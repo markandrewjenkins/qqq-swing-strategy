@@ -25,11 +25,14 @@ The strategy engine, its parameters, and the backtest logic live in a separate
 Born as a TradingView Pine script ("Ichimoku+++, optimized for TQQQ"), interrogated
 line by line, ported to Python on daily bars, de-bugged and de-overfit:
 
-- **TQQQ** in confirmed uptrends (adaptive Ichimoku structure + 20-day EMA, ~13 blockers all clear)
-- **SQQQ** in confirmed downtrends (bear structure + QQQ under its 200-day SMA), with a −10% hard stop
-- **Cash** whenever neither side fully aligns (~26% of days)
-- Exits are **structural** (trend break, VXN crash-spike, 20% trailing stop) — never "it looks overbought"
+- **TQQQ** whenever it closes above its 20-day EMA (and the VIX curve isn't deeply backwardated) — invested ~92% of days
+- **Exits are regime-gated:** while QQQ holds its 200-day SMA, dips are ridden; only a VXN crash-spike
+  (99.5th pct) or a 40% catastrophe trail exits. Below the 200-day, the adaptive Ichimoku structure
+  (bearish price bar / bearish Chikou) closes the position
+- **SQQQ** in confirmed downtrends (bear structure + QQQ under its 200-day SMA), half-size, −10% hard stop
 - Signals finalize on the **daily close**; orders execute at the **next market open**. No repainting.
+- Backtested vs TQQQ buy-and-hold over the same window: ~2× the terminal wealth with a ~33-point
+  smaller max drawdown.
 
 All figures are from a backtest on real prices with next-open fills and slippage.
 **Not investment advice.** Past performance is not indicative of future results.
