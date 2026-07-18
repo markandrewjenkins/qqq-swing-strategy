@@ -1,0 +1,55 @@
+name: Update live market status
+
+# Regenerates live_status.json + the daily candle JSONs from public market data
+# on a schedule. It does NOT run the strategy backtest — backtest_results.json
+# is produced by the private engine repo and pushed here via a deploy key.
+
+on:
+  schedule:
+    # Reliable EOD backbone: post-close runs after CBOE publishes the day's
+    # end-of-day prints. 21:35/22:35/23:35 UTC covers ~4:35–7:35pm ET across
+    # EST/EDT, with redundancy in case GitHub delays/skips one.
+    # (GitHub throttles high-frequency schedules, so we do NOT poll every 5 min
+    #  here — intraday refresh is driven externally via workflow_dispatch,
+    #  e.g. cron-job.org; see the VIX project's LIVE-REFRESH.md pattern.)
+    - cron: "35 21,22,23 * * 1-5"
+  workflow_dispatch: {}   # manual runs + external trigger (cron-job.org etc.)
+
+concurrency:
+  group: update-live
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install --quiet pandas
+
+      - name: Refresh data
+        run: |
+          python build_ohlc.py    # daily candles incl. the current forming day
+          python update_live.py   # live quotes + position + derived readings
+
+      - name: Commit if changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add live_status.json tqqq_ohlc.json sqqq_ohlc.json qld_ohlc.json qid_ohlc.json qqq_ohlc.json psq_ohlc.json
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: refresh live data [skip ci]"
+            git push
+          else
+            echo "No data changes — nothing to commit."
+          fi
