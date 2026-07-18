@@ -250,7 +250,7 @@ def main() -> None:
     quotes = {}
     for sym in ["^VXN", "^VIX", "^VIX3M", "^NDX"]:
         quotes[sym.lower().lstrip("^")] = yahoo_quote(sym, prepost=False)
-    for sym in ["TQQQ", "SQQQ", "QLD", "QID", "QQQ", "PSQ"]:
+    for sym in ["TQQQ", "SQQQ", "QQQ"]:
         quotes[sym.lower()] = yahoo_quote(sym, prepost=True)
     # Re-base index %change on the authoritative CBOE prior close.
     for qkey, ckey in [("vxn", "vxn"), ("vix", "vix"), ("vix3m", "vix3m")]:

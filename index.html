@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
 <title>QQQ Swing Strategy</title>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
 <style>
@@ -42,6 +42,7 @@
   --neu: var(--cyan);
 }
 * { box-sizing: border-box; margin: 0; padding: 0 }
+a { color: var(--cyan); text-decoration: underline; text-underline-offset: 2px; }
 html { font-size: 13.5px }
 body {
   background-color: var(--bg);
@@ -94,11 +95,11 @@ body {
 /* Sticky top bar: header + live strip pin together on scroll */
 .topbar { position: sticky; top: 0; z-index: 100; }
 .hdr-title {
-  font-family: 'Instrument Serif', serif;
-  font-size: 1.65rem;
-  font-weight: 400;
-  color: var(--yellow);
-  letter-spacing: 0.05em;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 1.28rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 .hdr-sun { color: var(--pink); font-size: 1.2rem; vertical-align: 2px;
@@ -392,11 +393,11 @@ tr:hover td { background: #e3dbc6 }
 #mkt-dot { display:none; }   /* redundant with the pulsing dot in the top status bar */
 .mkt-sessbar { position:relative; display:inline-flex; width:170px; height:6px; border-radius:3px; overflow:hidden; background:#d8cfba; vertical-align:middle; }
 .mkt-sessbar .seg { height:100%; }
-.mkt-sessbar .c1 { width:16.7%; background:rgba(152,141,120,0.45); }
-.mkt-sessbar .pre { width:22.9%; background:rgba(201,123,162,0.55); }
-.mkt-sessbar .reg { width:27.1%; background:rgba(29,138,94,0.7); }
-.mkt-sessbar .aft { width:16.7%; background:rgba(84,210,239,0.55); }
-.mkt-sessbar .c2 { width:16.6%; background:rgba(152,141,120,0.45); }
+.mkt-sessbar .c1 { width:16.7%; background:rgba(95,127,168,0.45); }
+.mkt-sessbar .pre { width:22.9%; background:rgba(211,163,56,0.6); }
+.mkt-sessbar .reg { width:27.1%; background:rgba(221,138,60,0.75); }
+.mkt-sessbar .aft { width:16.7%; background:rgba(201,105,141,0.6); }
+.mkt-sessbar .c2 { width:16.6%; background:rgba(95,127,168,0.45); }
 .mkt-marker { position:absolute; top:-5px; height:16px; width:2px; background:#ffffff; }
 #mkt-countdown { color:var(--dim); font-weight:400; }
 .mkt-block { display:inline-flex; align-items:center; gap:6px; white-space:nowrap; overflow:hidden; }
@@ -409,7 +410,7 @@ tr:hover td { background: #e3dbc6 }
 /* Summary page */
 .sig-etfnote { font-size:0.7rem; color:var(--dim); line-height:1.45; padding-top:8px; }
 .sig-etfnote b { color:var(--yellow); }
-.mini-mon .mini-note { font-size:0.52rem; color:var(--dim); line-height:1.35; margin-top:8px; padding-top:7px; border-top:1px dotted var(--border); white-space:nowrap; }
+.mini-mon .mini-note { font-size:0.5rem; color:var(--dim); line-height:1.3; margin-top:7px; padding-top:6px; border-top:1px dotted var(--border); white-space:normal; }
 .mini-mon .mini-note b { color:var(--dim); }
 .cdl-info { font-size:0.78rem; color:var(--text); padding:4px 2px 9px; margin-top:-7px; min-height:1.5em; border-bottom:1px dotted var(--border); margin-bottom:8px; line-height:1.5; }
 .cdl-info b { color:var(--yellow); }
@@ -431,7 +432,7 @@ tr:hover td { background: #e3dbc6 }
 .howto p { margin:0 0 6px; }
 .howto b { color:#26231e; }
 .howto .howto-note { color:var(--dim); font-size:0.8rem; margin-top:14px; border-top:1px dotted var(--border); padding-top:10px; }
-.howto a { color:var(--yellow); font-weight:600; text-decoration:none; }
+.howto a { color:var(--cyan); font-weight:600; text-decoration:underline; text-underline-offset:2px; }
 .howto a:hover { text-decoration:underline; }
 /* Exit-reason legend under the trades table */
 .exit-legend { display:flex; flex-wrap:wrap; gap:6px 18px; padding:12px 4px 2px; font-size:0.72rem; color:var(--dim); border-top:1px dotted var(--border); margin-top:10px; }
@@ -501,7 +502,7 @@ table.sig-mon th:nth-child(6),table.sig-mon td:nth-child(6){ width:9%; }
    the ~55px price axis and the bottom clears the ~25px time axis (each + a ~12px gap). */
 .mini-mon { position:absolute; top:12px; right:66px; bottom:36px; z-index:5; pointer-events:none; }
 .mini-mon .mini-inner { position:absolute; top:0; right:0; transform-origin:top right; width:252px;
-  background:rgba(237,230,214,0.84); border:1px dotted var(--border2); border-radius:16px; padding:8px 12px 9px;
+  background:rgba(237,230,214,0.965); border:1px dotted var(--border2); border-radius:16px; padding:8px 12px 9px;
   font-size:0.64rem; backdrop-filter:blur(2px); }
 /* Collapse only the body — the title bar stays so you remember what's minimized. */
 .mini-mon.mini-collapsed .mini-body { display:none; }
@@ -574,6 +575,23 @@ table.sig-mon tr.sig-divider td { color:var(--dim); font-size:0.6rem; text-trans
   opacity:0.55; transition:opacity .8s ease; }
 .flavor-off .flavor-footer { display:none !important; }
 
+
+/* ── Miami Magenta theme overrides (header toggle) ─────────────────── */
+.theme-miami body { background-image: none; }
+.theme-miami .hdr { background: #ffffff; }
+.theme-miami .tab.active { background: #fbe3ef; }
+.theme-miami .ph, .theme-miami th { background: #fbf2f6; }
+.theme-miami tr:hover td { background: #fdf5f9; }
+.theme-miami .rp-btn, .theme-miami .mini-mon .mini-exp { background: rgba(255,255,255,0.9); }
+.theme-miami .mini-mon .mini-inner { background: rgba(255,255,255,0.97); }
+.theme-miami .pill-tqqq { background:#e0f5f0 } .theme-miami .pill-sqqq { background:#fdeae0 }
+.theme-miami .pill-qld { background:#e2f3fb } .theme-miami .pill-qid { background:#f1e9fb }
+.theme-miami .eb-tp { background:#e0f5f0 } .theme-miami .eb-sl { background:#fdeae0 }
+.theme-miami .eb-move { background:#fdefda } .theme-miami .eb-ratio { background:#e2f3fb }
+.theme-miami .note-box { background: #fbe3ef; }
+.theme-miami .cdl-seg.active { color: #ffffff; }
+.theme-miami .sig-explain { background: rgba(214,0,110,0.05); }
+.theme-miami .hdr-title { color: var(--yellow); }
 </style>
 </head>
 <body>
@@ -581,13 +599,11 @@ table.sig-mon tr.sig-divider td { color:var(--dim); font-size:0.6rem; text-trans
 <div class="topbar">
 <div class="hdr">
   <div>
-    <div class="hdr-title">QQQ SWING STRATEGY <span class="hdr-sun">&#9788;</span></div>
+    <div class="hdr-title">QQQ SWING STRATEGY</div>
     <div class="hdr-metarow">
       <span class="hdr-meta" id="hdr-meta">Loading...</span>
-      <span class="hdr-meta" title="QLD/QID (2x) results are simulated by leverage-scaling the real TQQQ/SQQQ trade returns, calibrated on the actual QLD/QID price history">Toggle Leveraged ETF Pair:</span>
-      <span class="cdl-toggle-group instr-inline" title="QLD/QID (2x) results are simulated by leverage-scaling the real TQQQ/SQQQ trade returns, calibrated on the actual QLD/QID price history">
-        <button id="instr-real" class="cdl-seg active" onclick="setInstr('real')">TQQQ / SQQQ <span style="font-weight:400">(primary)</span></button>
-        <button id="instr-alt" class="cdl-seg" onclick="setInstr('alt')">QLD / QID <span style="font-weight:400">(2&times;, milder)</span></button>
+      <span class="cdl-toggle-group instr-inline" title="Switch the dashboard's color theme">
+        <button class="cdl-seg" onclick="toggleTheme()">Theme: <b id="theme-name" style="font-weight:700"></b></button>
       </span>
     </div>
   </div>
@@ -625,10 +641,7 @@ table.sig-mon tr.sig-divider td { color:var(--dim); font-size:0.6rem; text-trans
       <div class="live-row">
         <span class="live-item"><span class="live-lbl">TQQQ</span><span class="live-val" id="lv-tqqq">—</span><span class="live-chg" id="lv-tqqq-c"></span></span>
         <span class="live-item"><span class="live-lbl">SQQQ</span><span class="live-val" id="lv-sqqq">—</span><span class="live-chg" id="lv-sqqq-c"></span></span>
-        <span class="live-item"><span class="live-lbl">QLD</span><span class="live-val" id="lv-qld">—</span><span class="live-chg" id="lv-qld-c"></span></span>
-        <span class="live-item"><span class="live-lbl">QID</span><span class="live-val" id="lv-qid">—</span><span class="live-chg" id="lv-qid-c"></span></span>
         <span class="live-item"><span class="live-lbl">QQQ</span><span class="live-val" id="lv-qqq">—</span><span class="live-chg" id="lv-qqq-c"></span></span>
-        <span class="live-item"><span class="live-lbl">PSQ</span><span class="live-val" id="lv-psq">—</span><span class="live-chg" id="lv-psq-c"></span></span>
         <span class="live-item"><span class="live-lbl">NDX</span><span class="live-val" id="lv-ndx">—</span><span class="live-chg" id="lv-ndx-c"></span></span>
       </div>
     </div>
@@ -638,7 +651,7 @@ table.sig-mon tr.sig-divider td { color:var(--dim); font-size:0.6rem; text-trans
 
 <div id="loading">
   <div class="spinner"></div>
-  <div style="color:var(--dim);font-family:'IBM Plex Mono', monospace;font-size:0.75rem;letter-spacing:0.1em">Dialing the pool line&hellip; &#9788;</div>
+  <div style="color:var(--dim);font-family:'IBM Plex Mono', monospace;font-size:0.75rem;letter-spacing:0.1em">Loading dashboard...</div>
 </div>
 
 <div id="error-state">
@@ -706,7 +719,7 @@ table.sig-mon tr.sig-divider td { color:var(--dim); font-size:0.6rem; text-trans
       <div class="ph"><span>Live Signal Monitor</span></div>
       <div class="pb"><div id="sig-proj" class="sig-proj"></div></div>
       <div class="pb" style="overflow-x:auto;padding-top:0"><table id="signal-monitor" class="sig-mon"></table></div>
-      <div class="pb" style="padding-top:0"><div class="sig-etfnote"><span style="font-weight:700">Note: </span>All price-based signals are always computed from <b>TQQQ</b> daily bars (the instrument the strategy was built on) — the TQQQ/SQQQ &harr; QLD/QID toggle only rescales the displayed trade results and does not change the signals.</div></div>
+      <div class="pb" style="padding-top:0"><div class="sig-etfnote"><span style="font-weight:700">Note: </span>All price-based signals are computed from <b>TQQQ</b> daily bars; the added regime and volatility filters read QQQ, VXN and the VIX term structure.</div></div>
     </div>
   </div>
 
@@ -949,17 +962,42 @@ table.sig-mon tr.sig-divider td { color:var(--dim); font-size:0.6rem; text-trans
 </div><!-- /main-content -->
 
 <script>
-// ── Palette ───────────────────────────────────────────────────────────────
-const YELLOW='#3d3934', CYAN='#5f8f98', TEAL='#1d8a5e', PURPLE='#9a86c0';
-const PINK='#c97ba2', CORAL='#cf4a3f', AMBER='#b3773a', GRAY='#988d78', CASHC='#8a6d28';
-const DIM='#7d7466';
-const GRID='rgba(61,57,52,0.13)', TICK='#6f675a';
+// ── Theme system: vaporwave etch-a-sketch ↔ Miami Magenta (persisted) ─────
+const THEMES={
+ vapor:{ label:'Etch-a-Sketch', other:'Miami Vice',
+  vars:{'--bg':'#e7dfcd','--panel':'#ede6d6','--panel2':'#e0d8c3','--border':'#b3a88f','--border2':'#8d8371',
+   '--text':'#3d3934','--dim':'#6b6355','--white':'#26231e','--yellow':'#6d675d','--cyan':'#5f8f98',
+   '--pink':'#c97ba2','--teal':'#1d8a5e','--purple':'#9a86c0','--amber':'#b3773a','--coral':'#cf4a3f',
+   '--gray':'#988d78','--cash':'#d8cfba','--cashc':'#8a6d28','--holdg':'#8f8a80','--tealmut':'#7fae9a',
+   '--coralmut':'#c99a92','--cashmut':'#a89663','--namut':'#94886e','--dimwhite':'#756e60','--orangemut':'#b08d62'},
+  js:{YELLOW:'#6d675d',CYAN:'#5f8f98',TEAL:'#1d8a5e',PURPLE:'#9a86c0',PINK:'#c97ba2',CORAL:'#cf4a3f',
+   AMBER:'#b3773a',GRAY:'#988d78',CASHC:'#8a6d28',DIM:'#6b6355',GRID:'rgba(61,57,52,0.13)',TICK:'#6b6459',
+   LCBG:'#ede6d6',LCTX:'#57503f',LCBD:'#a99d85',LCCH:'#6f675a',HATCH:'#ddd5c2',HATCH2:'#d8cfba',
+   CASHB:'#8a6d28',CASHD:'#cdc2a4'} },
+ miami:{ label:'Miami Vice', other:'Etch-a-Sketch',
+  vars:{'--bg':'#fdeff4','--panel':'#ffffff','--panel2':'#fbf2f6','--border':'#f2d6e2','--border2':'#e7a8c6',
+   '--text':'#2c2433','--dim':'#94788a','--white':'#1a1420','--yellow':'#d6006e','--cyan':'#0a93c4',
+   '--pink':'#d6006e','--teal':'#009e88','--purple':'#8a4dd6','--amber':'#ef7d1a','--coral':'#df4726',
+   '--gray':'#9b8b95','--cash':'#ecd9e4','--cashc':'#b8741a','--holdg':'#9b8b95','--tealmut':'#8fd2c6',
+   '--coralmut':'#f0a894','--cashmut':'#d9a86c','--namut':'#c0a7b4','--dimwhite':'#a3909c','--orangemut':'#e2b07e'},
+  js:{YELLOW:'#3a2f44',CYAN:'#0a93c4',TEAL:'#009e88',PURPLE:'#8a4dd6',PINK:'#d6006e',CORAL:'#df4726',
+   AMBER:'#ef7d1a',GRAY:'#9b8b95',CASHC:'#b8741a',DIM:'#94788a',GRID:'rgba(44,36,51,0.09)',TICK:'#7a6a76',
+   LCBG:'#ffffff',LCTX:'#5c4f59',LCBD:'#e7a8c6',LCCH:'#94788a',HATCH:'#f4e6ef',HATCH2:'#f4e6ef',
+   CASHB:'#b8741a',CASHD:'#ecd9e4'} }
+};
+let THEME='vapor'; try{ if(localStorage.getItem('qqqTheme')==='miami') THEME='miami'; }catch(_){}
+const _TH=THEMES[THEME];
+Object.entries(_TH.vars).forEach(([k,v])=>document.documentElement.style.setProperty(k,v));
+document.documentElement.classList.toggle('theme-miami', THEME==='miami');
+function toggleTheme(){ try{ localStorage.setItem('qqqTheme', THEME==='vapor'?'miami':'vapor'); }catch(_){} location.reload(); }
+{ const tn=document.getElementById('theme-name'); if(tn) tn.textContent=_TH.other; }
+const {YELLOW,CYAN,TEAL,PURPLE,PINK,CORAL,AMBER,GRAY,CASHC,DIM,GRID,TICK,LCBG,LCTX,LCBD,LCCH,HATCH,HATCH2,CASHB,CASHD}=_TH.js;
 const FONT="'IBM Plex Mono', monospace";
 
 // ── Theme flavor (subtle Deus Ex / cyber-renaissance nod) ───────────────────
 // REVERSE SWITCH: set FLAVOR_ON=false to remove the footer tagline, the Vitruvian-man
 // watermark on "How It Works", and the console line — nothing else depends on it.
-const FLAVOR_ON = true;
+const FLAVOR_ON = false;   // footer taglines off per user preference
 (function(){
   const lines=[
     'Trade the trend \u00b7 fade the noise \u00b7 towel off \u2600',
@@ -1086,7 +1124,7 @@ function _exrBar(lo,hi,thr,val,fmt,ge,holdCol){
 function _hatchExrBar(){ const W=130,by=2,bh=5; let l='';
   for(let x=-bh;x<W;x+=5) l+=`<line x1="${x}" y1="${by+bh}" x2="${x+bh}" y2="${by}" stroke="var(--orangemut)" stroke-width="1" opacity="0.55"/>`;
   return `<svg width="${W}" height="20" style="vertical-align:middle"><clipPath id="ohc"><rect x="1" y="${by}" width="${W-2}" height="${bh}" rx="2.5"/></clipPath>`
-    +`<rect x="1" y="${by}" width="${W-2}" height="${bh}" rx="2.5" fill="#d8cfba"/><g clip-path="url(#ohc)">${l}</g></svg>`; }
+    +`<rect x="1" y="${by}" width="${W-2}" height="${bh}" rx="2.5" fill="${HATCH2}"/><g clip-path="url(#ohc)">${l}</g></svg>`; }
 // bar_history lookup for the trade's signal bar (the trading day before the fill).
 function _tBarBefore(date){ if(!window._tbd){ window._tbd={}; (DATA.bar_history||[]).forEach(r=>window._tbd[r.date]=r);
     window._tbdDates=(DATA.bar_history||[]).map(r=>r.date).sort(); }
@@ -1137,8 +1175,6 @@ async function load(){
     if(!r.ok)throw new Error('HTTP '+r.status);
     DATA=await r.json();
     try{ const ro=await fetch('tqqq_ohlc.json?v='+Date.now()); if(ro.ok) OHLC=await ro.json(); }catch(_){}
-    try{ const r2=await fetch('qld_ohlc.json?v='+Date.now()); if(r2.ok) ALT_QLD=await r2.json(); }catch(_){}
-    try{ const r3=await fetch('qid_ohlc.json?v='+Date.now()); if(r3.ok) ALT_QID=await r3.json(); }catch(_){}
     
     document.getElementById('loading').style.display='none';
     document.getElementById('main-content').style.display='flex';
@@ -1365,7 +1401,7 @@ function renderAnalytics(){
     {l:'Sharpe ratio', v:fmtNum(s.sharpe,2), sub:'Return per unit of total vol', c:s.sharpe>=1?'pos':s.sharpe>=0?'neu':'neg'},
     {l:'Sortino ratio',v:fmtNum(s.sortino,2), sub:'Return per unit of downside vol', c:s.sortino>=1?'pos':s.sortino>=0?'neu':'neg'},
     {l:'Calmar ratio', v:fmtNum(s.calmar,2), sub:'CAGR ÷ |max drawdown|', c:s.calmar>=1?'pos':s.calmar>=0.5?'neu':'neg'},
-    {l:'Alpha vs QQQ', v:fmtPct(s.total_return-s.benchmark_return,2), sub:'Strategy return minus QQQ', c:s.total_return>=s.benchmark_return?'pos':'neg'},
+    {l:'Alpha vs TQQQ', v:fmtPct(s.total_return-s.benchmark_return,2), sub:'Strategy return minus TQQQ B&H', c:s.total_return>=s.benchmark_return?'pos':'neg'},
   ];
   document.getElementById('kpi-strip').innerHTML=kpis.map(k=>
     `<div class="kpi"><div class="kpi-label">${k.l}</div><div class="kpi-val ${k.c}">${k.v}</div><div class="kpi-sub">${k.sub}</div></div>`
@@ -1383,19 +1419,15 @@ function renderAnalytics(){
   const spyMap={};spy.forEach(b=>{if(b.equity)spyMap[b.date]=+(b.equity/1000).toFixed(2);});
   const spyVals=labels.map(d=>spyMap[d]??null);
   // TQQQ buy-and-hold, normalised to the same start capital
-  const tMap={}; (OHLC||[]).forEach(r=>{tMap[r[0]]=r[4];});
-  let tBase=null; for(const d of labels){ if(tMap[d]!=null){tBase=tMap[d];break;} }
-  const tqqqVals=labels.map(d=> (tBase&&tMap[d]!=null)? +((sc*tMap[d]/tBase)/1000).toFixed(2):null);
 
   document.getElementById('eq-legend').innerHTML=legHtml([
-    [YELLOW,'Strategy'],[GRAY,'QQQ (B&H)'],[CYAN,'TQQQ (B&H)'],[CORAL,'Drawdown'],
+    [YELLOW,'Strategy'],[GRAY,'TQQQ (B&H)'],[CORAL,'Drawdown'],
   ]);
 
   mkChart('eqChart',{
     data:{labels,datasets:[
       {type:'line',label:'Strategy',data:eqVals,borderColor:YELLOW,borderWidth:2.5,pointRadius:0,yAxisID:'y',tension:0.2,fill:false},
-      ...(spyVals.some(v=>v)?[{type:'line',label:'QQQ',data:spyVals,borderColor:GRAY,borderWidth:1.5,pointRadius:0,yAxisID:'y',tension:0.2,borderDash:[5,3],fill:false}]:[]),
-      ...(tqqqVals.some(v=>v)?[{type:'line',label:'TQQQ',data:tqqqVals,borderColor:CYAN,borderWidth:1.5,pointRadius:0,yAxisID:'y',tension:0.2,borderDash:[2,3],fill:false}]:[]),
+      ...(spyVals.some(v=>v)?[{type:'line',label:'TQQQ (B&H)',data:spyVals,borderColor:GRAY,borderWidth:1.5,pointRadius:0,yAxisID:'y',tension:0.2,borderDash:[5,3],fill:false}]:[]),
       {type:'bar',label:'Drawdown',data:ddVals,backgroundColor:'rgba(207,74,63,0.22)',borderWidth:0,yAxisID:'y2',barPercentage:1,categoryPercentage:1},
     ]},
     options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
@@ -1797,9 +1829,7 @@ function renderMarkets(){
   // with a glow (custom plugin) so it's unmistakable.
   const pts=[]; const add=(name,curve,color,shape)=>{ const m=curve&&rr(curve); if(m) pts.push({name,x:+(m.mdd*100).toFixed(1),y:+(m.cagr*100).toFixed(1),color,shape}); };
   const s=aStats();
-  add('QQQ buy & hold', DATA.benchmark_curve, CYAN, 'circle');
-  add('TQQQ buy & hold', bh(typeof OHLC!=='undefined'?OHLC:null), TEAL, 'triangle');
-  add('QLD buy & hold', bh(typeof ALT_QLD!=='undefined'?ALT_QLD:null), PURPLE, 'rect');
+  add('TQQQ buy & hold', DATA.benchmark_curve, CYAN, 'circle');
   pts.push({name:'◆ This strategy ('+(aMode()?(CHART_MODE==='blend'?'QLD½/QID':'QLD/QID'):'TQQQ/SQQQ')+')', x:+(s.max_drawdown*100).toFixed(1), y:+(s.cagr*100).toFixed(1), color:YELLOW, shape:'rectRot', big:true});
   // Subtle red→green diagonal wash: bottom-left (deep DD, low CAGR) = worse, top-right = better.
   const rgBg={id:'rgbg',beforeDatasetsDraw(ch){const a=ch.chartArea;if(!a)return;const ctx=ch.ctx;
@@ -1848,7 +1878,7 @@ function _fallbackQuotes(){
   [['vxn',cv.vxn??(b&&b.vxn)],['vix',cv.vix],['vix3m',cv.vix3m]]
     .forEach(([id,v])=>{ const t=n2(v); if(t!=null) fill(id,t); });
   if(b&&b.contango!=null) fill('contango',(b.contango>=0?'+':'')+(b.contango*100).toFixed(1)+'%');
-  ['tqqq','sqqq','qld','qid','qqq','psq'].forEach(k=>{ const t=pr(q[k]&&q[k].price); if(t!=null) fill(k,t); });
+  ['tqqq','sqqq','qqq'].forEach(k=>{ const t=pr(q[k]&&q[k].price); if(t!=null) fill(k,t); });
   { const t=n2(q.ndx&&q.ndx.price); if(t!=null) fill('ndx',t); }
   if(window.OHLC&&OHLC.length){ const t=pr(OHLC[OHLC.length-1][4]); if(t!=null) fill('tqqq',t); }
 }
@@ -1937,8 +1967,7 @@ async function loadLive(){
       if(ce){ ce.textContent = x.change_pct!=null ? signed(x.change_pct*100,1,'%') : ''; ce.className='live-chg '+c+(dull?' dull':''); }
       _setTip(id, _tip('etf', fr, x.time));
     };
-    tk('tqqq','tqqq'); tk('sqqq','sqqq'); tk('qld','qld'); tk('qid','qid');
-    tk('qqq','qqq'); tk('psq','psq');
+    tk('tqqq','tqqq'); tk('sqqq','sqqq'); tk('qqq','qqq');
     // NDX is a regular-session index — display as a level, not a $ price.
     { const x=q.ndx||{}; const c=clsOf(x.change_pct); const fr=_fresh(x.time);
       setVal('lv-ndx', x.price==null?'—':(+x.price).toLocaleString('en-US',{maximumFractionDigits:0}), c, !fr);
@@ -1957,14 +1986,14 @@ async function loadLive(){
     const live = regular && fresh;
     // Match the live dot + status text to the embedded market-status bar's colour,
     // and keep it pulsing through any market phase (pre-market / regular / after).
-    const phaseColor = regular?TEAL : premkt?AMBER : settle?CYAN : GRAY;
+    const phaseColor = regular?'#dd8a3c' : premkt?'#d3a338' : settle?'#c9698d' : '#5f7fa8';
     const phaseActive = regular||premkt||settle;
     strip.classList.toggle('stale', !phaseActive);   // grey, non-pulsing only when fully closed
     const dot=document.querySelector('#live-strip .live-dot');
     if(dot){ dot.style.background=phaseColor; dot.style.boxShadow = phaseActive ? '0 0 6px '+phaseColor : 'none'; }
     const feed=document.getElementById('lv-feed'), note=document.getElementById('lv-feed-note'), delay=document.getElementById('lv-delay');
     // Badge colour: LIVE teal, DELAYED/PRE-MARKET amber, AFTER HOURS cyan, else grey.
-    const feedColor = live ? TEAL : (regular||premkt) ? AMBER : settle ? CYAN : GRAY;
+    const feedColor = live ? '#dd8a3c' : (regular||premkt) ? '#d3a338' : settle ? '#c9698d' : '#5f7fa8';
     if(feed){ feed.textContent = live ? 'LIVE' : regular ? 'DELAYED' : settle ? 'AFTER HOURS' : premkt ? 'PRE-MARKET' : 'OFFLINE'; feed.style.color=feedColor; }
     // After-hours: has the CBOE EOD term structure for TODAY actually posted (curve
     // dated today, not merely a 5:30 refresh attempt)? If so, record + show the ACTUAL
@@ -2057,10 +2086,11 @@ function toEtClock(iso){ if(!iso) return '\u2014'; try{ return new Intl.DateTime
 function updateMarket(){
   const {wd,sod}=_etNow(); const dec=sod/3600; const isWk=wd!=='Sat'&&wd!=='Sun'&&!_isMktHoliday(); let label,color,sep;
   const DASH='\u00a0-\u00a0', GAP='\u00a0\u00a0';   // snug gap for closed/pre, dash for open/after
-  if(isWk&&dec>=9.5&&dec<16){ label='Market open'; color=TEAL; sep=GAP; }
-  else if(isWk&&dec>=4&&dec<9.5){ label='Pre-market'; color=AMBER; sep=GAP; }
-  else if(isWk&&dec>=16&&dec<20){ label='After hours'; color=CYAN; sep=GAP; }
-  else { label='Market closed'; color=GRAY; sep=GAP; }
+  // Dusk palette: sunrise yellow → daylight orange → sunset pink → night blue
+  if(isWk&&dec>=9.5&&dec<16){ label='\u2600 Market open'; color='#dd8a3c'; sep=GAP; }
+  else if(isWk&&dec>=4&&dec<9.5){ label='\u263C Pre-market'; color='#d3a338'; sep=GAP; }
+  else if(isWk&&dec>=16&&dec<20){ label='\u2600 After hours'; color='#c9698d'; sep=GAP; }
+  else { label='\u263E Market closed'; color='#5f7fa8'; sep=GAP; }
   const dot=document.getElementById('mkt-dot'), lab=document.getElementById('mkt-label'), mk=document.getElementById('mkt-marker'), cd=document.getElementById('mkt-countdown');
   if(dot) dot.style.background=color;
   if(lab){ lab.textContent=label; lab.style.color=color; }   // match the phase colour
@@ -2174,14 +2204,14 @@ function buildDaily(){
   // preserve the current view across rebuilds (toggle / tab-switch) instead of snapping back
   let _keepRange=_dailyPendRange||null; if(dailyChart){ if(!_keepRange){ try{_keepRange=dailyChart.timeScale().getVisibleLogicalRange();}catch(_){} } try{dailyChart.remove();}catch(_){} dailyChart=null; }
   dailyChart=LC.createChart(el,{ width:el.clientWidth||900, height:el.clientHeight||360,
-    layout:{background:{color:'#ede6d6'},textColor:'#57503f',fontFamily:"'IBM Plex Mono', monospace"},
+    layout:{background:{color:LCBG},textColor:LCTX,fontFamily:"'IBM Plex Mono', monospace"},
     grid:{vertLines:{color:GRID,style:1},horzLines:{color:GRID,style:1}},
-    rightPriceScale:{borderColor:'#a99d85',scaleMargins:{top:0.10,bottom:0.10}},
-    leftPriceScale:{visible:true,invertScale:true,borderColor:'#a99d85',scaleMargins:{top:0.04,bottom:0.04}},
-    timeScale:{borderColor:'#a99d85',rightOffset:6,minBarSpacing:0.3,maxBarSpacing:18},
-    crosshair:{mode:(LC.CrosshairMode?LC.CrosshairMode.Normal:1),vertLine:{color:'#6f675a',labelBackgroundColor:'#6f675a'},horzLine:{color:'#6f675a',labelBackgroundColor:'#6f675a'}} });
+    rightPriceScale:{borderColor:LCBD,scaleMargins:{top:0.10,bottom:0.10}},
+    leftPriceScale:{visible:true,invertScale:true,borderColor:LCBD,scaleMargins:{top:0.04,bottom:0.04}},
+    timeScale:{borderColor:LCBD,rightOffset:6,minBarSpacing:0.3,maxBarSpacing:18},
+    crosshair:{mode:(LC.CrosshairMode?LC.CrosshairMode.Normal:1),vertLine:{color:LCCH,labelBackgroundColor:LCCH},horzLine:{color:LCCH,labelBackgroundColor:LCCH}} });
   dailySeries=dailyChart.addAreaSeries({lineColor:YELLOW,topColor:'rgba(61,57,52,0.25)',bottomColor:'rgba(61,57,52,0.01)',lineWidth:2,priceScaleId:'right',
-    priceLineVisible:true,priceLineColor:'#57503f',priceLineWidth:1,priceLineStyle:2,
+    priceLineVisible:true,priceLineColor:LCTX,priceLineWidth:1,priceLineStyle:2,
     priceFormat:{type:'custom',formatter:v=>'$'+abbrev(v)}});
   dailySeries.setData(data); dailySeries.setMarkers(mk);
   // drawdown histogram on its own left % axis — INVERTED scale: 0% sits at the
@@ -2293,22 +2323,22 @@ function renderSummary(){
 
   const el=document.getElementById('candle-chart'); el.innerHTML='';
   sumMain=LC.createChart(el,{ width:el.clientWidth||900, height:el.clientHeight||620,
-    layout:{background:{color:'#ede6d6'},textColor:'#57503f',fontFamily:"'IBM Plex Mono', monospace"},
+    layout:{background:{color:LCBG},textColor:LCTX,fontFamily:"'IBM Plex Mono', monospace"},
     grid:{vertLines:{color:GRID,style:1},horzLines:{color:GRID,style:1}},
-    rightPriceScale:{borderColor:'#a99d85',scaleMargins:{top:0.10,bottom:0.14}},
-    timeScale:{borderColor:'#a99d85',rightOffset:24,minBarSpacing:0.4,maxBarSpacing:18},
+    rightPriceScale:{borderColor:LCBD,scaleMargins:{top:0.10,bottom:0.14}},
+    timeScale:{borderColor:LCBD,rightOffset:24,minBarSpacing:0.4,maxBarSpacing:18},
     crosshair:{mode:(LC.CrosshairMode?LC.CrosshairMode.Normal:1),
-      vertLine:{color:'#6f675a',labelBackgroundColor:'#6f675a'},
-      horzLine:{color:'#6f675a',labelBackgroundColor:'#6f675a'}} });
+      vertLine:{color:LCCH,labelBackgroundColor:LCCH},
+      horzLine:{color:LCCH,labelBackgroundColor:LCCH}} });
   // Monochrome theme-gold candles: hollow body = up day, filled body = down day
   candleSeries=sumMain.addCandlestickSeries({upColor:'rgba(0,0,0,0)',downColor:YELLOW,borderUpColor:YELLOW,borderDownColor:YELLOW,wickUpColor:YELLOW,wickDownColor:YELLOW,
-    lastValueVisible:true,priceLineVisible:true,priceLineColor:'#57503f',priceLineWidth:1,priceLineStyle:2});
+    lastValueVisible:true,priceLineVisible:true,priceLineColor:LCTX,priceLineWidth:1,priceLineStyle:2});
   candleSeries.setData(CANDLES); candleSeries.setMarkers(markers); MARKERS=markers;
 
   // Position bar below the chart (per-session bars)
   const pel=document.getElementById('pos-band'); pel.innerHTML='';
   sumPos=LC.createChart(pel,{ width:pel.clientWidth||900, height:30,
-    layout:{background:{color:'#ede6d6'},textColor:'rgba(0,0,0,0)',fontFamily:"'IBM Plex Mono', monospace"},
+    layout:{background:{color:LCBG},textColor:'rgba(0,0,0,0)',fontFamily:"'IBM Plex Mono', monospace"},
     grid:{vertLines:{visible:false},horzLines:{visible:false}},
     rightPriceScale:{visible:true,borderVisible:false},leftPriceScale:{visible:false},
     timeScale:{visible:false,borderVisible:false},
@@ -2524,7 +2554,7 @@ function renderSignalMonitor(histBar){
 
   // ── Gauge engine (zones: 't' teal / 'r' coral / 'n' neutral; 'P' position hold
   //    band; 'C' cash exit extreme; 'd' permanently-dull) — same as the VIX build. ──
-  const CASHB='#8a6d28', CASHD='#cdc2a4';
+  // CASHB / CASHD come from the active theme palette
   const _zoneStyle=(z,val,trig)=>{ const c=z[2]; const hit=val!=null&&!isNaN(val)&&val>=z[0]&&val<=z[1];
     if(c==='P') return (hit&&!trig&&inPos)?{fill:POSC,op:0.95}:{fill:POSCM,op:0.4};
     if(c==='C') return trig?{fill:CASHB,op:1}:((hit&&inPos)?{fill:POSC,op:0.95}:{fill:CASHD,op:1});
@@ -2536,7 +2566,7 @@ function renderSignalMonitor(histBar){
   const _hatchSvg=(W,H,by,bhh)=>{ const id='hc'+(++_hcn); let lines='';
     for(let x=-bhh;x<W;x+=5) lines+=`<line x1="${x}" y1="${by+bhh}" x2="${x+bhh}" y2="${by}" stroke="var(--orangemut)" stroke-width="1" opacity="0.55"/>`;
     return `<svg width="${W}" height="${H}" style="vertical-align:middle"><clipPath id="${id}"><rect x="1" y="${by}" width="${W-2}" height="${bhh}" rx="2.5"/></clipPath>`
-      + `<rect x="1" y="${by}" width="${W-2}" height="${bhh}" rx="2.5" fill="#ddd5c2"/><g clip-path="url(#${id})">${lines}</g></svg>`; };
+      + `<rect x="1" y="${by}" width="${W-2}" height="${bhh}" rx="2.5" fill="${HATCH}"/><g clip-path="url(#${id})">${lines}</g></svg>`; };
   const gaugeHtml=(lo,hi,zones,val,tip,fmt,opts)=>{ opts=opts||{}; tip=_titleCase(tip);
     const W=176,H=24,bhh=5,pad=1;
     const noLabels = opts.hatch || opts.nolab;
@@ -2643,7 +2673,7 @@ function renderSignalMonitor(histBar){
       b.bull_bar?'TQQQ':b.bear_bar?'SQQQ':'NEU', gBar],
     ['Chikou Filter','Smoothed price vs the 25-day high/low displaced 25 bars — trend confirmation',
       'Bullish (not bearish blocks TQQQ)','Bearish (not bullish blocks SQQQ)',
-      b.chikou_sig===1?'Bullish':b.chikou_sig===-1?'Bearish':'Consolidation',
+      b.chikou_sig===1?'Bullish':b.chikou_sig===-1?'Bearish':'Consol.',
       b.chikou_sig===1?'TQQQ':b.chikou_sig===-1?'SQQQ':'NEU', gChik],
     ['20-day EMA Trend','Close vs its 20-day EMA — the base trend gate for each side',
       'Above &rarr; TQQQ side','Below &rarr; SQQQ side (50-day too)', pct(emaDist,1),
@@ -2871,7 +2901,7 @@ function renderSignalMonitor(histBar){
     const mnames=['Bear bar','Chikou-','VXN spike','Trail 20%','SuperTrend','Bull bar','Chikou+','Stoch OS','ATR low','VXN low','Stop −10%'];
     xdef.forEach((r,i)=>{ const s=exState(i); const g=r[7]?{...r[7],trig:s==='exit'}:null;
       mh+=mRow(mnames[i], g, stripTags(''+r[6])||'—', mStat(i), s==='na'); });
-    mh+=`<div class="mini-note"><b>NOTE:</b> All price-based signals are computed from TQQQ daily bars</div>`;
+    mh+=`<div class="mini-note"><b>NOTE:</b> Signals computed from TQQQ daily bars</div>`;
     const _mm=document.getElementById('mini-monitor');
     let _miniColl=false; try{ _miniColl=localStorage.getItem('miniCollapsed')==='1'; }catch(_){}
     _mm.classList.toggle('mini-collapsed', _miniColl);

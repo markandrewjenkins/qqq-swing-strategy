@@ -114,10 +114,9 @@ def fetch_ohlc(symbol="TQQQ", start="2010-02-11"):
     return rows
 
 def main():
-    # TQQQ/SQQQ from inception (2010-02); the 2x/1x toggle pair + benchmarks too.
+    # TQQQ/SQQQ from inception (2010-02) + QQQ for market context.
     for sym, fname in [("TQQQ", "tqqq_ohlc.json"), ("SQQQ", "sqqq_ohlc.json"),
-                       ("QLD",  "qld_ohlc.json"),  ("QID",  "qid_ohlc.json"),
-                       ("QQQ",  "qqq_ohlc.json"),  ("PSQ",  "psq_ohlc.json")]:
+                       ("QQQ",  "qqq_ohlc.json")]:
         try:
             rows = drop_forming_today(fetch_ohlc(sym))
             # Replace today's (glitchy) daily bar with one rebuilt from 5-min prints.
