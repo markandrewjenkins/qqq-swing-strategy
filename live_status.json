@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-07-18T10:48:37+00:00",
+  "generated_utc": "2026-07-18T18:29:39+00:00",
   "market": {
     "vxn_used": 29.03,
     "vix_used": 18.77,
@@ -86,13 +86,13 @@
     "yc_spread": null,
     "regime": "contango"
   },
-  "cboe_refreshed": true,
+  "cboe_refreshed": false,
   "official": {
     "date": "2026-07-17",
     "position": "CASH",
     "signal": "CASH",
     "open_pnl": 0.0,
-    "equity": 6016998.92,
+    "equity": 6017004.43,
     "entry_date": null,
     "entry_price": null
   },
