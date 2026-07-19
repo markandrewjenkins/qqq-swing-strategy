@@ -581,7 +581,7 @@ table.sig-mon tr.sig-divider td { color:var(--dim); font-size:0.6rem; text-trans
 /* ══ Miami Vice — dark synthwave theme (header toggle) ═════════════════════
    Independent look: indigo night, neon magenta/cyan, sunset scanlines + glow.
    Applied via .theme-miami on <html>; the JS palette sets the CSS vars. */
-.pre-miami { background:#160d2b; }   /* pre-paint bg to avoid a light flash */
+.pre-miami { background:#070510; }   /* pre-paint bg to avoid a light flash */
 /* Body font → Chakra Petch (Orbitron reserved for the title). Covers inline
    font-family:'IBM Plex Mono' set on JS-generated cells too. */
 .theme-miami, .theme-miami body, .theme-miami [style*="IBM Plex Mono"] {
@@ -589,16 +589,16 @@ table.sig-mon tr.sig-divider td { color:var(--dim); font-size:0.6rem; text-trans
 }
 .theme-miami .hdr-title { font-family: 'Orbitron', sans-serif !important; }
 .theme-miami body {
-  background-color: #160d2b;
+  background-color: #070510;
   /* Sunset gradient wash + faint horizon grid */
   background-image:
-    radial-gradient(ellipse at 50% -12%, rgba(255,60,170,0.16), transparent 55%),
-    radial-gradient(ellipse at 50% 0%, rgba(46,230,255,0.08), transparent 45%),
+    radial-gradient(ellipse at 50% -12%, rgba(255,60,170,0.20), transparent 55%),
+    radial-gradient(ellipse at 50% 0%, rgba(46,230,255,0.10), transparent 45%),
     linear-gradient(180deg, rgba(22,13,43,0) 60%, rgba(120,40,140,0.10) 100%);
   background-attachment: fixed;
 }
 .theme-miami .hdr {
-  background: linear-gradient(180deg,#1e1240,#160d2b);
+  background: linear-gradient(180deg,#130b26,#070510);
   border-bottom: 1px solid var(--pink);
   box-shadow: 0 2px 22px -6px rgba(255,60,170,0.5);
 }
@@ -626,7 +626,7 @@ table.sig-mon tr.sig-divider td { color:var(--dim); font-size:0.6rem; text-trans
 .theme-miami .pill-qid { background:rgba(185,140,255,0.16); }
 .theme-miami .eb-move { background:rgba(255,179,71,0.16); }
 .theme-miami .note-box { background:rgba(255,60,170,0.08); border-color:var(--pink); }
-.theme-miami .cdl-seg.active { background:var(--pink); color:#160d2b; }
+.theme-miami .cdl-seg.active { background:var(--pink); color:#070510; }
 .theme-miami .sig-explain { background: rgba(46,230,255,0.07); border-left-color: var(--cyan); }
 .theme-miami .spinner { border-top-color: var(--pink); }
 .theme-miami a { color: var(--cyan); }
@@ -1015,20 +1015,20 @@ const THEMES={
   js:{YELLOW:'#6d675d',CYAN:'#5f8f98',TEAL:'#1d8a5e',PURPLE:'#9a86c0',PINK:'#c97ba2',CORAL:'#cf4a3f',
    AMBER:'#b3773a',GRAY:'#988d78',CASHC:'#8a6d28',DIM:'#6b6355',GRID:'rgba(61,57,52,0.13)',TICK:'#6b6459',
    LCBG:'#ede6d6',LCTX:'#57503f',LCBD:'#a99d85',LCCH:'#6f675a',HATCH:'#ddd5c2',HATCH2:'#d8cfba',
-   CASHB:'#8a6d28',CASHD:'#cdc2a4'} },
+   CASHB:'#8a6d28',CASHD:'#cdc2a4',ENTRY:'#26231e'} },
  miami:{ label:'Miami Vice', other:'Etch-a-Sketch',
-  // Independent dark synthwave palette — deep indigo night, neon magenta/cyan,
-  // sunset amber. Gains = neon green, losses = hot red-coral (distinct from the
-  // magenta brand). Not derived from the light theme.
-  vars:{'--bg':'#160d2b','--panel':'#1e133f','--panel2':'#180f34','--border':'#3a2a63','--border2':'#5a3f8f',
-   '--text':'#e9def7','--dim':'#9a83c4','--white':'#fdf2ff','--yellow':'#ff3caa','--cyan':'#2ee6ff',
+  // Independent dark synthwave palette — near-black night with a faint purple
+  // cast, neon magenta/cyan, sunset amber. Gains = neon green, losses = hot
+  // red-coral (distinct from the magenta brand). Not derived from the light theme.
+  vars:{'--bg':'#070510','--panel':'#100a1e','--panel2':'#0b0718','--border':'#241a3c','--border2':'#463065',
+   '--text':'#ece2fa','--dim':'#9683bf','--white':'#fdf2ff','--yellow':'#ff3caa','--cyan':'#2ee6ff',
    '--pink':'#ff3caa','--teal':'#25f4b0','--purple':'#b98cff','--amber':'#ffb347','--coral':'#ff5a7a',
-   '--gray':'#7d6cae','--cash':'#2a1d4f','--cashc':'#ffb347','--holdg':'#8a79b8','--tealmut':'#3f8f79',
-   '--coralmut':'#a35668','--cashmut':'#b08a52','--namut':'#6f5f9a','--dimwhite':'#b3a3d6','--orangemut':'#c78f4e'},
+   '--gray':'#7d6cae','--cash':'#1b1330','--cashc':'#ffb347','--holdg':'#8a79b8','--tealmut':'#3f8f79',
+   '--coralmut':'#a35668','--cashmut':'#b08a52','--namut':'#6a5b93','--dimwhite':'#b3a3d6','--orangemut':'#c78f4e'},
   js:{YELLOW:'#ff3caa',CYAN:'#2ee6ff',TEAL:'#25f4b0',PURPLE:'#b98cff',PINK:'#ff3caa',CORAL:'#ff5a7a',
-   AMBER:'#ffb347',GRAY:'#7d6cae',CASHC:'#ffb347',DIM:'#9a83c4',GRID:'rgba(120,90,200,0.16)',TICK:'#9a83c4',
-   LCBG:'#1a1136',LCTX:'#c9b8ef',LCBD:'#3a2a63',LCCH:'#6a4fa0',HATCH:'#2a1d4f',HATCH2:'#241748',
-   CASHB:'#ffb347',CASHD:'#3a2a63'} }
+   AMBER:'#ffb347',GRAY:'#7d6cae',CASHC:'#ffb347',DIM:'#9683bf',GRID:'rgba(120,90,200,0.14)',TICK:'#8f7cbb',
+   LCBG:'#0b0718',LCTX:'#c9b8ef',LCBD:'#241a3c',LCCH:'#5a4488',HATCH:'#1b1330',HATCH2:'#160e28',
+   CASHB:'#ffb347',CASHD:'#241a3c',ENTRY:'#fff0a0'} }
 };
 let THEME='vapor'; try{ if(localStorage.getItem('qqqTheme')==='miami') THEME='miami'; }catch(_){}
 const _TH=THEMES[THEME];
@@ -1036,7 +1036,7 @@ Object.entries(_TH.vars).forEach(([k,v])=>document.documentElement.style.setProp
 document.documentElement.classList.toggle('theme-miami', THEME==='miami');
 function toggleTheme(){ try{ localStorage.setItem('qqqTheme', THEME==='vapor'?'miami':'vapor'); }catch(_){} location.reload(); }
 { const tn=document.getElementById('theme-name'); if(tn) tn.textContent=_TH.other; }
-const {YELLOW,CYAN,TEAL,PURPLE,PINK,CORAL,AMBER,GRAY,CASHC,DIM,GRID,TICK,LCBG,LCTX,LCBD,LCCH,HATCH,HATCH2,CASHB,CASHD}=_TH.js;
+const {YELLOW,CYAN,TEAL,PURPLE,PINK,CORAL,AMBER,GRAY,CASHC,DIM,GRID,TICK,LCBG,LCTX,LCBD,LCCH,HATCH,HATCH2,CASHB,CASHD,ENTRY:ENTRYC}=_TH.js;
 const FONT = THEME==='miami' ? "'Chakra Petch', sans-serif" : "'IBM Plex Mono', monospace";
 
 // ── Theme flavor (subtle Deus Ex / cyber-renaissance nod) ───────────────────
@@ -2157,7 +2157,7 @@ function displayMarkers(){
   const alt=aMode(); const markers=[];
   let svC={}, uvC={};
   if(alt){ (ALT_QLD||[]).forEach(a=>svC[a[0]]=a[4]); (ALT_QID||[]).forEach(a=>uvC[a[0]]=a[4]); }
-  const ENTRY='#26231e';   // luminous pale gold — pops against the deeper gold candles without looking stark white
+  const ENTRY=ENTRYC;   // theme-aware entry marker (dark ink on light, pale gold on dark)
   DATA.trades.forEach(t=>{ const sv=t.type==='LONG_TQQQ'; const mp=sv?'aboveBar':'belowBar';
     if(alt){
       const map=sv?svC:uvC; const e=map[t.entry_date], x=map[t.exit_date];
@@ -2237,7 +2237,7 @@ function buildDaily(){
   ec.forEach((b,i)=>{ const prev=i>0?ec[i-1].equity:sc; const held=_pb[b.date]&&_pb[b.date]!=='CASH';
     _dailyMap[b.date]={eq:b.equity,cum:b.equity/sc-1,day:prev?b.equity/prev-1:0,dd:(b.drawdown||0),pos:_op[b.date],held:held}; });
   // markers: entries WHITE, exits teal/red by P&L; TQQQ above the line, SQQQ below
-  const WHITE='#26231e'; const mk=[];
+  const WHITE=ENTRYC; const mk=[];
   aTrades().forEach(t=>{ const sv=tIsSV(t), win=tRet(t)>0, posn=sv?'aboveBar':'belowBar', shp=sv?'arrowDown':'arrowUp';
     mk.push({time:t.entry_date,position:posn,color:WHITE,shape:shp,text:(sv?svN():uvN())});
     mk.push({time:t.exit_date, position:posn,color:win?TEAL:CORAL,shape:shp,text:(tRet(t)>=0?'+':'')+(tRet(t)*100).toFixed(1)+'%'}); });
