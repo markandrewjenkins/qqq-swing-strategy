@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
 <title>QQQ Swing Strategy</title>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Orbitron:wght@500;700;900&family=Chakra+Petch:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>/* Set theme class before paint to avoid a flash of the wrong palette. */
+try{ if(localStorage.getItem('qqqTheme')==='miami') document.documentElement.classList.add('theme-miami','pre-miami'); }catch(_){}</script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
 <style>
@@ -576,22 +578,62 @@ table.sig-mon tr.sig-divider td { color:var(--dim); font-size:0.6rem; text-trans
 .flavor-off .flavor-footer { display:none !important; }
 
 
-/* ── Miami Magenta theme overrides (header toggle) ─────────────────── */
-.theme-miami body { background-image: none; }
-.theme-miami .hdr { background: #ffffff; }
-.theme-miami .tab.active { background: #fbe3ef; }
-.theme-miami .ph, .theme-miami th { background: #fbf2f6; }
-.theme-miami tr:hover td { background: #fdf5f9; }
-.theme-miami .rp-btn, .theme-miami .mini-mon .mini-exp { background: rgba(255,255,255,0.9); }
-.theme-miami .mini-mon .mini-inner { background: rgba(255,255,255,0.97); }
-.theme-miami .pill-tqqq { background:#e0f5f0 } .theme-miami .pill-sqqq { background:#fdeae0 }
-.theme-miami .pill-qld { background:#e2f3fb } .theme-miami .pill-qid { background:#f1e9fb }
-.theme-miami .eb-tp { background:#e0f5f0 } .theme-miami .eb-sl { background:#fdeae0 }
-.theme-miami .eb-move { background:#fdefda } .theme-miami .eb-ratio { background:#e2f3fb }
-.theme-miami .note-box { background: #fbe3ef; }
-.theme-miami .cdl-seg.active { color: #ffffff; }
-.theme-miami .sig-explain { background: rgba(214,0,110,0.05); }
-.theme-miami .hdr-title { color: var(--yellow); }
+/* ══ Miami Vice — dark synthwave theme (header toggle) ═════════════════════
+   Independent look: indigo night, neon magenta/cyan, sunset scanlines + glow.
+   Applied via .theme-miami on <html>; the JS palette sets the CSS vars. */
+.pre-miami { background:#160d2b; }   /* pre-paint bg to avoid a light flash */
+/* Body font → Chakra Petch (Orbitron reserved for the title). Covers inline
+   font-family:'IBM Plex Mono' set on JS-generated cells too. */
+.theme-miami, .theme-miami body, .theme-miami [style*="IBM Plex Mono"] {
+  font-family: 'Chakra Petch', sans-serif !important;
+}
+.theme-miami .hdr-title { font-family: 'Orbitron', sans-serif !important; }
+.theme-miami body {
+  background-color: #160d2b;
+  /* Sunset gradient wash + faint horizon grid */
+  background-image:
+    radial-gradient(ellipse at 50% -12%, rgba(255,60,170,0.16), transparent 55%),
+    radial-gradient(ellipse at 50% 0%, rgba(46,230,255,0.08), transparent 45%),
+    linear-gradient(180deg, rgba(22,13,43,0) 60%, rgba(120,40,140,0.10) 100%);
+  background-attachment: fixed;
+}
+.theme-miami .hdr {
+  background: linear-gradient(180deg,#1e1240,#160d2b);
+  border-bottom: 1px solid var(--pink);
+  box-shadow: 0 2px 22px -6px rgba(255,60,170,0.5);
+}
+.theme-miami .hdr-title {
+  font-family: 'Orbitron', sans-serif; font-weight: 900;
+  color: #ff3caa; letter-spacing: 0.14em;
+  text-shadow: 0 0 8px rgba(255,60,170,0.75), 0 0 22px rgba(255,60,170,0.4);
+}
+.theme-miami .ph span { color: var(--cyan); text-shadow: 0 0 7px rgba(46,230,255,0.45); }
+.theme-miami .tab { font-family:'Chakra Petch',sans-serif; }
+.theme-miami .tab.active { background:#2a1a52; border-color:var(--pink); color:var(--pink);
+  box-shadow: 0 0 10px -1px rgba(255,60,170,0.5); }
+.theme-miami .tab:hover { border-color: var(--cyan); color: var(--cyan); }
+.theme-miami .ph, .theme-miami th { background:#1a1038; }
+.theme-miami tr:hover td { background: rgba(120,90,200,0.12); }
+.theme-miami .panel { box-shadow: 0 0 0 1px rgba(90,63,143,0.25), 0 6px 26px -14px rgba(255,60,170,0.35); }
+.theme-miami .kpi { border-left-color: var(--cyan); }
+.theme-miami .kpi-val.pos { text-shadow: 0 0 9px rgba(37,244,176,0.4); }
+.theme-miami .rp-btn, .theme-miami .mini-mon .mini-exp { background: rgba(30,19,63,0.9); color: var(--cyan); }
+.theme-miami .mini-mon .mini-inner { background: rgba(24,15,52,0.96); border-color: var(--border2);
+  box-shadow: 0 0 18px -4px rgba(255,60,170,0.4); }
+.theme-miami .pill-tqqq, .theme-miami .eb-tp { background:rgba(37,244,176,0.14); }
+.theme-miami .pill-sqqq, .theme-miami .eb-sl { background:rgba(255,90,122,0.16); }
+.theme-miami .pill-qld, .theme-miami .eb-ratio { background:rgba(46,230,255,0.14); }
+.theme-miami .pill-qid { background:rgba(185,140,255,0.16); }
+.theme-miami .eb-move { background:rgba(255,179,71,0.16); }
+.theme-miami .note-box { background:rgba(255,60,170,0.08); border-color:var(--pink); }
+.theme-miami .cdl-seg.active { background:var(--pink); color:#160d2b; }
+.theme-miami .sig-explain { background: rgba(46,230,255,0.07); border-left-color: var(--cyan); }
+.theme-miami .spinner { border-top-color: var(--pink); }
+.theme-miami a { color: var(--cyan); }
+.theme-miami .live-dot { background: var(--pink); box-shadow: 0 0 8px var(--pink); }
+/* Neon horizon scanline under the live strip */
+.theme-miami #live-strip { border-bottom: 1px solid var(--border2);
+  box-shadow: inset 0 -1px 0 rgba(46,230,255,0.25); }
 </style>
 </head>
 <body>
@@ -975,15 +1017,18 @@ const THEMES={
    LCBG:'#ede6d6',LCTX:'#57503f',LCBD:'#a99d85',LCCH:'#6f675a',HATCH:'#ddd5c2',HATCH2:'#d8cfba',
    CASHB:'#8a6d28',CASHD:'#cdc2a4'} },
  miami:{ label:'Miami Vice', other:'Etch-a-Sketch',
-  vars:{'--bg':'#fdeff4','--panel':'#ffffff','--panel2':'#fbf2f6','--border':'#f2d6e2','--border2':'#e7a8c6',
-   '--text':'#2c2433','--dim':'#94788a','--white':'#1a1420','--yellow':'#d6006e','--cyan':'#0a93c4',
-   '--pink':'#d6006e','--teal':'#009e88','--purple':'#8a4dd6','--amber':'#ef7d1a','--coral':'#df4726',
-   '--gray':'#9b8b95','--cash':'#ecd9e4','--cashc':'#b8741a','--holdg':'#9b8b95','--tealmut':'#8fd2c6',
-   '--coralmut':'#f0a894','--cashmut':'#d9a86c','--namut':'#c0a7b4','--dimwhite':'#a3909c','--orangemut':'#e2b07e'},
-  js:{YELLOW:'#3a2f44',CYAN:'#0a93c4',TEAL:'#009e88',PURPLE:'#8a4dd6',PINK:'#d6006e',CORAL:'#df4726',
-   AMBER:'#ef7d1a',GRAY:'#9b8b95',CASHC:'#b8741a',DIM:'#94788a',GRID:'rgba(44,36,51,0.09)',TICK:'#7a6a76',
-   LCBG:'#ffffff',LCTX:'#5c4f59',LCBD:'#e7a8c6',LCCH:'#94788a',HATCH:'#f4e6ef',HATCH2:'#f4e6ef',
-   CASHB:'#b8741a',CASHD:'#ecd9e4'} }
+  // Independent dark synthwave palette — deep indigo night, neon magenta/cyan,
+  // sunset amber. Gains = neon green, losses = hot red-coral (distinct from the
+  // magenta brand). Not derived from the light theme.
+  vars:{'--bg':'#160d2b','--panel':'#1e133f','--panel2':'#180f34','--border':'#3a2a63','--border2':'#5a3f8f',
+   '--text':'#e9def7','--dim':'#9a83c4','--white':'#fdf2ff','--yellow':'#ff3caa','--cyan':'#2ee6ff',
+   '--pink':'#ff3caa','--teal':'#25f4b0','--purple':'#b98cff','--amber':'#ffb347','--coral':'#ff5a7a',
+   '--gray':'#7d6cae','--cash':'#2a1d4f','--cashc':'#ffb347','--holdg':'#8a79b8','--tealmut':'#3f8f79',
+   '--coralmut':'#a35668','--cashmut':'#b08a52','--namut':'#6f5f9a','--dimwhite':'#b3a3d6','--orangemut':'#c78f4e'},
+  js:{YELLOW:'#ff3caa',CYAN:'#2ee6ff',TEAL:'#25f4b0',PURPLE:'#b98cff',PINK:'#ff3caa',CORAL:'#ff5a7a',
+   AMBER:'#ffb347',GRAY:'#7d6cae',CASHC:'#ffb347',DIM:'#9a83c4',GRID:'rgba(120,90,200,0.16)',TICK:'#9a83c4',
+   LCBG:'#1a1136',LCTX:'#c9b8ef',LCBD:'#3a2a63',LCCH:'#6a4fa0',HATCH:'#2a1d4f',HATCH2:'#241748',
+   CASHB:'#ffb347',CASHD:'#3a2a63'} }
 };
 let THEME='vapor'; try{ if(localStorage.getItem('qqqTheme')==='miami') THEME='miami'; }catch(_){}
 const _TH=THEMES[THEME];
@@ -992,7 +1037,7 @@ document.documentElement.classList.toggle('theme-miami', THEME==='miami');
 function toggleTheme(){ try{ localStorage.setItem('qqqTheme', THEME==='vapor'?'miami':'vapor'); }catch(_){} location.reload(); }
 { const tn=document.getElementById('theme-name'); if(tn) tn.textContent=_TH.other; }
 const {YELLOW,CYAN,TEAL,PURPLE,PINK,CORAL,AMBER,GRAY,CASHC,DIM,GRID,TICK,LCBG,LCTX,LCBD,LCCH,HATCH,HATCH2,CASHB,CASHD}=_TH.js;
-const FONT="'IBM Plex Mono', monospace";
+const FONT = THEME==='miami' ? "'Chakra Petch', sans-serif" : "'IBM Plex Mono', monospace";
 
 // ── Theme flavor (subtle Deus Ex / cyber-renaissance nod) ───────────────────
 // REVERSE SWITCH: set FLAVOR_ON=false to remove the footer tagline, the Vitruvian-man
