@@ -1,8 +1,8 @@
 {
-  "generated_utc": "2026-07-20T10:25:24+00:00",
+  "generated_utc": "2026-07-20T10:30:29+00:00",
   "market": {
     "vxn_used": 29.03,
-    "vix_used": 18.38,
+    "vix_used": 18.42,
     "vix3m_used": 20.54,
     "curve": {
       "vxn": 29.03,
@@ -26,10 +26,10 @@
         "time": "2026-07-17T20:15:01+00:00"
       },
       "vix": {
-        "price": 18.38,
+        "price": 18.42,
         "prev_close": 18.77,
-        "change_pct": -0.020778,
-        "time": "2026-07-20T10:10:16+00:00"
+        "change_pct": -0.018647,
+        "time": "2026-07-20T10:15:16+00:00"
       },
       "vix3m": {
         "price": 20.54,
@@ -38,33 +38,33 @@
         "time": "2026-07-17T20:15:01+00:00"
       },
       "ndx": {
-        "price": 28775.8,
+        "price": 28797.19,
         "prev_close": 29025.8,
-        "change_pct": -0.008613,
-        "time": "2026-07-20T10:25:12+00:00"
+        "change_pct": -0.007876,
+        "time": "2026-07-20T10:30:31+00:00"
       },
       "tqqq": {
-        "price": 68.75,
+        "price": 68.86,
         "prev_close": 70.74,
-        "change_pct": -0.028131,
-        "time": "2026-07-20T10:25:25+00:00"
+        "change_pct": -0.026576,
+        "time": "2026-07-20T10:30:24+00:00"
       },
       "sqqq": {
-        "price": 41.9605,
+        "price": 41.92,
         "prev_close": 40.89,
-        "change_pct": 0.02618,
-        "time": "2026-07-20T10:25:07+00:00"
+        "change_pct": 0.02519,
+        "time": "2026-07-20T10:30:28+00:00"
       },
       "qqq": {
-        "price": 699.86,
+        "price": 700.38,
         "prev_close": 705.94,
-        "change_pct": -0.008613,
-        "time": "2026-07-20T10:25:12+00:00"
+        "change_pct": -0.007876,
+        "time": "2026-07-20T10:30:31+00:00"
       }
     }
   },
   "derived": {
-    "contango": 0.117519,
+    "contango": 0.115092,
     "yc_spread": null,
     "regime": "contango"
   },
@@ -73,7 +73,7 @@
     "date": "2026-07-17",
     "position": "LONG_TQQQ",
     "signal": "LONG_TQQQ",
-    "open_pnl": 0.401431,
+    "open_pnl": 0.403673,
     "equity": 37430252.53,
     "entry_date": "2026-04-10",
     "entry_price": 49.057,
