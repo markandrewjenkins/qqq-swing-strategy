@@ -1,9 +1,9 @@
 {
-  "generated_utc": "2026-07-20T18:10:30+00:00",
+  "generated_utc": "2026-07-20T18:15:25+00:00",
   "market": {
-    "vxn_used": 27.95,
-    "vix_used": 18.05,
-    "vix3m_used": 19.99,
+    "vxn_used": 27.91,
+    "vix_used": 17.95,
+    "vix3m_used": 19.97,
     "curve": {
       "vxn": 29.03,
       "vxn_date": "2026-07-17",
@@ -20,51 +20,51 @@
     },
     "quotes": {
       "vxn": {
-        "price": 27.95,
+        "price": 27.91,
         "prev_close": 29.03,
-        "change_pct": -0.037203,
-        "time": "2026-07-20T17:55:17+00:00"
+        "change_pct": -0.038581,
+        "time": "2026-07-20T18:00:17+00:00"
       },
       "vix": {
-        "price": 18.05,
+        "price": 17.95,
         "prev_close": 18.77,
-        "change_pct": -0.038359,
-        "time": "2026-07-20T17:55:16+00:00"
+        "change_pct": -0.043687,
+        "time": "2026-07-20T18:00:16+00:00"
       },
       "vix3m": {
-        "price": 19.99,
+        "price": 19.97,
         "prev_close": 20.54,
-        "change_pct": -0.026777,
-        "time": "2026-07-20T17:55:16+00:00"
+        "change_pct": -0.027751,
+        "time": "2026-07-20T18:00:16+00:00"
       },
       "ndx": {
-        "price": 28823.26,
+        "price": 28814.205,
         "prev_close": 28592.658,
-        "change_pct": 0.008065,
-        "time": "2026-07-20T18:10:32+00:00"
+        "change_pct": 0.007748,
+        "time": "2026-07-20T18:15:24+00:00"
       },
       "tqqq": {
         "price": 69.085,
         "prev_close": 67.53,
         "change_pct": 0.023027,
-        "time": "2026-07-20T18:10:31+00:00"
+        "time": "2026-07-20T18:15:26+00:00"
       },
       "sqqq": {
         "price": 41.77,
         "prev_close": 42.79,
         "change_pct": -0.023837,
-        "time": "2026-07-20T18:10:32+00:00"
+        "time": "2026-07-20T18:15:26+00:00"
       },
       "qqq": {
-        "price": 700.9377,
+        "price": 700.875,
         "prev_close": 695.33,
-        "change_pct": 0.008065,
-        "time": "2026-07-20T18:10:32+00:00"
+        "change_pct": 0.007975,
+        "time": "2026-07-20T18:15:15+00:00"
       }
     }
   },
   "derived": {
-    "contango": 0.107479,
+    "contango": 0.112535,
     "yc_spread": null,
     "regime": "contango"
   },
