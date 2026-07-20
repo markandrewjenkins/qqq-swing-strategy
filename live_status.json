@@ -1,8 +1,8 @@
 {
-  "generated_utc": "2026-07-20T20:25:29+00:00",
+  "generated_utc": "2026-07-20T20:30:34+00:00",
   "market": {
-    "vxn_used": 28.56,
-    "vix_used": 18.67,
+    "vxn_used": 28.53,
+    "vix_used": 18.65,
     "vix3m_used": 20.4,
     "curve": {
       "vxn": 29.03,
@@ -20,51 +20,51 @@
     },
     "quotes": {
       "vxn": {
-        "price": 28.56,
+        "price": 28.53,
         "prev_close": 29.03,
-        "change_pct": -0.01619,
-        "time": "2026-07-20T20:10:16+00:00"
+        "change_pct": -0.017224,
+        "time": "2026-07-20T20:15:01+00:00"
       },
       "vix": {
-        "price": 18.67,
+        "price": 18.65,
         "prev_close": 18.77,
-        "change_pct": -0.005328,
-        "time": "2026-07-20T20:10:16+00:00"
+        "change_pct": -0.006393,
+        "time": "2026-07-20T20:15:01+00:00"
       },
       "vix3m": {
         "price": 20.4,
         "prev_close": 20.54,
         "change_pct": -0.006816,
-        "time": "2026-07-20T20:10:16+00:00"
+        "time": "2026-07-20T20:15:01+00:00"
       },
       "ndx": {
         "price": 28604.234,
         "prev_close": 28592.658,
         "change_pct": 0.000405,
-        "time": "2026-07-20T20:25:29+00:00"
+        "time": "2026-07-20T20:30:34+00:00"
       },
       "tqqq": {
-        "price": 67.4685,
+        "price": 67.44,
         "prev_close": 67.53,
-        "change_pct": -0.000911,
-        "time": "2026-07-20T20:25:27+00:00"
+        "change_pct": -0.001333,
+        "time": "2026-07-20T20:30:35+00:00"
       },
       "sqqq": {
-        "price": 42.7999,
+        "price": 42.8098,
         "prev_close": 42.79,
-        "change_pct": 0.000231,
-        "time": "2026-07-20T20:25:26+00:00"
+        "change_pct": 0.000463,
+        "time": "2026-07-20T20:30:27+00:00"
       },
       "qqq": {
-        "price": 695.3412,
+        "price": 695.34,
         "prev_close": 695.33,
-        "change_pct": 1.6e-05,
-        "time": "2026-07-20T20:25:24+00:00"
+        "change_pct": 1.4e-05,
+        "time": "2026-07-20T20:30:29+00:00"
       }
     }
   },
   "derived": {
-    "contango": 0.092662,
+    "contango": 0.093834,
     "yc_spread": null,
     "regime": "contango"
   },
@@ -73,7 +73,7 @@
     "date": "2026-07-17",
     "position": "LONG_TQQQ",
     "signal": "LONG_TQQQ",
-    "open_pnl": 0.375308,
+    "open_pnl": 0.374727,
     "equity": 37430252.53,
     "entry_date": "2026-04-10",
     "entry_price": 49.057,
