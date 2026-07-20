@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-07-20T21:25:23+00:00",
+  "generated_utc": "2026-07-20T21:30:34+00:00",
   "market": {
     "vxn_used": 28.53,
     "vix_used": 18.65,
@@ -38,28 +38,28 @@
         "time": "2026-07-20T20:15:01+00:00"
       },
       "ndx": {
-        "price": 28620.22,
+        "price": 28616.93,
         "prev_close": 28592.658,
-        "change_pct": 0.000964,
-        "time": "2026-07-20T21:25:20+00:00"
+        "change_pct": 0.000849,
+        "time": "2026-07-20T21:30:39+00:00"
       },
       "tqqq": {
-        "price": 67.65,
+        "price": 67.66,
         "prev_close": 67.53,
-        "change_pct": 0.001777,
-        "time": "2026-07-20T21:25:21+00:00"
+        "change_pct": 0.001925,
+        "time": "2026-07-20T21:30:31+00:00"
       },
       "sqqq": {
-        "price": 42.67,
+        "price": 42.65,
         "prev_close": 42.79,
-        "change_pct": -0.002804,
-        "time": "2026-07-20T21:25:21+00:00"
+        "change_pct": -0.003272,
+        "time": "2026-07-20T21:30:17+00:00"
       },
       "qqq": {
-        "price": 696.0,
+        "price": 695.92,
         "prev_close": 695.33,
-        "change_pct": 0.000964,
-        "time": "2026-07-20T21:25:20+00:00"
+        "change_pct": 0.000849,
+        "time": "2026-07-20T21:30:39+00:00"
       }
     }
   },
@@ -68,12 +68,12 @@
     "yc_spread": null,
     "regime": "contango"
   },
-  "cboe_refreshed": false,
+  "cboe_refreshed": true,
   "official": {
     "date": "2026-07-17",
     "position": "LONG_TQQQ",
     "signal": "LONG_TQQQ",
-    "open_pnl": 0.379008,
+    "open_pnl": 0.379212,
     "equity": 37430252.53,
     "entry_date": "2026-04-10",
     "entry_price": 49.057,
