@@ -10,6 +10,7 @@
 document.documentElement.classList.add('theme-miami');</script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
 <style>
 :root {
   /* Miami Vice / dark synthwave — near-black night, neon magenta & cyan,
@@ -425,12 +426,12 @@ tr:hover td { background: #e3dbc6 }
 /* Fixed layout so columns stay put when hovering between days (the Current cell
    gains/loses a clock icon, values change width — none of it should reflow). */
 /* How-it-works explainer */
-.howto { font-size:0.9rem; line-height:1.6; color:var(--text); max-width:none; }
+.howto { font-size:0.92rem; line-height:1.68; color:#d6c9ee; max-width:none; }
 .howto h3 { color:var(--yellow); font-size:0.95rem; margin:16px 0 4px; font-weight:600; }
 .howto h3:first-child { margin-top:0; }
 .howto p { margin:0 0 6px; }
 .howto b { color:#26231e; }
-.howto .howto-note { color:var(--dim); font-size:0.8rem; margin-top:14px; border-top:1px dotted var(--border); padding-top:10px; }
+.howto .howto-note { color:#bcaee0; font-size:0.84rem; margin-top:14px; border-top:1px solid var(--border); padding-top:10px; }
 .howto a { color:var(--cyan); font-weight:600; text-decoration:underline; text-underline-offset:2px; }
 .howto a:hover { text-decoration:underline; }
 /* Exit-reason legend under the trades table */
@@ -633,15 +634,18 @@ table.sig-mon tr.sig-divider td { color:var(--dim); font-size:0.6rem; text-trans
   z-index:0; opacity:0.5; transition: background 1.5s linear; }
 .topbar { position: sticky; top: 0; z-index: 100; }
 
-/* Drawdown-recovery strip (P&L Summary) */
-.rec-head { margin:14px 2px 8px; font-size:0.74rem; letter-spacing:0.06em; text-transform:uppercase;
-  color:var(--cyan); font-weight:600; }
-.rec-head .rec-note { text-transform:none; letter-spacing:0; color:var(--dim); font-weight:400;
-  font-size:0.72rem; margin-left:8px; }
-.kpi.kpi-rec { border-left-color: var(--sun-dusk); }
-.page-disclaimer { max-width:1180px; margin:20px auto 14px; padding:10px 16px 0;
-  color:var(--dim); font-size:0.66rem; line-height:1.6; text-align:center; opacity:0.85;
-  border-top:1px solid var(--border); }
+/* Drawdown-stats card: recovery figures embedded as small chips */
+.kpi.kpi-wide { flex: 1 1 430px; }
+.kpi-insets { display:flex; flex-wrap:wrap; gap:5px 6px; margin-top:9px;
+  padding-top:8px; border-top:1px solid var(--border); }
+.kpi-inset { display:flex; flex-direction:column; gap:1px; padding:3px 7px; border-radius:4px;
+  background:rgba(120,90,200,0.10); border:1px solid var(--border); cursor:help; }
+.kpi-inset .ki-l { font-size:0.56rem; letter-spacing:0.03em; text-transform:uppercase; color:var(--dim);
+  white-space:nowrap; }
+.kpi-inset .ki-v { font-family:'JetBrains Mono',monospace; font-size:0.8rem; font-weight:600;
+  color:var(--sun-dusk); line-height:1.15; }
+.page-disclaimer { max-width:1180px; margin:20px auto 16px; padding:10px 16px 0;
+  color:var(--dim); font-size:0.78rem; line-height:1.65; text-align:center; opacity:0.95; }
 .page-disclaimer b { color:var(--dim); }
 </style>
 </head>
@@ -679,7 +683,8 @@ table.sig-mon tr.sig-divider td { color:var(--dim); font-size:0.6rem; text-trans
         <span class="live-item"><span class="live-lbl">VIX</span><span class="live-val" id="lv-vix">—</span><span class="live-chg" id="lv-vix-c"></span></span>
         <span class="live-item"><span class="live-lbl">VIX3M</span><span class="live-val" id="lv-vix3m">—</span><span class="live-chg" id="lv-vix3m-c"></span></span>
         <span class="live-item"><span class="live-lbl" title="VIX3M ÷ VIX − 1: positive = contango (calm), negative = backwardation (stress)">CONTANGO</span><span class="live-val" id="lv-contango">—</span><span class="live-chg" id="lv-contango-c"></span></span>
-        <span class="live-item"><span class="live-lbl" title="10-year minus 2-year Treasury yield (FRED, EOD)">10Y−2Y</span><span class="live-val" id="lv-yc">—</span><span class="live-chg" id="lv-yc-c"></span></span>
+        <span class="live-item"><span class="live-lbl" title="TQQQ close vs its 20-day EMA — this IS the TQQQ entry condition: above the line the bull side is live">TQQQ vs EMA20</span><span class="live-val" id="lv-ema">—</span><span class="live-chg" id="lv-ema-c"></span></span>
+        <span class="live-item"><span class="live-lbl" title="QQQ vs its 200-day SMA — the regime gate: above = bull regime (dips are ridden, SQQQ is off), below = bear regime (Ichimoku exits arm, SQQQ may trade)">QQQ vs 200d</span><span class="live-val" id="lv-reg">—</span><span class="live-chg" id="lv-reg-c"></span></span>
         <span class="live-item live-status" style="margin-left:auto;gap:14px">
           <span class="live-badge"><span class="live-dot"></span><span id="lv-feed">LIVE</span></span>
           <span class="live-lbl" id="lv-feed-note">Updating every ~5 mins</span>
@@ -690,7 +695,6 @@ table.sig-mon tr.sig-divider td { color:var(--dim); font-size:0.6rem; text-trans
         <span class="live-item"><span class="live-lbl">TQQQ</span><span class="live-val" id="lv-tqqq">—</span><span class="live-chg" id="lv-tqqq-c"></span></span>
         <span class="live-item"><span class="live-lbl">SQQQ</span><span class="live-val" id="lv-sqqq">—</span><span class="live-chg" id="lv-sqqq-c"></span></span>
         <span class="live-item"><span class="live-lbl">QQQ</span><span class="live-val" id="lv-qqq">—</span><span class="live-chg" id="lv-qqq-c"></span></span>
-        <span class="live-item"><span class="live-lbl">NDX</span><span class="live-val" id="lv-ndx">—</span><span class="live-chg" id="lv-ndx-c"></span></span>
       </div>
     </div>
   </div>
@@ -776,9 +780,7 @@ table.sig-mon tr.sig-divider td { color:var(--dim); font-size:0.6rem; text-trans
   <div id="tab-analytics" style="display:none">
     <div class="kpi-grid" id="kpi-strip"></div>
 
-    <div class="rec-head">Drawdown recovery &mdash; how quickly the strategy gets back to a new high
-      <span class="rec-note">the counterweight to the headline max-drawdown figure</span></div>
-    <div class="kpi-grid" id="dd-recovery-strip"></div>
+
 
     <!-- Daily mark-to-market: every trading day, cumulative P&L + daily % change.
          Lightweight-Charts (zoom/pan, crosshair, markers) like the live chart. -->
@@ -801,7 +803,9 @@ table.sig-mon tr.sig-divider td { color:var(--dim); font-size:0.6rem; text-trans
         <div style="display:flex;gap:14px;align-items:center" id="eq-legend"></div>
       </div>
       <div class="pb" style="position:relative;height:320px">
-        <canvas id="eqChart"></canvas>
+        <canvas id="eqChart" title="Scroll to zoom, drag to pan, double-click to reset"></canvas>
+        <button class="rp-btn" onclick="if(window._eqChart)window._eqChart.resetZoom()"
+          style="position:absolute;top:10px;right:18px;z-index:5;font-size:0.66rem">Reset zoom</button>
       </div>
     </div>
 
@@ -945,9 +949,7 @@ table.sig-mon tr.sig-divider td { color:var(--dim); font-size:0.6rem; text-trans
           can do when pointed at a real quantitative-finance problem end to end: the data pipeline, the signal
           engine, the backtest and this live front-end were all built collaboratively with AI. It is a personal
           project, not a product or a service. More of the author&rsquo;s work can be found on his
-          <a href="https://markandrewjenkins.github.io/portfolio/" target="_blank" rel="noopener">portfolio webpage</a>,
-          alongside the companion
-          <a href="https://markandrewjenkins.github.io/vix-swing-strategy/" target="_blank" rel="noopener">VIX Swing Strategy</a> dashboard.</p>
+          <a href="https://markandrewjenkins.github.io/portfolio/" target="_blank" rel="noopener">portfolio webpage</a>.</p>
         <h3>How to read it</h3>
         <p><b>Live Chart w/ Signals</b> &mdash; TQQQ price with entry/exit markers plus the live signal monitor
           (hover or click any bar to see exactly what the strategy saw that day). <b>P&amp;L Summary</b> &mdash;
@@ -1241,6 +1243,7 @@ async function load(){
     document.getElementById('main-content').style.display='flex';
     computeAltSim();
     render();
+    updateGateReadouts();
   }catch(e){
     document.getElementById('loading').style.display='none';
     document.getElementById('error-state').style.display='block';
@@ -1455,7 +1458,15 @@ function renderAnalytics(){
   // KPI strip
   const kpis=[
     {l:'Total P&L',    v:fmtK(s.final_equity-DATA.meta.start_capital), sub:fmtPct(s.total_return,2)+' total return', c:s.total_return>=0?'pos':'neg'},
-    {l:'Max drawdown', v:fmtPct(s.max_drawdown,1), sub:'Peak-to-trough', c:'neg'},
+    {l:'Drawdown stats', v:fmtPct(s.max_drawdown,1), sub:'Peak-to-trough (max)', c:'neg', wide:true,
+     insets:(()=>{ const R=DATA.dd_recovery||{};
+       const _m=v=>v==null?'N/A':(v<1?(v*30.44).toFixed(0)+'d':v.toFixed(1)+'mo');
+       return [['Median recov.',_m(R.median_recovery_m),'Trough → new high, median of '+(R.n_episodes||0)+' drawdowns >10%'],
+               ['Avg recov.',_m(R.avg_recovery_m),'Mean trough → new high'],
+               ['Deep >30%',_m(R.deep_median_recovery_m),'Median recovery for the '+(R.n_deep||0)+' drawdowns deeper than 30%'],
+               ['Healed <6mo',(R.pct_recovered_6m!=null?R.pct_recovered_6m.toFixed(0)+'%':'N/A'),'Share of all drawdowns fully recovered inside six months'],
+               ['Full cycle',_m(R.median_span_m),'Median peak → trough → new high, end to end'],
+               ['Slowest',_m(R.max_recovery_m),'Worst single recovery (the 2015 flash crash)']]; })()},
     {l:'Win rate',     v:(s.win_rate*100).toFixed(1)+'%', sub:aTrades().filter(t=>tRet(t)>0).length+' wins / '+s.total_trades+' trades', c:s.win_rate>=0.5?'pos':'neg'},
     {l:'Profit factor',v:parseFloat(s.profit_factor).toFixed(2)+'×', sub:'Gross wins ÷ gross losses', c:s.profit_factor>=1.5?'pos':s.profit_factor>=1?'neu':'neg'},
     {l:'CAGR',         v:fmtPct(s.cagr,2), sub:'Annualised compound return', c:s.cagr>=0?'pos':'neg'},
@@ -1464,27 +1475,11 @@ function renderAnalytics(){
     {l:'Calmar ratio', v:fmtNum(s.calmar,2), sub:'CAGR ÷ |max drawdown|', c:s.calmar>=1?'pos':s.calmar>=0.5?'neu':'neg'},
     {l:'Alpha vs TQQQ', v:fmtPct(s.total_return-s.benchmark_return,2), sub:'Strategy return minus TQQQ B&H', c:s.total_return>=s.benchmark_return?'pos':'neg'},
   ];
-  document.getElementById('kpi-strip').innerHTML=kpis.map(k=>
-    `<div class="kpi"><div class="kpi-label">${k.l}</div><div class="kpi-val ${k.c}">${k.v}</div><div class="kpi-sub">${k.sub}</div></div>`
-  ).join('');
-
-  // ── Drawdown recovery strip: the mitigating context for the headline MaxDD ──
-  // A deep drawdown that heals in weeks is a very different risk from one that
-  // takes years, so these sit directly beneath the drawdown number.
-  const R=DATA.dd_recovery||{};
-  const _m=v=>v==null?'N/A':(v<1? (v*30.44).toFixed(0)+'d' : v.toFixed(1)+'mo');
-  const rkpis=[
-    {l:'Median recovery', v:_m(R.median_recovery_m), sub:'Trough → new high, all '+(R.n_episodes||0)+' drawdowns >10%', c:'pos'},
-    {l:'Avg recovery',    v:_m(R.avg_recovery_m),    sub:'Mean trough → new high', c:'pos'},
-    {l:'Deep-DD recovery',v:_m(R.deep_median_recovery_m), sub:'Median for the '+(R.n_deep||0)+' drawdowns >30%', c:'pos'},
-    {l:'Healed < 6 mo',   v:(R.pct_recovered_6m!=null?R.pct_recovered_6m.toFixed(0)+'%':'N/A'), sub:'Share of drawdowns fully recovered inside 6 months', c:(R.pct_recovered_6m||0)>=80?'pos':'neu'},
-    {l:'Median full cycle',v:_m(R.median_span_m),    sub:'Peak → trough → new high, end to end', c:'neu'},
-    {l:'Slowest recovery',v:_m(R.max_recovery_m),    sub:'Worst single case (2015 flash crash)', c:'neg'},
-  ];
-  const rs=document.getElementById('dd-recovery-strip');
-  if(rs) rs.innerHTML=rkpis.map(k=>
-    `<div class="kpi kpi-rec"><div class="kpi-label">${k.l}</div><div class="kpi-val ${k.c}">${k.v}</div><div class="kpi-sub">${k.sub}</div></div>`
-  ).join('');
+  document.getElementById('kpi-strip').innerHTML=kpis.map(k=>{
+    const ins = k.insets ? `<div class="kpi-insets">`+k.insets.map(([lab,val,tip])=>
+        `<div class="kpi-inset" title="${tip.replace(/"/g,'&quot;')}"><span class="ki-l">${lab}</span><span class="ki-v">${val}</span></div>`).join('')+`</div>` : '';
+    return `<div class="kpi${k.wide?' kpi-wide':''}"><div class="kpi-label">${k.l}</div><div class="kpi-val ${k.c}">${k.v}</div><div class="kpi-sub">${k.sub}</div>${ins}</div>`;
+  }).join('');
 
   // Equity curve vs benchmarks (SPY & TQQQ buy-and-hold) + drawdown
   const sc=DATA.meta.start_capital;
@@ -1503,7 +1498,7 @@ function renderAnalytics(){
     [YELLOW,'Strategy'],[GRAY,'TQQQ (B&H)'],[CORAL,'Drawdown'],
   ]);
 
-  mkChart('eqChart',{
+  window._eqChart = mkChart('eqChart',{
     data:{labels,datasets:[
       {type:'line',label:'Strategy',data:eqVals,borderColor:YELLOW,borderWidth:2.5,pointRadius:0,yAxisID:'y',tension:0.2,fill:false},
       ...(spyVals.some(v=>v)?[{type:'line',label:'TQQQ (B&H)',data:spyVals,borderColor:GRAY,borderWidth:1.5,pointRadius:0,yAxisID:'y',tension:0.2,borderDash:[5,3],fill:false}]:[]),
@@ -1512,7 +1507,12 @@ function renderAnalytics(){
     options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
       plugins:{legend:{display:false},tooltip:{
         callbacks:{label:c=>c.dataset.label==='Drawdown'?' DD: '+c.parsed.y.toFixed(1)+'%':' '+c.dataset.label+': $'+abbrev(c.parsed.y*1000)}
-      }},
+      },
+      // Scroll to zoom, drag to pan, double-click to reset — matches the
+      // Lightweight-Charts behaviour on the live/daily charts.
+      zoom:{ zoom:{ wheel:{enabled:true}, pinch:{enabled:true}, drag:{enabled:false}, mode:'x' },
+             pan:{ enabled:true, mode:'x', modifierKey:null },
+             limits:{ x:{minRange:10} } }},
       scales:{
         x:{ticks:{color:TICK,maxTicksLimit:12,font:{size:13,family:FONT}},grid:{color:GRID}},
         y:{position:'left',ticks:{color:TICK,font:{size:13,family:FONT},callback:v=>'$'+abbrev(v*1000)},grid:{color:GRID}},
@@ -1958,7 +1958,7 @@ function _fallbackQuotes(){
   // to the backtest's final bar for the VIX curve + TQQQ close. Everything dulled.
   let L=null; try{ L=JSON.parse(localStorage.getItem('lastLive')||'null'); }catch(_){}
   const cv=(L&&L.market&&L.market.curve)||{}, q=(L&&L.market&&L.market.quotes)||{};
-  const bh=(window.DATA&&DATA.bar_history)||[]; const b=bh[bh.length-1];
+  const bh=(typeof DATA!=='undefined'&&DATA&&DATA.bar_history)||[]; const b=bh[bh.length-1];
   const fill=(id,txt)=>{ const el=document.getElementById('lv-'+id); if(!el) return;
     if(el.textContent==='—'||el.textContent===''){ el.textContent=txt; el.className='live-val dull'; } };
   const n2=v=>v==null||isNaN(v)?null:(+v).toFixed(2);
@@ -1970,6 +1970,29 @@ function _fallbackQuotes(){
   { const t=n2(q.ndx&&q.ndx.price); if(t!=null) fill('ndx',t); }
   if(window.OHLC&&OHLC.length){ const t=pr(OHLC[OHLC.length-1][4]); if(t!=null) fill('tqqq',t); }
 }
+// ── Gate readouts: TQQQ vs EMA20 (the entry condition) and QQQ vs its 200-day
+// SMA (the regime gate). Reads the MA level from the backtest's last bar and the
+// current price from the live quote, so it needs both feeds — hence it is called
+// from load() and loadLive() and simply no-ops until both have arrived.
+function updateGateReadouts(){
+  const bh=(typeof DATA!=='undefined'&&DATA&&DATA.bar_history)||[]; const lb=bh[bh.length-1]; if(!lb) return;
+  const q=(LIVE&&LIVE.market&&LIVE.market.quotes)||{};
+  const setV=(id,txt,cls)=>{const el=document.getElementById(id); if(el){el.textContent=txt; el.className='live-val '+(cls||'');}};
+  const setC=(id,txt,cls)=>{const el=document.getElementById(id); if(el){el.textContent=txt; el.className='live-chg '+(cls||'');}};
+  const tq=(q.tqqq&&q.tqqq.price)!=null?q.tqqq.price:lb.tqqq_price;
+  const d1=(tq!=null&&lb.ema20)?(tq/lb.ema20-1):null;
+  setV('lv-ema', d1==null?'—':((d1>=0?'+':'')+(d1*100).toFixed(1)+'%'), d1==null?'':(d1>=0?'up':'down'));
+  setC('lv-ema-c', d1==null?'':(d1>=0?'long side live':'no long'), d1>=0?'up':'down');
+  const e=document.getElementById('lv-ema'); const ei=e&&e.closest('.live-item');
+  if(ei) ei.title='TQQQ close vs its 20-day EMA — above the line the TQQQ entry condition is satisfied'+(lb.ema20?' (EMA20 ≈ $'+(+lb.ema20).toFixed(2)+')':'');
+  const qq=(q.qqq&&q.qqq.price)!=null?q.qqq.price:lb.qqq_price;
+  const d2=(qq!=null&&lb.qqq_sma200)?(qq/lb.qqq_sma200-1):null;
+  setV('lv-reg', d2==null?'—':((d2>=0?'+':'')+(d2*100).toFixed(1)+'%'), d2==null?'':(d2>=0?'up':'down'));
+  setC('lv-reg-c', d2==null?'':(d2<0?'bear regime':'bull regime'), d2<0?'down':'up');
+  const r=document.getElementById('lv-reg'); const ri=r&&r.closest('.live-item');
+  if(ri) ri.title='QQQ vs its 200-day SMA — the regime gate: above it dips are ridden and SQQQ is off; below it the Ichimoku exits arm and SQQQ may trade'+(lb.qqq_sma200?' (200-SMA ≈ $'+(+lb.qqq_sma200).toFixed(2)+')':'');
+}
+
 // ── Live market strip (polls live_status.json) ─────────────────────────────
 async function loadLive(){
   const strip = document.getElementById('live-strip');
@@ -2042,10 +2065,8 @@ async function loadLive(){
       const ctFresh=_fresh(_qt(q.vix), _qt(q.vix3m), cv.vix_date);
       setVal('lv-contango', ct==null?'—':((ct>=0?'+':'')+(ct*100).toFixed(1)+'%'), ct==null?'':(ct>=0?'up':'down'), !ctFresh);
       _setTip('contango', _tip('vix', ctFresh, _qt(q.vix)||cv.vix_date)); }
-    // 10Y−2Y Treasury spread (FRED, EOD-only)
-    { const yc=(L.derived&&L.derived.yc_spread!=null)?L.derived.yc_spread:null;
-      setVal('lv-yc', yc==null?'—':((yc>=0?'+':'')+yc.toFixed(2)+'pp'), yc==null?'':(yc>=0?'up':'down'), true);
-      _setTip('yc', 'FRED DGS10 − DGS2, end-of-day print (1-day lag)'); }
+    updateGateReadouts();
+
 
     // ── Tradeable tickers: price + % change ─────────────────────────────
     const tk = (id,key) => {
@@ -2056,12 +2077,7 @@ async function loadLive(){
       _setTip(id, _tip('etf', fr, x.time));
     };
     tk('tqqq','tqqq'); tk('sqqq','sqqq'); tk('qqq','qqq');
-    // NDX is a regular-session index — display as a level, not a $ price.
-    { const x=q.ndx||{}; const c=clsOf(x.change_pct); const fr=_fresh(x.time);
-      setVal('lv-ndx', x.price==null?'—':(+x.price).toLocaleString('en-US',{maximumFractionDigits:0}), c, !fr);
-      const ce=document.getElementById('lv-ndx-c');
-      if(ce){ ce.textContent = x.change_pct!=null ? signed(x.change_pct*100,1,'%') : ''; ce.className='live-chg '+c+(!fr?' dull':''); }
-      _setTip('ndx', _tip('vix', fr, x.time)); }
+
 
     // ── Feed freshness: live vs paused ──────────────────────────────────
     const gen = L.generated_utc ? new Date(L.generated_utc) : null;
@@ -2319,7 +2335,9 @@ function buildDaily(){
     grid:{vertLines:{color:GRID,style:1},horzLines:{color:GRID,style:1}},
     rightPriceScale:{borderColor:LCBD,scaleMargins:{top:0.10,bottom:0.10}},
     leftPriceScale:{visible:true,invertScale:true,borderColor:LCBD,scaleMargins:{top:0.04,bottom:0.04}},
-    timeScale:{borderColor:LCBD,rightOffset:6,minBarSpacing:0.3,maxBarSpacing:18},
+    // minBarSpacing must be small enough that all ~3,700 bars fit at any window
+    // width (0.3 px/bar caps the view and hides history on narrow screens).
+    timeScale:{borderColor:LCBD,rightOffset:6,minBarSpacing:0.02,maxBarSpacing:18},
     crosshair:{mode:(LC.CrosshairMode?LC.CrosshairMode.Normal:1),vertLine:{color:LCCH,labelBackgroundColor:LCCH},horzLine:{color:LCCH,labelBackgroundColor:LCCH}} });
   dailySeries=dailyChart.addAreaSeries({lineColor:YELLOW,topColor:'rgba(61,57,52,0.25)',bottomColor:'rgba(61,57,52,0.01)',lineWidth:2,priceScaleId:'right',
     priceLineVisible:true,priceLineColor:LCTX,priceLineWidth:1,priceLineStyle:2,
@@ -2768,6 +2786,9 @@ function renderSignalMonitor(histBar){
   const dWp=_domain('wpr',[-99]);
   const gWpr={lo:dWp.lo,hi:dWp.hi,z:[[dWp.lo,-99,'r'],[-99,dWp.hi,'t']],v:b.wpr,fmt:fN0,
     tip:`Williams %R — at its bearish extreme (≤ −99) fresh SQQQ entries are blocked · now ${b.wpr!=null?b.wpr.toFixed(1):'—'}`};
+  // Day-spread percentile: bottom-1% prior-day move blocks SQQQ entries
+  const gSpr={lo:0,hi:100,z:[[0,1,'r'],[1,100,'t']],v:b.spread_rank,fmt:fN0,
+    tip:`Prior-day move as a percentile of the last 500 days — a bottom-1% reading blocks fresh SQQQ entries · now ${b.spread_rank!=null?b.spread_rank.toFixed(1):'—'}`};
   const dBW=_domain('bb_width',[0.06]);
   const gBW={lo:dBW.lo,hi:dBW.hi,z:[[dBW.lo,0.06,'r'],[0.06,dBW.hi,'t']],v:b.bb_width,fmt:fPP,
     tip:`Bollinger band width — under 6% = squeeze; blocks new entries (breakout direction unknown) · now ${b.bb_width!=null?(b.bb_width*100).toFixed(1)+'%':'—'}`};
@@ -2807,35 +2828,19 @@ function renderSignalMonitor(histBar){
   // on the EMA/backwardation spine alone — every oscillator gate below vetoes the
   // SQQQ (bear) side only. Rows whose engine flag no longer feeds any decision
   // (yield curve, MACD range, and the overbought-side extremes) were removed.
+  // Entry gates that ACTUALLY bind. Ablation (one-at-a-time removal over the full
+  // 2011-2026 backtest) showed 11 of the original 15 SQQQ blockers changed nothing
+  // whatsoever — byte-identical equity curve — so they were deleted from the engine.
+  // These four are the ones that move the needle; each vetoes SQQQ entries only.
   const blockRows=[
-    ['Choppiness','Choppiness Index &gt; 65 = trendless tape; blocks new SQQQ entries','','&le; 65 clear',
-      num(b.chop,1), b.chop_trendless?'BLOCK':'NA', gChop],
-    ['Stochastic Floor','%K &lt; 25 (oversold) blocks SQQQ entries AND exits an open SQQQ','','&ge; 25 clear',
+    ['Stochastic Floor','%K &lt; 25 (oversold) blocks SQQQ entries AND exits an open SQQQ &mdash; the single most valuable gate (+2.4 CAGR pts)','','&ge; 25 clear',
       num(b.stoch_k,1), (b.stoch_k!=null&&b.stoch_k<25)?'BLOCK':'NA', gK],
-    ['ADX Bull Trend','A strong bullish trend (ADX &gt; 35 with DI+ &gt; 0.7&times;DI&minus;) blocks SQQQ entries','','Weak or bearish trend clear',
-      num(b.adx,1), 'NA', gAdx],
-    ['CCI Bear Extreme','CCI &lt; &minus;325 (bear blow-off) blocks SQQQ entries','','Above &minus;325 clear',
-      num(b.cci,0), (b.cci!=null&&b.cci<-325)?'BLOCK':'NA', gCci],
-    ['Williams %R Extreme','%R at its bearish extreme blocks SQQQ entries','','Not extreme clear',
-      num(b.wpr,1), 'NA', gWpr],
-    ['Aroon Bull Extreme','A brand-new 14-day high (Aroon-Up &gt; 95) blocks SQQQ entries','','&le; 95 clear',
-      num(b.aroon_up,0), (b.aroon_up!=null&&b.aroon_up>95)?'BLOCK':'NA', gArUp],
-    ['BB Squeeze','Band width under 6% of price = coiled spring; blocks SQQQ entries','','&ge; 6% clear',
-      pct(b.bb_width,1), (b.bb_width!=null&&b.bb_width<0.06)?'BLOCK':'NA', gBW],
-    ['RSI Floor','RSI &lt; 30 blocks SQQQ entries (bear move already stretched)','','&ge; 30 clear',
-      num(b.rsi,1), (b.rsi!=null&&b.rsi<30)?'BLOCK':'NA', gRsi],
-    ['MFI Floor','Money Flow Index &lt; 25 blocks SQQQ entries','','&ge; 25 clear',
-      num(b.mfi,1), (b.mfi!=null&&b.mfi<25)?'BLOCK':'NA', gMfi],
-    ['ATR Collapse','Volatility-spectrum extreme-low blocks SQQQ entries AND exits an open SQQQ','','Not extreme-low clear',
+    ['ATR Collapse','Volatility-spectrum extreme-low blocks SQQQ entries AND exits an open SQQQ (no fuel for a bear move) &mdash; worth +0.9 CAGR and 1.5 DD pts','','Not extreme-low clear',
       num(b.atr_sig,1), 'NA', gAtr],
-    ['VXN Complacency','VXN below its 0.5th percentile blocks SQQQ entries AND exits an open SQQQ','','&ge; 0.5 pct clear',
-      num(b.vxn_rank,1), b.vxn_extreme_low?'BLOCK':'NA', gVxnR],
-    ['Low Volume','Volume under 30% of its 50-day average blocks SQQQ entries','','Normal volume clear',
-      'live', 'NA', null],
-    ['BB Lower-Band Thrust','An extreme close-vs-lower-band move blocks SQQQ entries (already extended)','','Not extreme clear',
-      'live', 'NA', null],
-    ['Day-Spread Extreme','A bottom-1%-percentile prior-day move blocks SQQQ entries','','Not extreme clear',
-      'live', 'NA', null],
+    ['MFI Floor','Money Flow Index &lt; 25 blocks SQQQ entries (selling already exhausted)','','&ge; 25 clear',
+      num(b.mfi,1), (b.mfi!=null&&b.mfi<25)?'BLOCK':'NA', gMfi],
+    ['Day-Spread Extreme','A bottom-1%-percentile prior-day move blocks SQQQ entries; tightens drawdown by ~0.5 pts','','Not extreme clear',
+      num(b.spread_rank,1), 'NA', gSpr],
   ];
 
   // ── Exit rules (status: Hold / Exit / N/A). Applicability per held side. ──
@@ -2971,7 +2976,7 @@ function renderSignalMonitor(histBar){
     +`<td style="color:var(--teal)">${_bb(r[2],'--teal')}</td><td style="color:var(--coral)">${_bb(r[3],'--coral')}</td>`
     +curCell(r[4],r[6],dull)+`<td>${tag(r[5],dull)}</td></tr>`;
   const coreDivider='<tr class="sig-divider"><td colspan="6">Core Alignment &mdash; the directional spine. <b>TQQQ entry needs only two of these</b>: close above the 20-day EMA, and the VIX curve not in deep backwardation. <b>SQQQ entry needs all four</b>: bearish/neutral price bar, close below the 20- and 50-day EMAs, Chikou not bullish, and QQQ below its 200-day SMA. All conditions on a side must hold simultaneously on the same close &mdash; partial alignment never trades.</td></tr>';
-  const blockDivider='<tr class="sig-divider"><td colspan="6">Entry Blockers (SQQQ side only) &mdash; any ONE of these vetoes a new SQQQ entry; they never block TQQQ and never close an open position. The deployed TQQQ side trades on the spine alone, because the Pine original&rsquo;s long-side blockers sat out rebounds and cost ~18 CAGR points. Rows are listed only if they still bind &mdash; the retired yield-curve, MACD-range and overbought-side gates were removed.</td></tr>';
+  const blockDivider='<tr class="sig-divider"><td colspan="6">Entry Blockers (SQQQ side only) &mdash; any ONE of these vetoes a new SQQQ entry; they never block TQQQ and never close an open position. The deployed TQQQ side trades on the spine alone, because the Pine original&rsquo;s long-side blockers sat out rebounds and cost ~18 CAGR points. Only gates that measurably change the backtest are listed: ablation showed 11 of the original 15 blockers had <b>zero</b> effect (identical equity curve), so they were deleted from the engine rather than displayed as decoration.</td></tr>';
   const exitDivider='<tr class="sig-divider"><td colspan="6">Exit Rules &mdash; while a position is open, any ONE firing closes it at the next open (OR logic). Note which side each applies to: the TQQQ trend exits are <b>regime-gated</b>, so in a bull regime only a VXN crash-spike or the 40% catastrophe trail can force an exit; below the 200-day SMA the Ichimoku structure exits too. Exits are suppressed while the same-side entry conditions still hold.</td></tr>';
   const exitHtml=xdef.map((r,i)=>{ const s=exState(i); const dull=s==='na';
     const g=r[7]?{...r[7],trig:s==='exit'}:null;
@@ -3018,11 +3023,10 @@ function renderSignalMonitor(histBar){
     mh+=mRow('Regime', gReg, b.qqq_below_sma200?'Bear':'Bull', mSig(coreRows[3][5]));
     mh+=mRow('Contango', gCt, stripTags(''+coreRows[4][4]), mSig(coreRows[4][5]));
     mh+=`<div class="mini-sub">Blockers</div>`;
-    mh+=mRow('Chop', gChop, stripTags(''+num(b.chop,0)), mSig(blockRows[0][5]));
-    mh+=mRow('Stoch %K', gK, stripTags(''+num(b.stoch_k,0)), mSig(blockRows[1][5]));
-    mh+=mRow('CCI', gCci, stripTags(''+num(b.cci,0)), mSig(blockRows[3][5]));
-    mh+=mRow('RSI', gRsi, stripTags(''+num(b.rsi,0)), mSig(blockRows[7][5]));
-    mh+=mRow('VXN pct', gVxnR, stripTags(''+num(b.vxn_rank,0)), mSig(blockRows[10][5]));
+    mh+=mRow('Stoch %K', gK, stripTags(''+num(b.stoch_k,0)), mSig(blockRows[0][5]));
+    mh+=mRow('ATR spec', gAtr, stripTags(''+num(b.atr_sig,0)), mSig(blockRows[1][5]));
+    mh+=mRow('MFI', gMfi, stripTags(''+num(b.mfi,0)), mSig(blockRows[2][5]));
+    mh+=mRow('Day spread', gSpr, stripTags(''+num(b.spread_rank,0)), mSig(blockRows[3][5]));
     mh+=`<div class="mini-sub">Exit rules ${help(xTip)}</div>`;
     const mnames=['Bear bar','Chikou-','VXN spike','Trail 20%','SuperTrend','Bull bar','Chikou+','Stoch OS','ATR low','VXN low','Stop −10%'];
     xdef.forEach((r,i)=>{ const s=exState(i); const g=r[7]?{...r[7],trig:s==='exit'}:null;
