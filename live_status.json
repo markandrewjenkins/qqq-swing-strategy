@@ -1,9 +1,9 @@
 {
-  "generated_utc": "2026-07-21T14:20:27+00:00",
+  "generated_utc": "2026-07-21T14:25:26+00:00",
   "market": {
-    "vxn_used": 27.59,
+    "vxn_used": 27.66,
     "vix_used": 17.74,
-    "vix3m_used": 19.9,
+    "vix3m_used": 19.89,
     "curve": {
       "vxn": 28.53,
       "vxn_date": "2026-07-20",
@@ -20,51 +20,51 @@
     },
     "quotes": {
       "vxn": {
-        "price": 27.59,
+        "price": 27.66,
         "prev_close": 28.53,
-        "change_pct": -0.032948,
-        "time": "2026-07-21T14:05:17+00:00"
+        "change_pct": -0.030494,
+        "time": "2026-07-21T14:10:17+00:00"
       },
       "vix": {
         "price": 17.74,
         "prev_close": 18.65,
         "change_pct": -0.048794,
-        "time": "2026-07-21T14:05:16+00:00"
+        "time": "2026-07-21T14:10:16+00:00"
       },
       "vix3m": {
-        "price": 19.9,
+        "price": 19.89,
         "prev_close": 20.4,
-        "change_pct": -0.02451,
-        "time": "2026-07-21T14:05:16+00:00"
+        "change_pct": -0.025,
+        "time": "2026-07-21T14:10:16+00:00"
       },
       "ndx": {
-        "price": 28982.3,
+        "price": 28972.03,
         "prev_close": 28604.234,
-        "change_pct": 0.013217,
-        "time": "2026-07-21T14:20:30+00:00"
+        "change_pct": 0.012858,
+        "time": "2026-07-21T14:25:28+00:00"
       },
       "tqqq": {
-        "price": 70.35,
-        "prev_close": 67.65,
-        "change_pct": 0.039911,
-        "time": "2026-07-21T14:20:29+00:00"
+        "price": null,
+        "prev_close": null,
+        "change_pct": null,
+        "time": null
       },
       "sqqq": {
-        "price": 40.98,
+        "price": 41.0351,
         "prev_close": 42.68,
-        "change_pct": -0.039831,
-        "time": "2026-07-21T14:20:30+00:00"
+        "change_pct": -0.03854,
+        "time": "2026-07-21T14:25:27+00:00"
       },
       "qqq": {
-        "price": 705.26,
+        "price": 705.01,
         "prev_close": 696.06,
-        "change_pct": 0.013217,
-        "time": "2026-07-21T14:20:30+00:00"
+        "change_pct": 0.012858,
+        "time": "2026-07-21T14:25:28+00:00"
       }
     }
   },
   "derived": {
-    "contango": 0.121759,
+    "contango": 0.121195,
     "yc_spread": null,
     "regime": "contango"
   },
@@ -73,11 +73,10 @@
     "date": "2026-07-17",
     "position": "LONG_TQQQ",
     "signal": "LONG_TQQQ",
-    "open_pnl": 0.434046,
+    "open_pnl": 0.370577,
     "equity": 37430252.53,
     "entry_date": "2026-04-10",
-    "entry_price": 49.057,
-    "open_pnl_live": true
+    "entry_price": 49.057
   },
   "note": "VXN/VIX/VIX3M are CBOE end-of-day (re-fetched only after the ~5:30pm ET post; cached intraday) with Yahoo intraday overrides. ETF quotes are Yahoo intraday (~5-15 min delayed). Signals finalize on the daily close and trade the next market open."
 }
