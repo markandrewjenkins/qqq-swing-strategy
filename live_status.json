@@ -1,9 +1,9 @@
 {
-  "generated_utc": "2026-07-21T20:20:24+00:00",
+  "generated_utc": "2026-07-21T20:25:26+00:00",
   "market": {
     "vxn_used": 26.83,
-    "vix_used": 17.04,
-    "vix3m_used": 19.59,
+    "vix_used": 17.02,
+    "vix3m_used": 19.58,
     "curve": {
       "vxn": 28.53,
       "vxn_date": "2026-07-20",
@@ -23,48 +23,48 @@
         "price": 26.83,
         "prev_close": 28.53,
         "change_pct": -0.059586,
-        "time": "2026-07-21T20:05:16+00:00"
+        "time": "2026-07-21T20:10:16+00:00"
       },
       "vix": {
-        "price": 17.04,
+        "price": 17.02,
         "prev_close": 18.65,
-        "change_pct": -0.086327,
-        "time": "2026-07-21T20:05:16+00:00"
+        "change_pct": -0.087399,
+        "time": "2026-07-21T20:10:16+00:00"
       },
       "vix3m": {
-        "price": 19.59,
+        "price": 19.58,
         "prev_close": 20.4,
-        "change_pct": -0.039706,
-        "time": "2026-07-21T20:05:16+00:00"
+        "change_pct": -0.040196,
+        "time": "2026-07-21T20:10:16+00:00"
       },
       "ndx": {
-        "price": 29111.33,
+        "price": 29110.53,
         "prev_close": 28604.234,
-        "change_pct": 0.017728,
-        "time": "2026-07-21T20:20:26+00:00"
+        "change_pct": 0.0177,
+        "time": "2026-07-21T20:25:26+00:00"
       },
       "tqqq": {
         "price": 71.23,
         "prev_close": 67.65,
         "change_pct": 0.052919,
-        "time": "2026-07-21T20:20:24+00:00"
+        "time": "2026-07-21T20:25:24+00:00"
       },
       "sqqq": {
         "price": 40.41,
         "prev_close": 42.68,
         "change_pct": -0.053187,
-        "time": "2026-07-21T20:20:25+00:00"
+        "time": "2026-07-21T20:25:13+00:00"
       },
       "qqq": {
-        "price": 708.4,
+        "price": 708.38,
         "prev_close": 696.06,
-        "change_pct": 0.017728,
-        "time": "2026-07-21T20:20:26+00:00"
+        "change_pct": 0.0177,
+        "time": "2026-07-21T20:25:26+00:00"
       }
     }
   },
   "derived": {
-    "contango": 0.149648,
+    "contango": 0.150411,
     "yc_spread": null,
     "regime": "contango"
   },
