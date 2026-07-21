@@ -426,12 +426,13 @@ tr:hover td { background: #e3dbc6 }
 /* Fixed layout so columns stay put when hovering between days (the Current cell
    gains/loses a clock icon, values change width — none of it should reflow). */
 /* How-it-works explainer */
-.howto { font-size:0.92rem; line-height:1.68; color:#d6c9ee; max-width:none; }
-.howto h3 { color:var(--yellow); font-size:0.95rem; margin:16px 0 4px; font-weight:600; }
+.howto { font-size:var(--fs-body); line-height:1.7; color:#e2d8f5; max-width:none; }
+.howto h3 { color:var(--pink); font-size:var(--fs-h3); margin:18px 0 5px; font-weight:700;
+  letter-spacing:0.01em; }
 .howto h3:first-child { margin-top:0; }
 .howto p { margin:0 0 6px; }
-.howto b { color:#26231e; }
-.howto .howto-note { color:#bcaee0; font-size:0.84rem; margin-top:14px; border-top:1px solid var(--border); padding-top:10px; }
+.howto b { color:#ffffff; font-weight:600; }
+.howto .howto-note { color:#c9bce8; font-size:var(--fs-sm); margin-top:16px; border-top:1px solid var(--border); padding-top:11px; }
 .howto a { color:var(--cyan); font-weight:600; text-decoration:underline; text-underline-offset:2px; }
 .howto a:hover { text-decoration:underline; }
 /* Exit-reason legend under the trades table */
@@ -647,6 +648,65 @@ table.sig-mon tr.sig-divider td { color:var(--dim); font-size:0.6rem; text-trans
 .page-disclaimer { max-width:1180px; margin:20px auto 16px; padding:10px 16px 0;
   color:var(--dim); font-size:0.78rem; line-height:1.65; text-align:center; opacity:0.95; }
 .page-disclaimer b { color:var(--dim); }
+
+/* ── Type scale ────────────────────────────────────────────────────────────
+   Five steps only. Everything on the page maps onto these so the grid reads
+   consistently instead of drifting across ~10 inherited sizes.
+     micro  10px  gauge tick labels, mini-monitor
+     xs     11px  table cells, sub-labels, chips
+     sm     12.5px secondary text, descriptions
+     body   14px  primary reading text
+     h3     15.5px section headings                                        */
+:root{
+  --fs-micro: 0.68rem;
+  --fs-xs:    0.78rem;
+  --fs-sm:    0.88rem;
+  --fs-body:  1.0rem;
+  --fs-h3:    1.1rem;
+}
+/* Map the dense data surfaces onto the scale */
+table { font-size: var(--fs-xs); }
+th { font-size: var(--fs-micro); }
+td { font-size: var(--fs-xs); }
+table.sig-mon { font-size: var(--fs-xs); }
+table.sig-mon th { font-size: var(--fs-micro); }
+table.sig-mon td.sig-desc { font-size: var(--fs-micro); }
+table.sig-stats { font-size: var(--fs-xs); }
+table.sig-stats th { font-size: var(--fs-micro); }
+table.sig-stats td .ss-sub { font-size: var(--fs-micro); }
+.kpi-label, .mc-label { font-size: var(--fs-micro); }
+.kpi-sub, .mc-sub { font-size: var(--fs-xs); }
+.cur-cell .cur-val { font-size: var(--fs-xs); }
+.sig-proj { font-size: var(--fs-sm); }
+.sig-proj-note, .sig-logic-why, .sig-etfnote { font-size: var(--fs-xs); }
+.sig-explain { font-size: var(--fs-sm); }
+.cdl-info, #daily-info { font-size: var(--fs-sm); }
+.cdl-legend, .pos-band-label { font-size: var(--fs-micro); }
+.exit-legend { font-size: var(--fs-xs); }
+.live-lbl { font-size: var(--fs-micro); }
+.live-val { font-size: var(--fs-xs); }
+.live-chg { font-size: var(--fs-micro); }
+.tab { font-size: var(--fs-xs); }
+.ph { font-size: var(--fs-xs); }
+.page-disclaimer { font-size: var(--fs-xs); }
+
+/* Snap the remaining named outliers onto the scale. The mini-monitor keeps its
+   own two-step internal scale on purpose: it is a floating card that JS
+   CSS-transform-scales to the chart height, so it must stay self-consistent
+   rather than match the page grid. SVG gauge tick labels likewise. */
+.sig-info { font-size: var(--fs-xs); }
+.kpi-inset .ki-l { font-size: var(--fs-micro); }
+.kpi-inset .ki-v { font-size: var(--fs-xs); }
+.rp-btn, .rp-lab, .rp-date, #replay-status { font-size: var(--fs-micro); }
+.sig-proj .lbl, .sig-proj-mixline, .sig-logic { font-size: var(--fs-xs); }
+.sig-proj-row1 { font-size: var(--fs-sm); }
+.sig-proj-row2, .sig-proj-tally, .sig-rf { font-size: var(--fs-xs); }
+.leg-item, .cmp-badge, .pill, .eb { font-size: var(--fs-xs); }
+.mini-mon .mini-inner { font-size: var(--fs-micro); }
+.mini-row .mini-name, .mini-row .mini-val, .mini-row .mini-sig { font-size: 1em; }
+.mini-mon .mini-hd, .mini-mon .mini-sub, .mini-mon .mini-note,
+.mini-mon .mini-combo, .mini-mon .mini-why { font-size: 0.92em; }
+.mini-mon .mini-pos { font-size: 1.05em; }
 </style>
 </head>
 <body>
@@ -761,7 +821,7 @@ table.sig-mon tr.sig-divider td { color:var(--dim); font-size:0.6rem; text-trans
         <div class="cdl-legend">
           <span><span class="cdl-cndl up"></span> Up day</span>
           <span><span class="cdl-cndl dn"></span> Down day</span>
-          <span><span style="color:#26231e">&#9650;</span> Entry</span>
+          <span><span style="color:#fff0a0">&#9650;</span> Entry</span>
           <span><span class="cdl-sw" style="background:var(--teal)"></span> Profit exit</span>
           <span><span class="cdl-sw" style="background:var(--coral)"></span> Loss exit</span>
         </div>
