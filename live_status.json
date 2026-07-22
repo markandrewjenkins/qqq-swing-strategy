@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-07-22T11:30:33+00:00",
+  "generated_utc": "2026-07-22T11:35:23+00:00",
   "market": {
     "vxn_used": 26.66,
     "vix_used": 17.45,
@@ -39,7 +39,7 @@
         "regular_change": 0.02346,
         "ext_price": null,
         "ext_change": null,
-        "time": "2026-07-22T11:15:31+00:00"
+        "time": "2026-07-22T11:20:16+00:00"
       },
       "vix3m": {
         "price": 19.59,
@@ -53,70 +53,70 @@
         "time": "2026-07-21T20:15:01+00:00"
       },
       "ndx": {
-        "price": 28922.54,
+        "price": 28933.81,
         "prev_close": 28604.234,
-        "change_pct": 0.011128,
+        "change_pct": 0.011522,
         "session": "regular",
         "regular_price": 29155.18,
         "regular_change": 0.019261,
         "ext_price": null,
         "ext_change": null,
-        "time": "2026-07-22T11:30:36+00:00"
+        "time": "2026-07-22T11:35:23+00:00"
       },
       "tqqq": {
-        "price": 69.8285,
+        "price": 69.91,
         "prev_close": 67.65,
-        "change_pct": 0.032203,
+        "change_pct": 0.033407,
         "session": "pre",
         "regular_price": null,
         "regular_change": null,
-        "ext_price": 69.8285,
-        "ext_change": 0.032203,
-        "time": "2026-07-22T11:30:27+00:00"
+        "ext_price": 69.91,
+        "ext_change": 0.033407,
+        "time": "2026-07-22T11:35:21+00:00"
       },
       "sqqq": {
-        "price": 41.2,
+        "price": 41.15,
         "prev_close": 42.68,
-        "change_pct": -0.034677,
+        "change_pct": -0.035848,
         "session": "pre",
         "regular_price": null,
         "regular_change": null,
-        "ext_price": 41.2,
-        "ext_change": -0.034677,
-        "time": "2026-07-22T11:30:29+00:00"
+        "ext_price": 41.15,
+        "ext_change": -0.035848,
+        "time": "2026-07-22T11:35:22+00:00"
       },
       "qqq": {
-        "price": 703.8055,
+        "price": 704.08,
         "prev_close": 696.06,
-        "change_pct": 0.011128,
+        "change_pct": 0.011522,
         "session": "pre",
         "regular_price": null,
         "regular_change": null,
-        "ext_price": 703.8055,
-        "ext_change": 0.011128,
-        "time": "2026-07-22T11:30:36+00:00"
+        "ext_price": 704.08,
+        "ext_change": 0.011522,
+        "time": "2026-07-22T11:35:23+00:00"
       },
       "spy": {
-        "price": 746.1454,
+        "price": 746.3715,
         "prev_close": 742.09,
-        "change_pct": 0.005465,
+        "change_pct": 0.00577,
         "session": "pre",
         "regular_price": null,
         "regular_change": null,
-        "ext_price": 746.1454,
-        "ext_change": 0.005465,
-        "time": "2026-07-22T11:30:28+00:00"
+        "ext_price": 746.3715,
+        "ext_change": 0.00577,
+        "time": "2026-07-22T11:35:21+00:00"
       },
       "upro": {
-        "price": 140.6,
+        "price": 140.72,
         "prev_close": 138.47,
-        "change_pct": 0.015382,
+        "change_pct": 0.016249,
         "session": "pre",
         "regular_price": null,
         "regular_change": null,
-        "ext_price": 140.6,
-        "ext_change": 0.015382,
-        "time": "2026-07-22T11:30:28+00:00"
+        "ext_price": 140.72,
+        "ext_change": 0.016249,
+        "time": "2026-07-22T11:35:22+00:00"
       },
       "spxu": {
         "price": 37.3605,
@@ -152,7 +152,7 @@
     "date": "2026-07-21",
     "position": "LONG_TQQQ",
     "signal": "LONG_TQQQ",
-    "open_pnl": 0.423416,
+    "open_pnl": 0.425077,
     "equity": 51555953.82,
     "entry_date": "2026-04-10",
     "entry_price": 49.057,
