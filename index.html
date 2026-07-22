@@ -364,6 +364,14 @@ tr:hover td { background: #e3dbc6 }
 .live-sep { color: var(--border2, #555); font-weight: 300; margin: 0 2px; align-self: center; }
 .live-chg { font-size: 0.62rem; font-weight: 700; color: var(--dim, #909090); }
 .live-chg.up { color: var(--teal, #00e5a0); } .live-chg.down { color: var(--coral, #ff4560); }
+/* Extended-hours (pre-market / after-hours) badge: shown next to the daily
+   change so the headline % stays the authoritative regular-session figure. */
+.live-ext { font-size: 0.56rem; font-weight: 700; letter-spacing: 0.03em; margin-left: 4px;
+  padding: 1px 4px; border-radius: 4px; color: var(--dim, #909090);
+  background: rgba(125,108,174,0.16); white-space: nowrap; }
+.live-ext.up { color: var(--teal, #00e5a0); background: rgba(37,244,176,0.12); }
+.live-ext.down { color: var(--coral, #ff4560); background: rgba(255,90,122,0.13); }
+.live-ext .live-ext-tag { opacity: 0.72; font-weight: 800; margin-right: 3px; }
 .live-status { display: inline-flex; align-items: baseline; align-self: flex-end; }
 .hdr-metarow { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; margin-top: 3px; }
 .hdr-metarow .hdr-meta { margin-top: 0; }
@@ -2042,12 +2050,27 @@ function renderMarkets(){
   const rb=b=>b.qqq_below_sma200==null?null:(b.qqq_below_sma200?'Bear (QQQ < 200-day)':'Bull (QQQ > 200-day)');
   const cv=document.getElementById('regime-curve');
   if(cv) cv.innerHTML=tbl(agg(rb,['Bull (QQQ > 200-day)','Bear (QQQ < 200-day)']));
-  // Table 2: volatility level at entry — VXN is the Nasdaq-native vol gauge and
-  // feeds the crash exit, so it stays, but bucketed by its own percentile rank.
-  const vb=b=>{ const v=b.vxn_rank; if(v==null) return null;
-    return v<25?'Calm (VXN <25th pct)':v<60?'Normal (25-60th)':v<90?'Elevated (60-90th)':'Stressed (>90th)'; };
+  // Table 2: volatility level at entry. Bucketed into QUARTILES of the VXN
+  // reading on the trades' own entry days, so each bucket holds ~the same number
+  // of trades. (Fixed 25/60/90 percentile bands of the full VXN history left the
+  // "calm" bucket with a single trade — the strategy simply never enters in
+  // dead-calm tape, so slicing the whole distribution was the wrong frame.)
+  const _evx = aTrades().map(t=>{const b=_before(t.entry_date)||{}; return b.vxn_rank;})
+                        .filter(v=>v!=null).sort((a,b)=>a-b);
+  let vb, vorder;
+  if(_evx.length>=8){
+    const qi=f=>_evx[Math.min(_evx.length-1, Math.floor(f*_evx.length))];
+    const q1=qi(0.25), q2=qi(0.5), q3=qi(0.75), lo=_evx[0], hi=_evx[_evx.length-1];
+    const R=(a,b)=>`${Math.round(a)}–${Math.round(b)}`;
+    vorder=[`Low vol (VXN pct ${R(lo,q1)})`,`Mid-low (${R(q1,q2)})`,`Mid-high (${R(q2,q3)})`,`High vol (${R(q3,hi)})`];
+    vb=b=>{ const v=b.vxn_rank; if(v==null) return null; return v<q1?vorder[0]:v<q2?vorder[1]:v<q3?vorder[2]:vorder[3]; };
+  } else {
+    vorder=['Calm (VXN <25th pct)','Normal (25-60th)','Elevated (60-90th)','Stressed (>90th)'];
+    vb=b=>{ const v=b.vxn_rank; if(v==null) return null;
+      return v<25?vorder[0]:v<60?vorder[1]:v<90?vorder[2]:vorder[3]; };
+  }
   const vv=document.getElementById('regime-vix');
-  if(vv) vv.innerHTML=tbl(agg(vb,['Calm (VXN <25th pct)','Normal (25-60th)','Elevated (60-90th)','Stressed (>90th)']));
+  if(vv) vv.innerHTML=tbl(agg(vb,vorder));
 }
 // When the live feed is unavailable, don't zero the quotes — show the last settled
 // close we DO have (the backtest's final bar + the TQQQ close), dulled to signal it
@@ -2168,12 +2191,29 @@ async function loadLive(){
 
 
     // ── Tradeable tickers: price + % change ─────────────────────────────
+    // Extended-hours badge: the headline % is always the authoritative regular
+    // daily change; when a pre-market / after-hours print exists we show that
+    // move as a separate labelled chip (matching Google/broker/TradingView).
+    const setExt = (id,x,isPrice) => {
+      const ce=document.getElementById('lv-'+id+'-c'); const item=ce&&ce.closest('.live-item');
+      if(!item) return; let ext=item.querySelector('.live-ext');
+      const sess=x&&x.session; const emov=x&&x.ext_change;
+      const show=(sess==='pre'||sess==='post')&&emov!=null;
+      if(!show){ if(ext) ext.remove(); return; }
+      if(!ext){ ext=document.createElement('span'); ext.className='live-ext'; item.appendChild(ext); }
+      const tag=sess==='pre'?'PRE':'AH';
+      const px=x.ext_price!=null?(isPrice?price(x.ext_price):(+x.ext_price).toLocaleString('en-US',{maximumFractionDigits:0})):'';
+      ext.innerHTML='<span class="live-ext-tag">'+tag+'</span>'+px+' '+signed(emov*100,1,'%');
+      ext.className='live-ext '+clsOf(emov);
+      _setTip(id, _tip('etf', _fresh(x.time), x.time)+' · '+(sess==='pre'?'pre-market':'after-hours')+' move vs '+(sess==='pre'?'prior close':'today’s close'));
+    };
     const tk = (id,key) => {
       const x=q[key]||{}; const c=clsOf(x.change_pct); const fr=_fresh(x.time); const dull=!fr;
       setVal('lv-'+id, price(x.price), c, dull);
       const ce=document.getElementById('lv-'+id+'-c');
       if(ce){ ce.textContent = x.change_pct!=null ? signed(x.change_pct*100,1,'%') : ''; ce.className='live-chg '+c+(dull?' dull':''); }
       _setTip(id, _tip('etf', fr, x.time));
+      setExt(id, x, true);
     };
     tk('tqqq','tqqq'); tk('sqqq','sqqq'); tk('qqq','qqq');
     tk('spy','spy'); tk('upro','upro'); tk('spxu','spxu');

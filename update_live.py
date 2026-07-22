@@ -112,9 +112,31 @@ def fred_last(series_id: str) -> float | None:
 
 # ── Yahoo v8 live quote ───────────────────────────────────────────────────────
 def yahoo_quote(symbol: str, prepost: bool = False) -> dict:
-    """Return {price, prev_close, change_pct, time} from the freshest Yahoo quote.
-    prepost=True (ETFs) uses the LATEST traded price across pre/regular/after
-    hours. Indices (^VXN etc.) leave it False."""
+    """Return a session-aware quote whose %change matches the market convention.
+
+    The industry convention (Yahoo/Google/TradingView/brokers) is:
+      • Regular hours  → daily change = last / previous *regular* close.
+      • Pre-market     → change = pre-market last / previous regular close,
+                         shown SEPARATELY (labelled "pre"); the regular day
+                         hasn't traded yet, so there is no "daily" change.
+      • After-hours    → the day's change stays frozen at (today's regular
+                         close / previous close); the AH move is a SEPARATE
+                         number measured from *today's* regular close.
+    The old code always used (latest-extended-price / prev-close), which is why
+    a pre-/post-market reading disagreed with the authoritative daily %.
+
+    Emitted fields:
+      price            latest traded price (any session) — the number to show big
+      change_pct       the PRIMARY % to show next to it (see per-session rules)
+      prev_close       previous regular-session close (the daily baseline)
+      session          'pre' | 'regular' | 'post' | 'closed'
+      regular_price    today's regular close / current regular price (None pre-open)
+      regular_change   authoritative daily change (None until regular trades today)
+      ext_price        latest pre/post price (None in regular hours)
+      ext_change       extended-hours move vs its correct baseline (pre: prev
+                       close; post: today's regular close)
+      time             ISO timestamp of the latest print
+    """
     try:
         try:
             with urllib.request.urlopen(
@@ -131,27 +153,96 @@ def yahoo_quote(symbol: str, prepost: bool = False) -> dict:
         res   = data["chart"]["result"][0]
         meta  = res["meta"]
         prev  = meta.get("chartPreviousClose") or meta.get("previousClose")
-        price = meta.get("regularMarketPrice")
-        t     = meta.get("regularMarketTime")
-        if prepost:
-            ts = res.get("timestamp") or []
-            cl = (((res.get("indicators") or {}).get("quote") or [{}])[0].get("close")) or []
-            for i in range(len(cl) - 1, -1, -1):
-                if cl[i] is not None:
-                    price = cl[i]
-                    t = ts[i] if i < len(ts) else t
-                    break
-        chg = ((price / prev - 1.0) if (price and prev) else None)
-        return {
-            "price": round(price, 4) if price is not None else None,
-            "prev_close": round(prev, 4) if prev is not None else None,
-            "change_pct": round(chg, 6) if chg is not None else None,
-            "time": (datetime.fromtimestamp(t, tz=timezone.utc).isoformat()
-                     if t else None),
-        }
+        reg_meta_price = meta.get("regularMarketPrice")
+        t_meta = meta.get("regularMarketTime")
+
+        def _emit(price, chg, session, reg_px, reg_chg, ext_px, ext_chg, t):
+            r6 = lambda v: round(v, 6) if v is not None else None
+            r4 = lambda v: round(v, 4) if v is not None else None
+            return {
+                "price": r4(price), "prev_close": r4(prev),
+                "change_pct": r6(chg), "session": session,
+                "regular_price": r4(reg_px), "regular_change": r6(reg_chg),
+                "ext_price": r4(ext_px), "ext_change": r6(ext_chg),
+                "time": (datetime.fromtimestamp(t, tz=timezone.utc).isoformat()
+                         if t else None),
+            }
+
+        if not prepost:
+            # Indices (^VXN etc.): no extended hours; one number vs prev close.
+            chg = (reg_meta_price / prev - 1.0) if (reg_meta_price and prev) else None
+            return _emit(reg_meta_price, chg, "regular", reg_meta_price, chg,
+                         None, None, t_meta)
+
+        # ── Session-aware path (ETFs) ─────────────────────────────────────────
+        ts = res.get("timestamp") or []
+        cl = (((res.get("indicators") or {}).get("quote") or [{}])[0].get("close")) or []
+        cp = meta.get("currentTradingPeriod") or {}
+        reg_start = ((cp.get("regular") or {}).get("start"))
+        reg_end   = ((cp.get("regular") or {}).get("end"))
+
+        last_reg = last_reg_t = None
+        last_pre = last_post = None
+        last_any = last_any_t = None
+        for i, c in enumerate(cl):
+            if c is None:
+                continue
+            t = ts[i] if i < len(ts) else None
+            last_any, last_any_t = c, t
+            if reg_start is not None and reg_end is not None and t is not None:
+                if reg_start <= t < reg_end:
+                    last_reg, last_reg_t = c, t
+                elif t < reg_start:
+                    last_pre = c
+                else:
+                    last_post = c
+            else:                      # boundaries missing → treat as regular
+                last_reg, last_reg_t = c, t
+
+        # Regular price/change: valid only once the regular session has traded
+        # today. Fall back to meta.regularMarketPrice (today's close post-session).
+        reg_px = last_reg if last_reg is not None else None
+        if reg_px is None and last_post is not None:
+            reg_px = reg_meta_price     # after-hours: meta holds today's close
+        reg_chg = (reg_px / prev - 1.0) if (reg_px and prev) else None
+
+        # Classify the current session from the freshest print.
+        if last_any_t is None:
+            session = "closed"
+        elif reg_start is not None and reg_start <= last_any_t < (reg_end or 0):
+            session = "regular"
+        elif reg_start is not None and last_any_t < reg_start:
+            session = "pre"
+        elif reg_end is not None and last_any_t >= reg_end:
+            session = "post"
+        else:
+            session = "regular"
+
+        if session == "pre":
+            ext_px = last_pre
+            ext_chg = (ext_px / prev - 1.0) if (ext_px and prev) else None
+            price, chg = ext_px, ext_chg          # no regular day yet → pre IS the read
+        elif session == "post":
+            ext_px = last_post
+            ext_chg = (ext_px / reg_px - 1.0) if (ext_px and reg_px) else None
+            price, chg = reg_px, reg_chg           # headline = the day's regular change
+        elif session == "regular":
+            ext_px = ext_chg = None
+            price = last_reg if last_reg is not None else reg_meta_price
+            chg = (price / prev - 1.0) if (price and prev) else None
+            reg_px, reg_chg = price, chg
+        else:                                       # closed (weekend / holiday)
+            ext_px = ext_chg = None
+            price = reg_meta_price
+            chg = (price / prev - 1.0) if (price and prev) else None
+            reg_px, reg_chg = price, chg
+
+        return _emit(price, chg, session, reg_px, reg_chg, ext_px, ext_chg, last_any_t)
     except Exception as e:
         print(f"  yahoo {symbol:6s} FAILED: {e}")
-        return {"price": None, "prev_close": None, "change_pct": None, "time": None}
+        return {"price": None, "prev_close": None, "change_pct": None,
+                "session": None, "regular_price": None, "regular_change": None,
+                "ext_price": None, "ext_change": None, "time": None}
 
 
 # ── Last official position from the (privately generated) backtest ───────────
