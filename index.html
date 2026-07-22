@@ -993,13 +993,13 @@ table.sig-mon tr.sig-divider.regime-hd td b { color: var(--cyan); }
       </div>
       <div class="exit-legend">
         <span class="el-title">Exit reasons:</span>
-        <span><b>Bearish / Bullish price bar</b> — close crossed both adaptive Ichimoku lines against the position</span>
-        <span><b>Chikou bearish / bullish</b> — smoothed price broke the displaced 25-day channel</span>
-        <span><b>SuperTrend flipped up</b> — trend flip closes the SQQQ trade</span>
-        <span><b>Catastrophe Trail</b> — TQQQ gave back 40% from its running peak (safety net)</span>
-        <span><b>Hard Stop</b> — SQQQ hit −10% from entry</span>
+        <span><b>Bearish price bar</b> — TQQQ closed below both adaptive Ichimoku lines (bear regime)</span>
+        <span><b>Chikou bearish</b> — smoothed price broke below the displaced 25-day channel (bear regime)</span>
         <span><b>VXN extreme</b> — Nasdaq implied vol hit a 2-year percentile extreme</span>
+        <span><b>Catastrophe Trail</b> — TQQQ gave back 40% from its running peak (safety net)</span>
         <span><b>Stoch oversold / ATR low vol</b> — bear move exhausted; rebound risk closes SQQQ</span>
+        <span><b>Trailing stop</b> — SQQQ gave back 12% from its peak close</span>
+        <span><b>Hard Stop</b> — SQQQ hit −12% from entry</span>
         <span><b>Signal flip</b> — the opposite side's full entry alignment fired</span>
       </div>
     </div>
@@ -1116,11 +1116,11 @@ table.sig-mon tr.sig-divider.regime-hd td b { color: var(--cyan); }
           kept the strategy in cash during rebounds &mdash; the market&rsquo;s best days &mdash; so the entry is kept
           deliberately simple. Easy entry, regime-gated grip.</p>
         <h3>When it buys SQQQ</h3>
-        <p>Only in a genuine bear tape: bearish price structure below the 20- <i>and</i> 50-day EMAs, the full
-          oversold-blocker set clear, plus two filters added in the Python rework &mdash; <b>QQQ below its
-          200-day SMA</b> (the regime gate) and the VIX curve not in steep contango. Bear entries are
-          deliberately rare (17 of 51 backtest trades), sized at <b>half equity</b>, and carry a
-          <b>&minus;10% hard stop</b>, because rallies inside downtrends are violent.</p>
+        <p>Only in a genuine bear tape: the close below its <b>20-day EMA</b>, the three oversold blockers
+          clear, plus two filters added in the Python rework &mdash; <b>QQQ below its 200-day SMA</b> (the
+          regime gate) and the VIX curve not in steep contango. Bear entries are deliberately rare
+          (15 of 49 backtest trades), sized at <b>half equity</b>, and carry both a <b>12% trailing stop</b>
+          and a <b>&minus;12% hard stop</b>, because rallies inside downtrends are violent.</p>
         <h3>How it exits</h3>
         <p><b>Structurally and regime-gated &mdash; never on strength.</b> While QQQ holds above its 200-day SMA,
           TQQQ rides through dips, oscillator extremes and even bearish Ichimoku bars; only a VXN crash-spike
@@ -1128,8 +1128,8 @@ table.sig-mon tr.sig-divider.regime-hd td b { color: var(--cyan); }
           Ichimoku structure takes over: a bearish price bar or bearish Chikou closes the position at the next
           open. Exiting a strong up-trend on ordinary &ldquo;overbought&rdquo; oscillator readings was found to surrender
           most of the compounding, so the long side is left to run and only a genuine trend break closes it.
-          SQQQ exits stay deliberately twitchy: SuperTrend flip, bullish structure, oversold exhaustion, or the
-          hard stop.</p>
+          SQQQ exits on exhaustion &mdash; a stochastic-oversold or ATR-collapse reading &mdash; or on the 12%
+          trailing stop or &minus;12% hard stop.</p>
         <h3>Timing &amp; execution</h3>
         <p>Signals are evaluated on the <b>daily close</b> (confirmed once CBOE posts the day&rsquo;s end-of-day
           prints, ~5:30&nbsp;PM&nbsp;ET) and the resulting order executes at the <b>next market open</b>. No
@@ -1339,7 +1339,7 @@ function exitReasonMeta(t){
   if(r==='Trailing stop'){ const TR=0.40, pk=_tradePeakPnl(t), gb=(pk!=null)?Math.max(0,pk-(t.pnl_pct||0)):null;
     return {name:'Catastrophe Trail',desc:'Safety net — TQQQ gave back 40% from its highest close since entry',bar:_exrBar(0,Math.max(TR*1.5,(gb||0)*1.15),TR,gb,fpc,true,hc)}; }
   if(r==='Hard stop'){ const th=-0.10;
-    return {name:'Hard Stop',desc:'SQQQ hit the −10% hard stop from entry',bar:_exrBar(th*1.8,0.04,th,t.pnl_pct,fpc,false,hc)}; }
+    return {name:'Hard Stop',desc:'SQQQ hit the −12% hard stop from entry',bar:_exrBar(th*1.8,0.04,th,t.pnl_pct,fpc,false,hc)}; }
   const DESC={
     'Bearish price bar':'Ichimoku bear cross — close below both the adaptive Tenkan-Sen (fast) and Kijun-Sen (slow) lines, in a bear regime',
     'Bullish price bar':'Ichimoku bull cross — close back above both the adaptive Tenkan-Sen and Kijun-Sen lines (closes the SQQQ short)',
@@ -3069,8 +3069,6 @@ function renderSignalMonitor(histBar){
       num(b.atr_sig,1), 'NA', gAtr],
     ['MFI Floor','Money Flow Index &lt; 25 blocks SQQQ entries (selling already exhausted)','','&ge; 25 clear',
       num(b.mfi,1), (b.mfi!=null&&b.mfi<25)?'BLOCK':'NA', gMfi],
-    ['Day-Spread Extreme','A bottom-1%-percentile prior-day move blocks SQQQ entries; tightens drawdown by ~0.5 pts','','Not extreme clear',
-      num(b.spread_rank,1), 'NA', gSpr],
   ];
 
   // ── Exit rules (status: Hold / Exit / N/A). Applicability per held side. ──
@@ -3083,7 +3081,7 @@ function renderSignalMonitor(histBar){
     daysHeldN=i0-j; peakPnl=0;
     for(let k=j;k<=i0;k++){ const v=bh0[k].open_pnl_pct; if(v!=null&&v>peakPnl) peakPnl=v; }
   }
-  const TRL=0.40, HSTP=-0.10;
+  const TRL=0.40, HSTP=-0.12, SQTRL=0.12;
   const giveback=(peakPnl!=null&&openpnl!=null)?Math.max(0,peakPnl-openpnl):null;
   const xdef=[
     // [name, desc, holdTxt, exitTxt, applies, fired, current, gauge]
@@ -3098,23 +3096,19 @@ function renderSignalMonitor(histBar){
       giveback!=null?('−'+(giveback*100).toFixed(0)+'% pk'):num(null),
       {lo:-TRL*0.15,hi:Math.max(TRL*1.8,(giveback||0)*1.15),z:[[-TRL*0.15,TRL,'P'],[TRL,Math.max(TRL*1.8,(giveback||0)*1.15),'C']],v:giveback,fmt:fPP,
        tip:`give-back from peak close vs the 40% catastrophe trail · now ${giveback!=null?(giveback*100).toFixed(1)+'%':'—'}`}],
-    ['SuperTrend Flip','SuperTrend (10, 3) turns up — closes the bear trade', 'Downtrend','Uptrend',
-      isUV, b.supertrend===1, b.supertrend===1?'Up':'Down',
-      {lo:-1.5,hi:1.5,z:[[-1.5,0,'P'],[0,1.5,'C']],v:b.supertrend,nolab:true,tip:`SuperTrend(10,3) direction · now ${b.supertrend===1?'up (exits SQQQ)':'down'}`}],
-    ['Ichimoku Bull Cross','TQQQ closes back above BOTH the adaptive Tenkan-Sen and Kijun-Sen lines — the down-trend has broken, so the SQQQ (short) position is closed.', 'Below either line','Above both lines',
-      isUV, b.bull_bar, barState, gBar],
-    ['Chikou Span Breakout','The Ichimoku Chikou span clears the price from 25 bars ago — upside momentum confirmation that closes the SQQQ short.', 'Not bullish','Bullish',
-      isUV, b.chikou_bull, b.chikou_sig===1?'Bullish':b.chikou_sig===-1?'Bearish':'Consol.', gChik],
-    ['Stoch Oversold','%K under 25 — the bear move is stretched; rebound risk', '&ge; 25','&lt; 25',
+    ['Stoch Oversold','%K under 25 — the bear move is stretched; rebound risk, so the SQQQ short is closed', '&ge; 25','&lt; 25',
       isUV, (b.stoch_k!=null&&b.stoch_k<25), num(b.stoch_k,1), gK],
-    ['ATR Collapse','Volatility spectrum extreme-low — no fuel for the bear trade', 'Not extreme','Extreme low',
+    ['ATR Collapse','Volatility spectrum extreme-low — no fuel left for the bear trade, so the SQQQ short is closed', 'Not extreme','Extreme low',
       isUV, false /* engine flag not exported per-bar as extreme_low boolean; gauge shows the reading */, num(b.atr_sig,1), gAtr],
-    ['VXN Complacency','VXN below its 0.5th percentile — nothing left to panic about', '&ge; 0.5 pct','&lt; 0.5 pct',
-      isUV, b.vxn_extreme_low, num(b.vxn_rank,1), gVxnR],
-    ['Hard Stop &minus;10%','SQQQ down 10% from entry — cap the damage', 'Above &minus;10%','At/under &minus;10%',
+    ['Trailing Stop 12%','Locks in bear-leg gains: exits if SQQQ gives back 12% from its highest close since entry', 'Give-back &lt; 12%','Give-back &ge; 12%',
+      isUV, (isUV&&giveback!=null&&giveback>=SQTRL),
+      giveback!=null?('−'+(giveback*100).toFixed(0)+'% pk'):num(null),
+      {lo:-SQTRL*0.15,hi:Math.max(SQTRL*1.8,(giveback||0)*1.15),z:[[-SQTRL*0.15,SQTRL,'P'],[SQTRL,Math.max(SQTRL*1.8,(giveback||0)*1.15),'C']],v:giveback,fmt:fPP,
+       tip:`give-back from peak close vs the 12% SQQQ trailing stop · now ${giveback!=null?(giveback*100).toFixed(1)+'%':'—'}`}],
+    ['Hard Stop &minus;12%','SQQQ down 12% from entry — cap the damage', 'Above &minus;12%','At/under &minus;12%',
       isUV, (isUV&&openpnl!=null&&openpnl<=HSTP), pct(openpnl,1),
       {lo:HSTP*1.8,hi:0.06,z:[[HSTP*1.8,HSTP,'C'],[HSTP,0.06,'P']],v:openpnl,fmt:fPP,
-       tip:`open P&L vs the −10% hard stop · now ${openpnl!=null?(openpnl*100).toFixed(1)+'%':'—'}`}],
+       tip:`open P&L vs the −12% hard stop · now ${openpnl!=null?(openpnl*100).toFixed(1)+'%':'—'}`}],
   ];
   const exState=i=>{ const r=xdef[i];
     if(!inPos || !r[4]) return 'na';
@@ -3155,12 +3149,12 @@ function renderSignalMonitor(histBar){
     } else if((isSV&&_pk==='uv')||(isUV&&_pk==='sv')){ _why=`an exit fired AND the opposite side's full setup aligned &rarr; <b style="color:${_pk==='sv'?'var(--teal)':'var(--coral)'}">reverse position</b>`;
       explain=`<b>Reversing into ${_pk==='sv'?'TQQQ':'SQQQ'}</b> at the next open: the current position's exit fired on the same close that the opposite side completed its full entry alignment, so the strategy flips directly without a cash stop.`;
     } else { _why=`<b style="color:${POSC}">holding ${isSV?'TQQQ':'SQQQ'}</b> &mdash; no exit rule fired on this close`;
-      explain=`<b>Holding ${_instTxt}.</b> None of the applicable exit rules fired on this close, so the position rides. Entry rows are context-only while in a trade; the ${isSV?'40% catastrophe trail':'−10% hard stop'} back-stops the trend rules. In a bull regime (QQQ above its 200-day SMA) only a VXN crash-spike or that trail can force TQQQ out — dips are held.`;
+      explain=`<b>Holding ${_instTxt}.</b> None of the applicable exit rules fired on this close, so the position rides. Entry rows are context-only while in a trade; the ${isSV?'40% catastrophe trail':'12% trailing / −12% hard stop'} back-stops the trend rules. In a bull regime (QQQ above its 200-day SMA) only a VXN crash-spike or that trail can force TQQQ out — dips are held.`;
     }
   } else if(_pk==='sv'){ _why=`full TQQQ alignment &rarr; <b style="color:var(--teal)">buy TQQQ at the next open</b>`;
     explain=`<b>Entering TQQQ</b> at the next open: the close is back above its 20-day EMA and the VIX curve is not deeply backwardated. Entries are deliberately easy — the edge lives in the regime-gated exits, so the strategy is invested ~92% of the time.`;
   } else if(_pk==='uv'){ _why=`full SQQQ alignment (incl. QQQ &lt; 200-day) &rarr; <b style="color:var(--coral)">buy SQQQ at the next open</b>`;
-    explain=`<b>Entering SQQQ (half position)</b> at the next open: bearish price structure below the 20- and 50-day EMAs, QQQ under its 200-day SMA (the added regime gate), and no oversold/exhaustion blocker vetoes it. SQQQ trades at half size, and bear entries are deliberately rare — 17 of 112 backtest trades.`;
+    explain=`<b>Entering SQQQ (half position)</b> at the next open: the close is below its 20-day EMA, QQQ is under its 200-day SMA (the regime gate), the VIX curve is not in steep contango, and no oversold/exhaustion blocker vetoes it. SQQQ trades at half size, and bear entries are deliberately rare — 15 of 49 backtest trades.`;
   } else { _why=`neither side complete &rarr; <b style="color:var(--cashc)">stay in cash</b> &mdash; a side must hit its <i>full</i> set`;
     explain=`<b>Cash.</b> TQQQ re-enters as soon as the close is above its 20-day EMA (backwardation guard clear); SQQQ needs the full bear set plus QQQ under its 200-day SMA. Cash is rare (~8% of days) — it only appears in transition windows.`;
   }
@@ -3223,10 +3217,10 @@ function renderSignalMonitor(histBar){
     + rows(coreRows,[2,4])
     + _div('Exit TQQQ &mdash; <b>regime-gated</b>. In a bull regime only a VXN crash-spike or the 40% catastrophe trail can force an exit; below the 200-day SMA the Ichimoku structure (bearish bar / Chikou) exits too. Suppressed while the entry still holds.')
     + exRows([0,1,2,3])
-    + _div('Enter SQQQ (half position) &mdash; needs the full bear set on the same close: bearish price bar, close below the 20- and 50-day EMAs, Chikou not bullish, QQQ below its 200-day SMA, and none of the four exhaustion blockers vetoing it. Deliberately rare.')
-    + rows(coreRows,[0,1]) + rows(blockRows,[0,1,2,3])
-    + _div('Exit SQQQ &mdash; kept deliberately quick: a SuperTrend flip, bullish Ichimoku structure, an oversold / complacency reading, or the &minus;10% hard stop &mdash; whichever fires first.')
-    + exRows([4,5,6,7,8,9,10])
+    + _div('Enter SQQQ (half position) &mdash; on the same close: <b>close below the 20-day EMA</b>, <b>QQQ below its 200-day SMA</b> (the regime gate, above), the VIX curve <b>not in steep contango</b>, and none of the three exhaustion blockers below vetoing it. Deliberately rare.')
+    + rows(blockRows,[0,1,2])
+    + _div('Exit SQQQ &mdash; a stochastic-oversold or ATR-collapse exhaustion reading, the 12% trailing stop, or the &minus;12% hard stop &mdash; whichever fires first.')
+    + exRows([4,5,6,7])
     + '</tbody>';
   document.getElementById('signal-monitor').innerHTML=head+body;
 
@@ -3258,7 +3252,7 @@ function renderSignalMonitor(histBar){
       : `Spine ${tqBase?'ON':'off'} &nbsp;·&nbsp; Guard ${bwGuard?'clear':'BLOCK'} &nbsp;·&nbsp; SQQQ ${b.long_sqqq?'ALIGNED':'—'}`;
     mh+=`<div class="mini-combo"><span>${_cmbo}</span></div>`;
     mh+=`<div class="mini-why">${explain}</div>`;
-    const mnames=['Bear bar','Chikou-','VXN spike','Trail 40%','SuperTrend','Bull bar','Chikou+','Stoch OS','ATR low','VXN low','Stop −10%'];
+    const mnames=['Bear bar','Chikou-','VXN spike','Trail 40%','Stoch OS','ATR low','Trail 12%','Stop −12%'];
     const mExit=i=>{ const s=exState(i); const g=xdef[i][7]?{...xdef[i][7],trig:s==='exit'}:null;
       return mRow(mnames[i], g, stripTags(''+xdef[i][6])||'—', mStat(i), s==='na'); };
     // Regime → Enter TQQQ → Exit TQQQ → Enter SQQQ → Exit SQQQ (same order as the table)
@@ -3270,14 +3264,11 @@ function renderSignalMonitor(histBar){
     mh+=`<div class="mini-sub">Exit TQQQ ${help(xTip)}</div>`;
     [0,1,2,3].forEach(i=>{ mh+=mExit(i); });
     mh+=`<div class="mini-sub">Enter SQQQ ${help(eTip)}</div>`;
-    mh+=mRow('Price bar', gBar, barState, mSig(coreRows[0][5]));
-    mh+=mRow('Chikou', gChik, coreRows[1][4], mSig(coreRows[1][5]));
     mh+=mRow('Stoch %K', gK, stripTags(''+num(b.stoch_k,0)), mSig(blockRows[0][5]));
     mh+=mRow('ATR spec', gAtr, stripTags(''+num(b.atr_sig,0)), mSig(blockRows[1][5]));
     mh+=mRow('MFI', gMfi, stripTags(''+num(b.mfi,0)), mSig(blockRows[2][5]));
-    mh+=mRow('Day spread', gSpr, stripTags(''+num(b.spread_rank,0)), mSig(blockRows[3][5]));
     mh+=`<div class="mini-sub">Exit SQQQ</div>`;
-    [4,5,6,7,8,9,10].forEach(i=>{ mh+=mExit(i); });
+    [4,5,6,7].forEach(i=>{ mh+=mExit(i); });
     mh+=`<div class="mini-note"><b>NOTE:</b> Signals computed from TQQQ daily bars</div>`;
     const _mm=document.getElementById('mini-monitor');
     let _miniColl=false; try{ _miniColl=localStorage.getItem('miniCollapsed')==='1'; }catch(_){}
