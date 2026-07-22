@@ -349,9 +349,9 @@ tr:hover td { background: #e3dbc6 }
 }
 .live-main { display: flex; align-items: stretch; gap: 16px; flex-wrap: wrap; }
 .live-pos-block { display: flex; flex-direction: column; justify-content: center; gap: 1px; padding-right: 2px; }
-.live-pos-lbl { color: var(--dim, #909090); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.6rem; }
-.live-pos-val { font-weight: 700; font-size: 1.2rem; letter-spacing: 0.01em; display: inline-flex; align-items: baseline; gap: 8px; }
-.live-pos-val .live-chg { font-size: 0.82rem; }
+.live-pos-lbl { color: var(--dim, #909090); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.57rem; }
+.live-pos-val { font-weight: 700; font-size: 1.12rem; letter-spacing: 0.01em; display: inline-flex; align-items: baseline; gap: 8px; }
+.live-pos-val .live-chg { font-size: 0.78rem; }
 .live-vdiv { width: 1px; align-self: stretch; background: var(--border2, #555); }
 .live-quotes { display: flex; flex-direction: column; justify-content: center; gap: 6px; min-width: 0; flex: 1; }
 .live-row { display: flex; align-items: baseline; gap: 13px; flex-wrap: wrap; }
@@ -703,9 +703,11 @@ table.sig-stats td .ss-sub { font-size: var(--fs-micro); }
 .cdl-info, #daily-info { font-size: var(--fs-sm); }
 .cdl-legend, .pos-band-label { font-size: var(--fs-micro); }
 .exit-legend { font-size: var(--fs-xs); }
-.live-lbl { font-size: var(--fs-micro); }
-.live-val { font-size: var(--fs-xs); }
-.live-chg { font-size: var(--fs-micro); }
+/* Status bar sits between the original and the enlarged scale — the global
+   bump made these tickers read too big, so tune them independently here. */
+.live-lbl { font-size: 0.69rem; }
+.live-val { font-size: 0.78rem; }
+.live-chg { font-size: 0.69rem; }
 .tab { font-size: var(--fs-xs); }
 .ph { font-size: var(--fs-xs); }
 .page-disclaimer { font-size: var(--fs-xs); }
