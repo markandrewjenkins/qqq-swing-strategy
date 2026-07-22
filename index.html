@@ -1338,7 +1338,7 @@ function exitReasonMeta(t){
   // state flips, so they get the hatched (non-numeric) bar.
   if(r==='Trailing stop'){ const TR=0.40, pk=_tradePeakPnl(t), gb=(pk!=null)?Math.max(0,pk-(t.pnl_pct||0)):null;
     return {name:'Catastrophe Trail',desc:'Safety net — TQQQ gave back 40% from its highest close since entry',bar:_exrBar(0,Math.max(TR*1.5,(gb||0)*1.15),TR,gb,fpc,true,hc)}; }
-  if(r==='Hard stop'){ const th=-0.10;
+  if(r==='Hard stop'){ const th=-0.12;
     return {name:'Hard Stop',desc:'SQQQ hit the −12% hard stop from entry',bar:_exrBar(th*1.8,0.04,th,t.pnl_pct,fpc,false,hc)}; }
   const DESC={
     'Bearish price bar':'Ichimoku bear cross — close below both the adaptive Tenkan-Sen (fast) and Kijun-Sen (slow) lines, in a bear regime',
