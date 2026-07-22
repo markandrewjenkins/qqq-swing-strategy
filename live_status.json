@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-07-22T20:50:29+00:00",
+  "generated_utc": "2026-07-22T20:55:22+00:00",
   "market": {
     "vxn_used": 26.74,
     "vix_used": 16.64,
@@ -53,15 +53,15 @@
         "time": "2026-07-22T20:15:01+00:00"
       },
       "ndx": {
-        "price": 28998.1,
+        "price": 29003.02,
         "prev_close": 29155.18,
-        "change_pct": -0.005388,
+        "change_pct": -0.005219,
         "session": "regular",
         "regular_price": 28998.1,
         "regular_change": -0.005388,
         "ext_price": null,
         "ext_change": null,
-        "time": "2026-07-22T20:50:31+00:00"
+        "time": "2026-07-22T20:55:23+00:00"
       },
       "tqqq": {
         "price": 70.2499,
@@ -70,9 +70,9 @@
         "session": "post",
         "regular_price": 70.2499,
         "regular_change": -0.015694,
-        "ext_price": 70.545,
-        "ext_change": 0.004201,
-        "time": "2026-07-22T20:50:31+00:00"
+        "ext_price": 70.52,
+        "ext_change": 0.003845,
+        "time": "2026-07-22T20:55:16+00:00"
       },
       "sqqq": {
         "price": 40.95,
@@ -81,9 +81,9 @@
         "session": "post",
         "regular_price": 40.95,
         "regular_change": 0.015877,
-        "ext_price": 40.78,
-        "ext_change": -0.004151,
-        "time": "2026-07-22T20:50:33+00:00"
+        "ext_price": 40.7999,
+        "ext_change": -0.003665,
+        "time": "2026-07-22T20:55:23+00:00"
       },
       "qqq": {
         "price": 705.27,
@@ -92,9 +92,9 @@
         "session": "post",
         "regular_price": 705.27,
         "regular_change": -0.005219,
-        "ext_price": 706.16,
-        "ext_change": 0.001262,
-        "time": "2026-07-22T20:50:31+00:00"
+        "ext_price": 706.2,
+        "ext_change": 0.001319,
+        "time": "2026-07-22T20:55:23+00:00"
       },
       "spy": {
         "price": 747.33,
@@ -103,9 +103,9 @@
         "session": "post",
         "regular_price": 747.33,
         "regular_change": -0.00127,
-        "ext_price": 748.2801,
-        "ext_change": 0.001271,
-        "time": "2026-07-22T20:50:23+00:00"
+        "ext_price": 748.33,
+        "ext_change": 0.001338,
+        "time": "2026-07-22T20:55:24+00:00"
       },
       "upro": {
         "price": 141.29,
@@ -114,9 +114,9 @@
         "session": "post",
         "regular_price": 141.29,
         "regular_change": -0.004229,
-        "ext_price": 141.8153,
-        "ext_change": 0.003718,
-        "time": "2026-07-22T20:50:24+00:00"
+        "ext_price": 141.86,
+        "ext_change": 0.004034,
+        "time": "2026-07-22T20:51:44+00:00"
       },
       "spxu": {
         "price": 37.19,
@@ -125,9 +125,9 @@
         "session": "post",
         "regular_price": 37.19,
         "regular_change": 0.00405,
-        "ext_price": 37.05,
-        "ext_change": -0.003764,
-        "time": "2026-07-22T20:50:18+00:00"
+        "ext_price": 37.04,
+        "ext_change": -0.004033,
+        "time": "2026-07-22T20:54:30+00:00"
       },
       "spx": {
         "price": 7498.96,
