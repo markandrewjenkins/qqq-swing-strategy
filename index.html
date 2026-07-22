@@ -23,9 +23,9 @@ document.documentElement.classList.add('theme-miami');</script>
   --text:    #ece2fa;
   --dim:     #9683bf;
   --white:   #fdf2ff;
-  --yellow:  #ff3caa;
+  --yellow:  #f660b6;
   --cyan:    #2ee6ff;
-  --pink:    #ff3caa;
+  --pink:    #f660b6;
   --teal:    #25f4b0;
   --purple:  #b98cff;
   --amber:   #ffb347;
@@ -50,7 +50,7 @@ document.documentElement.classList.add('theme-miami');</script>
 }
 * { box-sizing: border-box; margin: 0; padding: 0 }
 a { color: var(--cyan); text-decoration: underline; text-underline-offset: 2px; }
-html { font-size: 13.5px }
+html { font-size: 15px }
 body {
   background-color: var(--bg);
   background-image: none;
@@ -402,6 +402,9 @@ tr:hover td { background: #e3dbc6 }
 #mkt-countdown { color:var(--dim); font-weight:400; }
 .mkt-block { display:inline-flex; align-items:center; gap:6px; white-space:nowrap; overflow:hidden; }
 #mkt-label { color:var(--pink, #ff2a6d); font-weight:700; letter-spacing:0.04em; }
+.mkt-legend { display:inline-flex; gap:11px; align-items:center; font-size:var(--fs-micro); color:var(--dim); flex-wrap:wrap; }
+.mkt-legend .ml-item { display:inline-flex; align-items:center; gap:3px; white-space:nowrap; }
+.mkt-legend .ml-ico { font-size:0.92rem; }
 .cdl-toggle-group { display:inline-flex; border:1px dotted var(--border2); border-radius:5px; overflow:hidden; }
 .cdl-seg { background:transparent; color:var(--dim); border:none; padding:3px 11px; font-family:'JetBrains Mono',monospace; font-size:0.7rem; font-weight:600; letter-spacing:0.03em; cursor:pointer; }
 .cdl-seg.active { background:var(--yellow); color:#f1ebdc; }
@@ -594,32 +597,32 @@ table.sig-mon tr.sig-divider td { color:var(--dim); font-size:0.6rem; text-trans
 .theme-miami .hdr {
   background: linear-gradient(180deg,#130b26,#070510);
   border-bottom: 1px solid var(--pink);
-  box-shadow: 0 2px 22px -6px rgba(255,60,170,0.5);
+  box-shadow: 0 2px 22px -6px rgba(246,96,182,0.5);
 }
 .theme-miami .hdr-title {
   font-family: 'Orbitron', sans-serif; font-weight: 900;
   color: #ff3caa; letter-spacing: 0.14em;
-  text-shadow: 0 0 8px rgba(255,60,170,0.75), 0 0 22px rgba(255,60,170,0.4);
+  text-shadow: 0 0 8px rgba(246,96,182,0.75), 0 0 22px rgba(246,96,182,0.4);
 }
 .theme-miami .ph span { color: var(--cyan); text-shadow: 0 0 7px rgba(46,230,255,0.45); }
 .theme-miami .tab { font-family:'Chakra Petch',sans-serif; }
 .theme-miami .tab.active { background:#2a1a52; border-color:var(--pink); color:var(--pink);
-  box-shadow: 0 0 10px -1px rgba(255,60,170,0.5); }
+  box-shadow: 0 0 10px -1px rgba(246,96,182,0.5); }
 .theme-miami .tab:hover { border-color: var(--cyan); color: var(--cyan); }
 .theme-miami .ph, .theme-miami th { background:#1a1038; }
 .theme-miami tr:hover td { background: rgba(120,90,200,0.12); }
-.theme-miami .panel { box-shadow: 0 0 0 1px rgba(90,63,143,0.25), 0 6px 26px -14px rgba(255,60,170,0.35); }
+.theme-miami .panel { box-shadow: 0 0 0 1px rgba(90,63,143,0.25), 0 6px 26px -14px rgba(246,96,182,0.35); }
 .theme-miami .kpi { border-left-color: var(--cyan); }
 .theme-miami .kpi-val.pos { text-shadow: 0 0 9px rgba(37,244,176,0.4); }
 .theme-miami .rp-btn, .theme-miami .mini-mon .mini-exp { background: rgba(30,19,63,0.9); color: var(--cyan); }
 .theme-miami .mini-mon .mini-inner { background: rgba(24,15,52,0.96); border-color: var(--border2);
-  box-shadow: 0 0 18px -4px rgba(255,60,170,0.4); }
+  box-shadow: 0 0 18px -4px rgba(246,96,182,0.4); }
 .theme-miami .pill-tqqq, .theme-miami .eb-tp { background:rgba(37,244,176,0.14); }
 .theme-miami .pill-sqqq, .theme-miami .eb-sl { background:rgba(255,90,122,0.16); }
 .theme-miami .pill-qld, .theme-miami .eb-ratio { background:rgba(46,230,255,0.14); }
 .theme-miami .pill-qid { background:rgba(185,140,255,0.16); }
 .theme-miami .eb-move { background:rgba(255,179,71,0.16); }
-.theme-miami .note-box { background:rgba(255,60,170,0.08); border-color:var(--pink); }
+.theme-miami .note-box { background:rgba(246,96,182,0.08); border-color:var(--pink); }
 .theme-miami .cdl-seg.active { background:var(--pink); color:#070510; }
 .theme-miami .sig-explain { background: rgba(46,230,255,0.07); border-left-color: var(--cyan); }
 .theme-miami .spinner { border-top-color: var(--pink); }
@@ -630,21 +633,30 @@ table.sig-mon tr.sig-divider td { color:var(--dim); font-size:0.6rem; text-trans
   box-shadow: inset 0 -1px 0 rgba(46,230,255,0.25); }
 /* ── Time-of-day accent: a thin sky-gradient rule under the top bar that
       shifts from dawn → daylight → dusk → night as the clock advances. ── */
-#tod-bar { height:2px; width:100%; transition: background 1.5s linear; }
-#tod-glow { position:fixed; top:0; left:0; right:0; height:120px; pointer-events:none;
-  z-index:0; opacity:0.5; transition: background 1.5s linear; }
+#tod-bar { height:4px; width:100%; transition: background 1.5s linear;
+  box-shadow: 0 0 12px -1px currentColor; }
+#tod-glow { position:fixed; top:0; left:0; right:0; height:150px; pointer-events:none;
+  z-index:0; opacity:0.7; transition: background 1.5s linear; }
 .topbar { position: sticky; top: 0; z-index: 100; }
+/* Time-of-day badge in the header: icon + phase label, driven by the ET clock */
+.tod-badge { display:inline-flex; align-items:center; gap:7px; padding:3px 11px; border-radius:20px;
+  border:1px solid var(--border2); background:rgba(120,90,200,0.10); margin-left:2px;
+  font-size:var(--fs-xs); white-space:nowrap; transition:border-color 1.5s, box-shadow 1.5s; }
+.tod-badge .tod-ico { font-size:1.05rem; line-height:1; }
+.tod-badge .tod-txt { color:var(--dim); font-weight:600; letter-spacing:0.02em; }
 
-/* Drawdown-stats card: recovery figures embedded as small chips */
-.kpi.kpi-wide { flex: 1 1 430px; }
-.kpi-insets { display:flex; flex-wrap:wrap; gap:5px 6px; margin-top:9px;
-  padding-top:8px; border-top:1px solid var(--border); }
-.kpi-inset { display:flex; flex-direction:column; gap:1px; padding:3px 7px; border-radius:4px;
-  background:rgba(120,90,200,0.10); border:1px solid var(--border); cursor:help; }
-.kpi-inset .ki-l { font-size:0.56rem; letter-spacing:0.03em; text-transform:uppercase; color:var(--dim);
-  white-space:nowrap; }
-.kpi-inset .ki-v { font-family:'JetBrains Mono',monospace; font-size:0.8rem; font-weight:600;
-  color:var(--sun-dusk); line-height:1.15; }
+/* Drawdown-stats card: headline max-DD on the left, six recovery chips in a
+   3×2 grid on the right, all in one card. */
+.kpi.kpi-wide { flex: 1 1 560px; display:flex; align-items:stretch; gap:14px; }
+.kpi.kpi-wide .dd-left { flex:0 0 auto; display:flex; flex-direction:column; justify-content:center;
+  padding-right:14px; border-right:1px solid var(--border); }
+.dd-grid { flex:1; display:grid; grid-template-columns:repeat(3,1fr); grid-auto-rows:1fr; gap:6px; }
+.kpi-inset { display:flex; flex-direction:column; justify-content:center; gap:2px; padding:5px 9px;
+  border-radius:5px; background:rgba(120,90,200,0.10); border:1px solid var(--border); cursor:help; }
+.kpi-inset .ki-l { font-size:0.66rem; letter-spacing:0.02em; text-transform:uppercase; color:var(--dim);
+  line-height:1.15; }
+.kpi-inset .ki-v { font-family:'JetBrains Mono',monospace; font-weight:700;
+  color:var(--sun-dusk); line-height:1.1; }
 .page-disclaimer { max-width:1180px; margin:20px auto 16px; padding:10px 16px 0;
   color:var(--dim); font-size:0.78rem; line-height:1.65; text-align:center; opacity:0.95; }
 .page-disclaimer b { color:var(--dim); }
@@ -658,11 +670,11 @@ table.sig-mon tr.sig-divider td { color:var(--dim); font-size:0.6rem; text-trans
      body   14px  primary reading text
      h3     15.5px section headings                                        */
 :root{
-  --fs-micro: 0.68rem;
-  --fs-xs:    0.78rem;
-  --fs-sm:    0.88rem;
-  --fs-body:  1.0rem;
-  --fs-h3:    1.1rem;
+  --fs-micro: 0.76rem;
+  --fs-xs:    0.86rem;
+  --fs-sm:    0.95rem;
+  --fs-body:  1.06rem;
+  --fs-h3:    1.16rem;
 }
 /* Map the dense data surfaces onto the scale */
 table { font-size: var(--fs-xs); }
@@ -695,8 +707,8 @@ table.sig-stats td .ss-sub { font-size: var(--fs-micro); }
    CSS-transform-scales to the chart height, so it must stay self-consistent
    rather than match the page grid. SVG gauge tick labels likewise. */
 .sig-info { font-size: var(--fs-xs); }
-.kpi-inset .ki-l { font-size: var(--fs-micro); }
-.kpi-inset .ki-v { font-size: var(--fs-xs); }
+.kpi-inset .ki-l { font-size: 0.66rem; }
+.kpi-inset .ki-v { font-size: var(--fs-sm); }
 .rp-btn, .rp-lab, .rp-date, #replay-status { font-size: var(--fs-micro); }
 .sig-proj .lbl, .sig-proj-mixline, .sig-logic { font-size: var(--fs-xs); }
 .sig-proj-row1 { font-size: var(--fs-sm); }
@@ -717,6 +729,8 @@ table.sig-stats td .ss-sub { font-size: var(--fs-micro); }
     <div class="hdr-title">QQQ SWING STRATEGY</div>
     <div class="hdr-metarow">
       <span class="hdr-meta" id="hdr-meta">Loading...</span>
+      <span class="tod-badge" id="tod-badge" title="Time of day in New York — the header accent shifts through dawn, daylight, dusk and night">
+        <span class="tod-ico" id="tod-ico">&#9788;</span><span class="tod-txt" id="tod-txt">—</span></span>
     </div>
   </div>
   <div class="tabs">
@@ -752,6 +766,11 @@ table.sig-stats td .ss-sub { font-size: var(--fs-micro); }
         </span>
       </div>
       <div class="live-row">
+        <span class="live-item"><span class="live-lbl" title="S&amp;P 500 index level">SPX</span><span class="live-val" id="lv-spx">—</span><span class="live-chg" id="lv-spx-c"></span></span>
+        <span class="live-item"><span class="live-lbl" title="SPDR S&amp;P 500 ETF (1×)">SPY</span><span class="live-val" id="lv-spy">—</span><span class="live-chg" id="lv-spy-c"></span></span>
+        <span class="live-item"><span class="live-lbl" title="ProShares UltraPro S&amp;P 500 — 3× long S&amp;P">UPRO</span><span class="live-val" id="lv-upro">—</span><span class="live-chg" id="lv-upro-c"></span></span>
+        <span class="live-item"><span class="live-lbl" title="ProShares UltraPro Short S&amp;P 500 — 3× inverse S&amp;P">SPXU</span><span class="live-val" id="lv-spxu">—</span><span class="live-chg" id="lv-spxu-c"></span></span>
+        <span class="live-vdiv" style="margin:0 2px"></span>
         <span class="live-item"><span class="live-lbl">TQQQ</span><span class="live-val" id="lv-tqqq">—</span><span class="live-chg" id="lv-tqqq-c"></span></span>
         <span class="live-item"><span class="live-lbl">SQQQ</span><span class="live-val" id="lv-sqqq">—</span><span class="live-chg" id="lv-sqqq-c"></span></span>
         <span class="live-item"><span class="live-lbl">QQQ</span><span class="live-val" id="lv-qqq">—</span><span class="live-chg" id="lv-qqq-c"></span></span>
@@ -788,7 +807,8 @@ table.sig-stats td .ss-sub { font-size: var(--fs-micro); }
       <div class="ph ph-live"><span>Live Chart</span>
         <div id="mkt-row">
           <span class="mkt-block"><span id="mkt-dot"></span><span id="mkt-label">Market closed</span><span id="mkt-countdown"></span></span>
-          <span class="mkt-sessbar"><span class="seg c1"></span><span class="seg pre"></span><span class="seg reg"></span><span class="seg aft"></span><span class="seg c2"></span><span class="mkt-marker" id="mkt-marker"></span></span>
+          <span class="mkt-sessbar" title="Trading day timeline — the white marker is the current time in New York"><span class="seg c1"></span><span class="seg pre"></span><span class="seg reg"></span><span class="seg aft"></span><span class="seg c2"></span><span class="mkt-marker" id="mkt-marker"></span></span>
+          <span class="mkt-legend" id="mkt-legend"></span>
         </div>
         <button id="cdl-fs" class="rp-btn" title="Full screen" onclick="toggleChartFs()" style="margin-left:auto;color:var(--yellow);font-variant-emoji:text">&#9974;&#65038; Full screen</button>
       </div>
@@ -852,6 +872,7 @@ table.sig-stats td .ss-sub { font-size: var(--fs-micro); }
           <div id="daily-lock" style="position:absolute;top:8px;left:10px;z-index:6;display:none;background:rgba(237,230,214,0.9);color:var(--yellow);border:1px dotted var(--border2);border-radius:12px;padding:3px 11px;font-size:0.66rem;letter-spacing:0.02em;pointer-events:none"></div>
           <div id="daily-lc" style="position:relative;width:100%;height:100%"></div>
           <button id="daily-toend" title="Jump to latest" onclick="dailyToEnd()" style="position:absolute;bottom:40px;right:78px;z-index:6;display:none;background:rgba(237,230,214,0.88);color:var(--yellow);border:1px dotted var(--border2);border-radius:12px;padding:3px 11px;font-family:'JetBrains Mono',monospace;font-size:0.7rem;letter-spacing:0.03em;cursor:pointer">Latest &#8594;</button>
+          <button class="rp-btn" title="Reset zoom to full history" onclick="try{window._dailyChart&&window._dailyChart.timeScale().fitContent();}catch(_){}" style="position:absolute;top:8px;right:16px;z-index:6;font-size:0.66rem">Reset zoom</button>
         </div>
       </div>
     </div>
@@ -988,6 +1009,10 @@ table.sig-stats td .ss-sub { font-size: var(--fs-micro); }
           <div class="pb" id="regime-curve" style="flex:1"></div></div>
         <div class="panel" style="flex:1;display:flex;flex-direction:column"><div class="ph"><span>Performance by volatility level (at entry)</span></div>
           <div class="pb" id="regime-vix" style="flex:1"></div></div>
+        <p style="font-size:0.72rem;color:var(--dim);margin:2px 4px 0;line-height:1.45">
+          <b>Average</b> is a per-trade mean and a couple of huge multi-year TQQQ winners drag it far above the typical trade;
+          <b>median</b> is the middle trade and is the more honest read on a bucket. <b>Total P&amp;L</b> is dollars, so it is
+          dominated by the few trades that happened to be sized large late in the compounding, not by how good the bucket was.</p>
       </div>
     </div>
   </div>
@@ -1044,14 +1069,14 @@ table.sig-stats td .ss-sub { font-size: var(--fs-micro); }
         <p>This is a <b>trend-following swing strategy</b> on the Nasdaq-100, traded through two 3&times;
           leveraged ETFs: <b>TQQQ</b> (3&times; long) in uptrends, <b>SQQQ</b> (3&times; inverse) in confirmed
           downtrends, and <b>cash</b> only in the brief transitions between them (~8% of days). It began life as
-          a TradingView Pine strategy (&ldquo;Ichimoku+++, optimized for TQQQ&rdquo;) built on an adaptive
-          Ichimoku core plus a large battery of oscillators; that script was interrogated line by line, ported to
-          Python on daily bars, de-bugged, de-overfit and re-tuned &mdash; keeping only what earned its keep.</p>
+          a TradingView Pine Script strategy developed by the author of this dashboard. The strategy was built on
+          an adaptive Ichimoku core plus a broad set of supporting indicators, then ported to Python on daily
+          bars and tuned into the configuration shown here.</p>
         <h3>When it buys TQQQ</h3>
         <p>When TQQQ closes back above its <b>20-day EMA</b> and the VIX curve is not in deep backwardation.
-          That is the whole entry. The original Pine script demanded roughly a dozen additional oscillator
-          blockers; ablation showed they systematically kept the strategy in cash during rebounds &mdash; the
-          market&rsquo;s best days &mdash; costing about <b>18 points of CAGR</b>. Easy entry, regime-gated grip.</p>
+          That is the whole entry. Testing showed that adding a battery of additional oscillator filters to the long side systematically
+          kept the strategy in cash during rebounds &mdash; the market&rsquo;s best days &mdash; so the entry is kept
+          deliberately simple. Easy entry, regime-gated grip.</p>
         <h3>When it buys SQQQ</h3>
         <p>Only in a genuine bear tape: bearish price structure below the 20- <i>and</i> 50-day EMAs, the full
           oversold-blocker set clear, plus two filters added in the Python rework &mdash; <b>QQQ below its
@@ -1063,14 +1088,17 @@ table.sig-stats td .ss-sub { font-size: var(--fs-micro); }
           TQQQ rides through dips, oscillator extremes and even bearish Ichimoku bars; only a VXN crash-spike
           (99.5th percentile) or a 40% catastrophe trail can force it out. Once QQQ loses the 200-day, the
           Ichimoku structure takes over: a bearish price bar or bearish Chikou closes the position at the next
-          open. The original Pine exited on any of ~17 oscillator triggers &mdash; those exits alone cost about
-          two thirds of the compounding. SQQQ exits stay deliberately twitchy: SuperTrend flip, bullish
-          structure, oversold exhaustion, or the hard stop.</p>
+          open. Exiting a strong up-trend on ordinary &ldquo;overbought&rdquo; oscillator readings was found to surrender
+          most of the compounding, so the long side is left to run and only a genuine trend break closes it.
+          SQQQ exits stay deliberately twitchy: SuperTrend flip, bullish structure, oversold exhaustion, or the
+          hard stop.</p>
         <h3>Timing &amp; execution</h3>
         <p>Signals are evaluated on the <b>daily close</b> (confirmed once CBOE posts the day&rsquo;s end-of-day
           prints, ~5:30&nbsp;PM&nbsp;ET) and the resulting order executes at the <b>next market open</b>. No
-          intraday repaint &mdash; every decision uses only confirmed daily data, and the backtest fills at that
-          same next open with slippage modelled.</p>
+          intraday &ldquo;repaint&rdquo; &mdash; a TradingView term for an indicator that quietly rewrites its own past values
+          as new data arrives, flattering a backtest with hindsight it never had. Here every decision uses only
+          the confirmed daily close and fills at that same next open with slippage modelled, so what the backtest
+          shows is what could actually have been traded.</p>
         <h3>Position sizing</h3>
         <p>TQQQ trades at full size; SQQQ at half size, which costs about 0.6 points of CAGR but removes roughly
           6 points of maximum drawdown. Cash is not a position the strategy seeks &mdash; it appears only when
@@ -1078,9 +1106,8 @@ table.sig-stats td .ss-sub { font-size: var(--fs-micro); }
         <h3>Validation</h3>
         <p>Ablation-tested gate by gate, walk-forward split (2011&ndash;2019 train 37.9% CAGR &rarr;
           2019&ndash;2026 test 64.9%), threshold-nudged to confirm it sits on a performance plateau rather than a
-          lucky spike, and stress-tested at 3&times; the modelled slippage. Known Pine bugs (an always-false
-          Williams&nbsp;%R gate, duplicated conditions, dollar-denominated MACD thresholds, an absolute
-          share-count volume filter) were fixed or normalised in the port.</p>
+          lucky spike, and stress-tested at 3&times; the modelled slippage &mdash; the edge holds up out of sample and does not depend on
+          a single lucky period.</p>
       </div>
     </div>
   </div>
@@ -1101,19 +1128,19 @@ table.sig-stats td .ss-sub { font-size: var(--fs-micro); }
 // ── Palette: Miami Vice / dark synthwave (single theme) ───────────────────
 const PALETTE={
  '--bg':'#070510','--panel':'#100a1e','--panel2':'#0b0718','--border':'#241a3c','--border2':'#463065',
- '--text':'#ece2fa','--dim':'#9683bf','--white':'#fdf2ff','--yellow':'#ff3caa','--cyan':'#2ee6ff',
- '--pink':'#ff3caa','--teal':'#25f4b0','--purple':'#b98cff','--amber':'#ffb347','--coral':'#ff5a7a',
+ '--text':'#ece2fa','--dim':'#9683bf','--white':'#fdf2ff','--yellow':'#f660b6','--cyan':'#2ee6ff',
+ '--pink':'#f660b6','--teal':'#25f4b0','--purple':'#b98cff','--amber':'#ffb347','--coral':'#ff5a7a',
  '--gray':'#7d6cae','--cash':'#1b1330','--cashc':'#ffb347','--holdg':'#8a79b8','--tealmut':'#3f8f79',
  '--coralmut':'#a35668','--cashmut':'#b08a52','--namut':'#6a5b93','--dimwhite':'#b3a3d6','--orangemut':'#c78f4e',
  // sunset accent ramp (dawn → noon → dusk → night), also used by the time-of-day bar
  '--sun-dawn':'#ffb347','--sun-day':'#ffd166','--sun-dusk':'#ff6f9c','--sun-night':'#6f8fd6'};
 Object.entries(PALETTE).forEach(([k,v])=>document.documentElement.style.setProperty(k,v));
-const YELLOW='#ff3caa', CYAN='#2ee6ff', TEAL='#25f4b0', PURPLE='#b98cff';
-const PINK='#ff3caa', CORAL='#ff5a7a', AMBER='#ffb347', GRAY='#7d6cae', CASHC='#ffb347';
+const YELLOW='#f660b6', CYAN='#2ee6ff', TEAL='#25f4b0', PURPLE='#b98cff';
+const PINK='#f660b6', CORAL='#ff5a7a', AMBER='#ffb347', GRAY='#7d6cae', CASHC='#ffb347';
 const DIM='#9683bf';
 const GRID='rgba(120,90,200,0.14)', TICK='#8f7cbb';
 const LCBG='#0b0718', LCTX='#c9b8ef', LCBD='#241a3c', LCCH='#5a4488';
-const HATCH='#1b1330', HATCH2='#160e28', CASHB='#ffb347', CASHD='#241a3c', ENTRYC='#fff0a0';
+const HATCH='#1b1330', HATCH2='#160e28', CASHB='#ffb347', CASHD='#241a3c', ENTRYC='#ffffff';
 const FONT = "'Chakra Petch', sans-serif";
 
 // ── Theme flavor (subtle Deus Ex / cyber-renaissance nod) ───────────────────
@@ -1272,14 +1299,14 @@ function exitReasonMeta(t){
   // signal exits (price bar / chikou / SuperTrend / oscillator extremes) are
   // state flips, so they get the hatched (non-numeric) bar.
   if(r==='Trailing stop'){ const TR=0.40, pk=_tradePeakPnl(t), gb=(pk!=null)?Math.max(0,pk-(t.pnl_pct||0)):null;
-    return {name:'Catastrophe Trail',desc:'TQQQ gave back 40% from its running peak close',bar:_exrBar(0,Math.max(TR*1.5,(gb||0)*1.15),TR,gb,fpc,true,hc)}; }
+    return {name:'Catastrophe Trail',desc:'Safety net — TQQQ gave back 40% from its highest close since entry',bar:_exrBar(0,Math.max(TR*1.5,(gb||0)*1.15),TR,gb,fpc,true,hc)}; }
   if(r==='Hard stop'){ const th=-0.10;
     return {name:'Hard Stop',desc:'SQQQ hit the −10% hard stop from entry',bar:_exrBar(th*1.8,0.04,th,t.pnl_pct,fpc,false,hc)}; }
   const DESC={
-    'Bearish price bar':'Close fell below both the adaptive Tenkan-Sen and Kijun-Sen',
-    'Bullish price bar':'Close rose above both the adaptive Tenkan-Sen and Kijun-Sen (exits SQQQ)',
-    'Chikou bearish':'Smoothed price dropped below the 25-day low set 25 days ago',
-    'Chikou bullish':'Smoothed price cleared the 25-day high set 25 days ago (exits SQQQ)',
+    'Bearish price bar':'Ichimoku bear cross — close below both the adaptive Tenkan-Sen (fast) and Kijun-Sen (slow) lines, in a bear regime',
+    'Bullish price bar':'Ichimoku bull cross — close back above both the adaptive Tenkan-Sen and Kijun-Sen lines (closes the SQQQ short)',
+    'Chikou bearish':'Ichimoku Chikou span broke below the price from 25 bars ago — bearish momentum confirmation, in a bear regime',
+    'Chikou bullish':'Ichimoku Chikou span cleared the price from 25 bars ago — bullish momentum, closes the SQQQ short',
     'SuperTrend flipped up':'SuperTrend (10, 3) flipped to an uptrend — closes the bear trade',
     'VXN extreme high':'Nasdaq-100 implied vol above its 99.5th percentile — crash regime',
     'VXN extreme low':'Nasdaq-100 implied vol below its 0.5th percentile — complacency floor',
@@ -1518,15 +1545,18 @@ function renderAnalytics(){
   // KPI strip
   const kpis=[
     {l:'Total P&L',    v:fmtK(s.final_equity-DATA.meta.start_capital), sub:fmtPct(s.total_return,2)+' total return', c:s.total_return>=0?'pos':'neg'},
-    {l:'Drawdown stats', v:fmtPct(s.max_drawdown,1), sub:'Peak-to-trough (max)', c:'neg', wide:true,
+    {l:'Drawdown stats', v:fmtPct(s.max_drawdown,1), sub:'Max peak-to-trough', c:'neg', wide:true,
      insets:(()=>{ const R=DATA.dd_recovery||{};
        const _m=v=>v==null?'N/A':(v<1?(v*30.44).toFixed(0)+'d':v.toFixed(1)+'mo');
-       return [['Median recov.',_m(R.median_recovery_m),'Trough → new high, median of '+(R.n_episodes||0)+' drawdowns >10%'],
-               ['Avg recov.',_m(R.avg_recovery_m),'Mean trough → new high'],
-               ['Deep >30%',_m(R.deep_median_recovery_m),'Median recovery for the '+(R.n_deep||0)+' drawdowns deeper than 30%'],
-               ['Healed <6mo',(R.pct_recovered_6m!=null?R.pct_recovered_6m.toFixed(0)+'%':'N/A'),'Share of all drawdowns fully recovered inside six months'],
-               ['Full cycle',_m(R.median_span_m),'Median peak → trough → new high, end to end'],
-               ['Slowest',_m(R.max_recovery_m),'Worst single recovery (the 2015 flash crash)']]; })()},
+       const _p=v=>v==null?'N/A':v.toFixed(0)+'%';
+       // 3 across × 2 down, most-reassuring → context. Each recovery = time from a
+       // trough back to a fresh all-time high.
+       return [['Avg. recovery',_m(R.avg_recovery_m),'Average time from a drawdown trough back to a new all-time high, across all '+(R.n_episodes||0)+' drawdowns deeper than 10%'],
+               ['Median recovery',_m(R.median_recovery_m),'The typical (median) trough-to-new-high time — half of drawdowns recover faster than this'],
+               ['Median recovery (DD>30%)',_m(R.deep_median_recovery_m),'Median recovery time for just the '+(R.n_deep||0)+' deepest drawdowns (those exceeding 30%)'],
+               ['% healed < 3 mo',_p(R.pct_recovered_3m),'Share of all drawdowns that fully recovered to a new high within three months'],
+               ['% healed < 6 mo',_p(R.pct_recovered_6m),'Share of all drawdowns that fully recovered to a new high within six months'],
+               ['Slowest recovery',_m(R.max_recovery_m),'The single worst case — the 2015 flash-crash aftermath, which chopped sideways for over a year']]; })()},
     {l:'Win rate',     v:(s.win_rate*100).toFixed(1)+'%', sub:aTrades().filter(t=>tRet(t)>0).length+' wins / '+s.total_trades+' trades', c:s.win_rate>=0.5?'pos':'neg'},
     {l:'Profit factor',v:parseFloat(s.profit_factor).toFixed(2)+'×', sub:'Gross wins ÷ gross losses', c:s.profit_factor>=1.5?'pos':s.profit_factor>=1?'neu':'neg'},
     {l:'CAGR',         v:fmtPct(s.cagr,2), sub:'Annualised compound return', c:s.cagr>=0?'pos':'neg'},
@@ -1536,9 +1566,15 @@ function renderAnalytics(){
     {l:'Alpha vs TQQQ', v:fmtPct(s.total_return-s.benchmark_return,2), sub:'Strategy return minus TQQQ B&H', c:s.total_return>=s.benchmark_return?'pos':'neg'},
   ];
   document.getElementById('kpi-strip').innerHTML=kpis.map(k=>{
-    const ins = k.insets ? `<div class="kpi-insets">`+k.insets.map(([lab,val,tip])=>
-        `<div class="kpi-inset" title="${tip.replace(/"/g,'&quot;')}"><span class="ki-l">${lab}</span><span class="ki-v">${val}</span></div>`).join('')+`</div>` : '';
-    return `<div class="kpi${k.wide?' kpi-wide':''}"><div class="kpi-label">${k.l}</div><div class="kpi-val ${k.c}">${k.v}</div><div class="kpi-sub">${k.sub}</div>${ins}</div>`;
+    if(k.insets){
+      // Wide card: the headline max-DD sits on the left, the six recovery chips
+      // fill a 3-across × 2-down grid on the right, all inside one card.
+      const grid = `<div class="dd-grid">`+k.insets.map(([lab,val,tip])=>
+        `<div class="kpi-inset" title="${tip.replace(/"/g,'&quot;')}"><span class="ki-l">${lab}</span><span class="ki-v">${val}</span></div>`).join('')+`</div>`;
+      return `<div class="kpi kpi-wide"><div class="dd-left"><div class="kpi-label">${k.l}</div>`
+        +`<div class="kpi-val ${k.c}">${k.v}</div><div class="kpi-sub">${k.sub}</div></div>${grid}</div>`;
+    }
+    return `<div class="kpi"><div class="kpi-label">${k.l}</div><div class="kpi-val ${k.c}">${k.v}</div><div class="kpi-sub">${k.sub}</div></div>`;
   }).join('');
 
   // Equity curve vs benchmarks (SPY & TQQQ buy-and-hold) + drawdown
@@ -1570,7 +1606,7 @@ function renderAnalytics(){
       },
       // Scroll to zoom, drag to pan, double-click to reset — matches the
       // Lightweight-Charts behaviour on the live/daily charts.
-      zoom:{ zoom:{ wheel:{enabled:true}, pinch:{enabled:true}, drag:{enabled:false}, mode:'x' },
+      zoom:{ zoom:{ wheel:{enabled:true}, pinch:{enabled:true}, mode:'x' },
              pan:{ enabled:true, mode:'x', modifierKey:null },
              limits:{ x:{minRange:10} } }},
       scales:{
@@ -1921,7 +1957,9 @@ function renderRisk(){
   for(let i=W;i<ec.length;i++){ const a=ec[i-W].equity, b=ec[i].equity; if(a>0){ rl.push(+((b/a-1)*100).toFixed(1)); rlab.push(ec[i].date); } }
   const rstep=Math.max(1,Math.floor(rl.length/150));
   mkChart('rollChart',{ type:'line', data:{ labels:rlab.filter((_,i)=>i%rstep===0),
-    datasets:[{label:'Rolling 12-mo return',data:rl.filter((_,i)=>i%rstep===0),borderColor:TEAL,borderWidth:1.5,pointRadius:0,fill:true,backgroundColor:'rgba(29,138,94,0.08)'}]},
+    datasets:[{label:'Rolling 12-mo return',data:rl.filter((_,i)=>i%rstep===0),borderWidth:1.5,pointRadius:0,fill:true,
+      segment:{ borderColor:cx=>cx.p1.parsed.y<0?CORAL:TEAL, backgroundColor:cx=>cx.p1.parsed.y<0?'rgba(255,90,122,0.12)':'rgba(37,244,176,0.10)' },
+      borderColor:TEAL }]},
     options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+(c.parsed.y>=0?'+':'')+c.parsed.y+'%'}}},
       scales:{x:{ticks:{color:TICK,maxTicksLimit:10,font:{size:12,family:FONT}},grid:{color:GRID}},
         y:{ticks:{color:TICK,font:{size:12,family:FONT},callback:v=>v+'%'},grid:{color:GRID}}}} });
@@ -1986,18 +2024,19 @@ function renderMarkets(){
     options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,labels:{color:TICK,font:{size:12,family:FONT},usePointStyle:true}},
       tooltip:{callbacks:{label:c=>c.dataset.label+': CAGR '+c.parsed.y+'%, MaxDD '+c.parsed.x+'%'}}},
       scales:{x:{max:0,ticks:{color:TICK,font:{size:12,family:FONT},callback:v=>v+'%'},grid:{color:GRID},title:{display:true,text:'Max drawdown (% — 0 = none, right is better)',color:TICK}},
-        y:{ticks:{color:TICK,font:{size:12,family:FONT},callback:v=>v+'%'},grid:{color:GRID},title:{display:true,text:'CAGR (%)',color:TICK}}}} });
+        y:{min:0,ticks:{color:TICK,font:{size:12,family:FONT},callback:v=>v+'%'},grid:{color:GRID},title:{display:true,text:'CAGR (%)',color:TICK}}}} });
   // ── Regime breakdown: aggregate trades by entry-day curve regime & VIX1M bucket ──
   const _bd=window._tbd||(()=>{const m={};(DATA.bar_history||[]).forEach(r=>m[r.date]=r);window._tbd=m;return m;})();
   const _before=(d)=>{ const ds=window._tbdDates||(window._tbdDates=(DATA.bar_history||[]).map(r=>r.date).sort()); let lo=0,hi=ds.length-1,res=null; while(lo<=hi){const mid=(lo+hi)>>1; if(ds[mid]<d){res=ds[mid];lo=mid+1;}else hi=mid-1;} return res?_bd[res]:_bd[d]; };
   const agg=(keyFn,order)=>{ const g={}; aTrades().forEach(t=>{ const b=_before(t.entry_date)||{}; const k=keyFn(b); if(k==null) return; (g[k]=g[k]||[]).push(t); });
     const rows=(order||Object.keys(g)).filter(k=>g[k]&&g[k].length).map(k=>{ const arr=g[k]; const wins=arr.filter(t=>tRet(t)>0).length;
       const avg=arr.reduce((a,t)=>a+tRet(t),0)/arr.length; const tot=arr.reduce((a,t)=>a+tPnl(t),0);
-      return {k,n:arr.length,wr:wins/arr.length,avg,tot}; });
+      const sr=arr.map(tRet).sort((x,y)=>x-y); const med=sr.length%2?sr[(sr.length-1)/2]:(sr[sr.length/2-1]+sr[sr.length/2])/2;
+      return {k,n:arr.length,wr:wins/arr.length,avg,med,tot}; });
     return rows; };
-  const tbl=(rows)=>`<table class="sig-stats"><thead><tr><th>Regime</th><th>Trades</th><th>Win %</th><th>Avg return</th><th>Total P&amp;L</th></tr></thead><tbody>`
+  const tbl=(rows)=>`<table class="sig-stats"><thead><tr><th>Regime</th><th>Trades</th><th>Win %</th><th>Avg return</th><th>Median return</th><th>Total P&amp;L</th></tr></thead><tbody>`
     + rows.map(r=>`<tr><td>${r.k}</td><td>${r.n}</td><td class="${r.wr>=0.5?'pos':'neg'}">${(r.wr*100).toFixed(0)}%</td>`
-      + `<td class="${r.avg>=0?'pos':'neg'}">${fmtPct(r.avg)}</td><td class="${r.tot>=0?'pos':'neg'}">${fmtK(r.tot)}</td></tr>`).join('')+'</tbody></table>';
+      + `<td class="${r.avg>=0?'pos':'neg'}">${fmtPct(r.avg)}</td><td class="${r.med>=0?'pos':'neg'}">${fmtPct(r.med)}</td><td class="${r.tot>=0?'pos':'neg'}">${fmtK(r.tot)}</td></tr>`).join('')+'</tbody></table>';
   // Table 1: the 200-day regime — the gate that actually drives this strategy
   // (it decides whether TQQQ dips are ridden and whether SQQQ may trade at all).
   const rb=b=>b.qqq_below_sma200==null?null:(b.qqq_below_sma200?'Bear (QQQ < 200-day)':'Bull (QQQ > 200-day)');
@@ -2137,6 +2176,13 @@ async function loadLive(){
       _setTip(id, _tip('etf', fr, x.time));
     };
     tk('tqqq','tqqq'); tk('sqqq','sqqq'); tk('qqq','qqq');
+    tk('spy','spy'); tk('upro','upro'); tk('spxu','spxu');
+    // SPX is an index level (no $), so render as a plain number.
+    { const x=q.spx||{}; const c=clsOf(x.change_pct); const fr=_fresh(x.time);
+      setVal('lv-spx', x.price==null?'—':(+x.price).toLocaleString('en-US',{maximumFractionDigits:0}), c, !fr);
+      const ce=document.getElementById('lv-spx-c');
+      if(ce){ ce.textContent=x.change_pct!=null?signed(x.change_pct*100,1,'%'):''; ce.className='live-chg '+c+(!fr?' dull':''); }
+      _setTip('spx', _tip('vix', fr, x.time)); }
 
 
     // ── Feed freshness: live vs paused ──────────────────────────────────
@@ -2251,10 +2297,15 @@ function updateMarket(){
   const {wd,sod}=_etNow(); const dec=sod/3600; const isWk=wd!=='Sat'&&wd!=='Sun'&&!_isMktHoliday(); let label,color,sep;
   const DASH='\u00a0-\u00a0', GAP='\u00a0\u00a0';   // snug gap for closed/pre, dash for open/after
   // Dusk palette: sunrise yellow → daylight orange → sunset pink → night blue
-  if(isWk&&dec>=9.5&&dec<16){ label='\u2600 Market open'; color='#dd8a3c'; sep=GAP; }
-  else if(isWk&&dec>=4&&dec<9.5){ label='\u263C Pre-market'; color='#d3a338'; sep=GAP; }
-  else if(isWk&&dec>=16&&dec<20){ label='\u2600 After hours'; color='#c9698d'; sep=GAP; }
-  else { label='\u263E Market closed'; color='#5f7fa8'; sep=GAP; }
+  if(isWk&&dec>=9.5&&dec<16){ label='\u2600\uFE0F Market open'; color='#ffb347'; sep=GAP; }
+  else if(isWk&&dec>=4&&dec<9.5){ label='\u{1F305} Pre-market'; color='#e8a13c'; sep=GAP; }
+  else if(isWk&&dec>=16&&dec<20){ label='\u{1F307} After hours'; color='#ff6f9c'; sep=GAP; }
+  else { label='\u{1F319} Market closed'; color='#6f8fd6'; sep=GAP; }
+  const leg=document.getElementById('mkt-legend');
+  if(leg && !leg._built){ leg._built=true;
+    leg.innerHTML=[['\u{1F305}','Pre-market','4:00\u20139:30a'],['\u2600\uFE0F','Open','9:30a\u20134:00p'],
+                   ['\u{1F307}','After hours','4:00\u20138:00p'],['\u{1F319}','Closed','overnight / weekend']]
+      .map(([i,n,hh])=>`<span class="ml-item" title="${n}: ${hh} ET"><span class="ml-ico">${i}</span>${n}</span>`).join(''); }
   const dot=document.getElementById('mkt-dot'), lab=document.getElementById('mkt-label'), mk=document.getElementById('mkt-marker'), cd=document.getElementById('mkt-countdown');
   if(dot) dot.style.background=color;
   if(lab){ lab.textContent=label; lab.style.color=color; }   // match the phase colour
@@ -2280,10 +2331,23 @@ function updateSkyAccent(dec){
   const c1=mix(a[1][0],b[1][0]), c2=mix(a[1][1],b[1][1]);
   const rgb=c=>`rgb(${c[0]},${c[1]},${c[2]})`;
   const bar=document.getElementById('tod-bar');
-  if(bar) bar.style.background=`linear-gradient(90deg, ${rgb(c1)}, ${rgb(c2)}, ${rgb(c1)})`;
+  if(bar){ bar.style.background=`linear-gradient(90deg, ${rgb(c1)}, ${rgb(c2)}, ${rgb(c1)})`;
+           bar.style.color=rgb(c2); }
   const glow=document.getElementById('tod-glow');
   if(glow) glow.style.background=
-    `radial-gradient(ellipse at 50% -30%, rgba(${c2[0]},${c2[1]},${c2[2]},0.20), transparent 70%)`;
+    `radial-gradient(ellipse at 50% -30%, rgba(${c2[0]},${c2[1]},${c2[2]},0.28), transparent 70%)`;
+  // Header badge: pick a sky phase → sun/moon icon + label, tinted to the accent.
+  let ico,txt;
+  if(dec<5.5)       { ico='☾'; txt='Night'; }        // moon
+  else if(dec<8)    { ico='\u{1F305}'; txt='Sunrise'; }   // sunrise
+  else if(dec<16.5) { ico='☀'; txt='Daylight'; }     // sun
+  else if(dec<19.5) { ico='\u{1F307}'; txt='Sunset'; }    // sunset
+  else              { ico='☾'; txt='Night'; }        // moon
+  const bi=document.getElementById('tod-ico'), bt=document.getElementById('tod-txt'),
+        bg=document.getElementById('tod-badge');
+  if(bi) bi.textContent=ico;
+  if(bt) bt.textContent=txt+' · New York';
+  if(bg){ bg.style.borderColor=rgb(c2); bg.style.boxShadow=`0 0 12px -3px ${rgb(c2)}`; }
 }
 let CHART_MODE='real';   // default to the real TQQQ/SQQQ backtest
 function displayCandles(){
@@ -2391,6 +2455,7 @@ function buildDaily(){
   // preserve the current view across rebuilds (toggle / tab-switch) instead of snapping back
   let _keepRange=_dailyPendRange||null; if(dailyChart){ if(!_keepRange){ try{_keepRange=dailyChart.timeScale().getVisibleLogicalRange();}catch(_){} } try{dailyChart.remove();}catch(_){} dailyChart=null; }
   dailyChart=LC.createChart(el,{ width:el.clientWidth||900, height:el.clientHeight||360,
+
     layout:{background:{color:LCBG},textColor:LCTX,fontFamily:"'JetBrains Mono', monospace"},
     grid:{vertLines:{color:GRID,style:1},horzLines:{color:GRID,style:1}},
     rightPriceScale:{borderColor:LCBD,scaleMargins:{top:0.10,bottom:0.10}},
@@ -2399,7 +2464,8 @@ function buildDaily(){
     // width (0.3 px/bar caps the view and hides history on narrow screens).
     timeScale:{borderColor:LCBD,rightOffset:6,minBarSpacing:0.02,maxBarSpacing:18},
     crosshair:{mode:(LC.CrosshairMode?LC.CrosshairMode.Normal:1),vertLine:{color:LCCH,labelBackgroundColor:LCCH},horzLine:{color:LCCH,labelBackgroundColor:LCCH}} });
-  dailySeries=dailyChart.addAreaSeries({lineColor:YELLOW,topColor:'rgba(61,57,52,0.25)',bottomColor:'rgba(61,57,52,0.01)',lineWidth:2,priceScaleId:'right',
+  window._dailyChart=dailyChart;   // expose for the Reset-zoom button
+  dailySeries=dailyChart.addAreaSeries({lineColor:YELLOW,topColor:'rgba(246,96,182,0.22)',bottomColor:'rgba(246,96,182,0.01)',lineWidth:2,priceScaleId:'right',
     priceLineVisible:true,priceLineColor:LCTX,priceLineWidth:1,priceLineStyle:2,
     priceFormat:{type:'custom',formatter:v=>'$'+abbrev(v)}});
   dailySeries.setData(data); dailySeries.setMarkers(mk);
@@ -2917,9 +2983,9 @@ function renderSignalMonitor(histBar){
   const giveback=(peakPnl!=null&&openpnl!=null)?Math.max(0,peakPnl-openpnl):null;
   const xdef=[
     // [name, desc, holdTxt, exitTxt, applies, fired, current, gauge]
-    ['Bear Bar (bear regime)','Close under both adaptive Ichimoku lines — fires ONLY while QQQ is below its 200-day SMA; bull-regime dips are held', 'Bull regime, or above a line','Bear regime + below both lines',
+    ['Ichimoku Bear Cross (bear regime)','TQQQ closes below BOTH the adaptive Tenkan-Sen (fast) and Kijun-Sen (slow) Ichimoku lines — the trend has flipped down. Fires ONLY while QQQ is below its 200-day SMA, so in a bull market dips are held through.', 'Bull regime, or above a line','Bear regime + below both lines',
       isSV, b.bear_bar&&b.qqq_below_sma200, barState, gBar],
-    ['Chikou Bear (bear regime)','Smoothed price loses the displaced 25-day channel — fires ONLY in the bear regime', 'Bull regime, or not bearish','Bear regime + bearish',
+    ['Chikou Span Breakdown (bear regime)','The Ichimoku Chikou span (price shifted back 25 bars) drops below the price from 25 bars ago — momentum confirmation that the down-move is real, not noise. Bear-regime only.', 'Bull regime, or not bearish','Bear regime + bearish',
       isSV, b.chikou_bear&&b.qqq_below_sma200, b.chikou_sig===1?'Bullish':b.chikou_sig===-1?'Bearish':'Consol.', gChik],
     ['VXN Crash Spike','VXN above its 99.5th 2-year percentile — crash regime, de-risk', 'Below 99.5 pct','Above 99.5 pct',
       isSV, b.vxn_extreme_high, num(b.vxn_rank,1), gVxnR],
@@ -2931,9 +2997,9 @@ function renderSignalMonitor(histBar){
     ['SuperTrend Flip','SuperTrend (10, 3) turns up — closes the bear trade', 'Downtrend','Uptrend',
       isUV, b.supertrend===1, b.supertrend===1?'Up':'Down',
       {lo:-1.5,hi:1.5,z:[[-1.5,0,'P'],[0,1.5,'C']],v:b.supertrend,nolab:true,tip:`SuperTrend(10,3) direction · now ${b.supertrend===1?'up (exits SQQQ)':'down'}`}],
-    ['Bullish Price Bar','Close above both adaptive lines — the primary SQQQ exit', 'Below either line','Above both lines',
+    ['Ichimoku Bull Cross','TQQQ closes back above BOTH the adaptive Tenkan-Sen and Kijun-Sen lines — the down-trend has broken, so the SQQQ (short) position is closed.', 'Below either line','Above both lines',
       isUV, b.bull_bar, barState, gBar],
-    ['Chikou Bullish','Smoothed price clears the displaced 25-day channel', 'Not bullish','Bullish',
+    ['Chikou Span Breakout','The Ichimoku Chikou span clears the price from 25 bars ago — upside momentum confirmation that closes the SQQQ short.', 'Not bullish','Bullish',
       isUV, b.chikou_bull, b.chikou_sig===1?'Bullish':b.chikou_sig===-1?'Bearish':'Consol.', gChik],
     ['Stoch Oversold','%K under 25 — the bear move is stretched; rebound risk', '&ge; 25','&lt; 25',
       isUV, (b.stoch_k!=null&&b.stoch_k<25), num(b.stoch_k,1), gK],

@@ -116,7 +116,7 @@ def fetch_ohlc(symbol="TQQQ", start="2010-02-11"):
 def main():
     # TQQQ/SQQQ from inception (2010-02) + QQQ for market context.
     for sym, fname in [("TQQQ", "tqqq_ohlc.json"), ("SQQQ", "sqqq_ohlc.json"),
-                       ("QQQ",  "qqq_ohlc.json")]:
+                       ("QQQ",  "qqq_ohlc.json"),  ("SPY",  "spy_ohlc.json")]:
         try:
             rows = drop_forming_today(fetch_ohlc(sym))
             # Replace today's (glitchy) daily bar with one rebuilt from 5-min prints.

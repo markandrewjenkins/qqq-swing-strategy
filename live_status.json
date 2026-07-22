@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-07-22T00:05:21+00:00",
+  "generated_utc": "2026-07-22T00:04:00+00:00",
   "market": {
     "vxn_used": 26.66,
     "vix_used": 17.05,
@@ -60,6 +60,30 @@
         "prev_close": 696.06,
         "change_pct": 0.018044,
         "time": "2026-07-21T23:59:58+00:00"
+      },
+      "spy": {
+        "price": 748.0506,
+        "prev_close": 742.09,
+        "change_pct": 0.008032,
+        "time": "2026-07-21T23:59:51+00:00"
+      },
+      "upro": {
+        "price": 141.717,
+        "prev_close": 138.47,
+        "change_pct": 0.023449,
+        "time": "2026-07-21T23:58:37+00:00"
+      },
+      "spxu": {
+        "price": 37.06,
+        "prev_close": 37.95,
+        "change_pct": -0.023452,
+        "time": "2026-07-21T23:59:42+00:00"
+      },
+      "spx": {
+        "price": 7509.2,
+        "prev_close": 7443.28,
+        "change_pct": 0.008856,
+        "time": "2026-07-21T20:39:59+00:00"
       }
     }
   },
@@ -74,7 +98,7 @@
     "position": "LONG_TQQQ",
     "signal": "LONG_TQQQ",
     "open_pnl": 0.453004,
-    "equity": 39558667.56,
+    "equity": 39558676.13,
     "entry_date": "2026-04-10",
     "entry_price": 49.057,
     "open_pnl_live": true

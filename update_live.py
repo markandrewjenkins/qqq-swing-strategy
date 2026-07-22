@@ -250,8 +250,9 @@ def main() -> None:
     quotes = {}
     for sym in ["^VXN", "^VIX", "^VIX3M", "^NDX"]:
         quotes[sym.lower().lstrip("^")] = yahoo_quote(sym, prepost=False)
-    for sym in ["TQQQ", "SQQQ", "QQQ"]:
+    for sym in ["TQQQ", "SQQQ", "QQQ", "SPY", "UPRO", "SPXU"]:
         quotes[sym.lower()] = yahoo_quote(sym, prepost=True)
+    quotes["spx"] = yahoo_quote("^GSPC", prepost=False)   # S&P 500 index level
     # Re-base index %change on the authoritative CBOE prior close.
     for qkey, ckey in [("vxn", "vxn"), ("vix", "vix"), ("vix3m", "vix3m")]:
         q = quotes.get(qkey); ref = curve.get(ckey + "_ref")
