@@ -170,10 +170,9 @@ body {
   border-radius: 6px;
   padding: 12px 14px 10px;
   position: relative;
-  /* Fixed ~136px; cards do NOT stretch to fill the row. The default flex
-     min-width:auto still lets a card that can't fit its value (e.g. a huge
-     Alpha %) expand past it, but every other card stays the same size. */
-  flex: 0 0 136px;
+  /* 136px basis but allowed to GROW so the strip fills the full page width
+     (they share the leftover space evenly rather than leaving a ragged edge). */
+  flex: 1 1 136px;
 }
 .kpi-label {
   font-size: 0.72rem;
@@ -659,7 +658,7 @@ table.sig-mon tr.sig-divider td { color:var(--dim); font-size:0.6rem; text-trans
 
 /* Drawdown-stats card: headline max-DD on the left, six recovery chips in a
    3×2 grid on the right, all in one card. */
-.kpi.kpi-wide { flex: 1 1 380px; display:flex; align-items:stretch; gap:10px; }
+.kpi.kpi-wide { flex: 1 1 340px; display:flex; align-items:stretch; gap:10px; }
 .kpi.kpi-wide .dd-left { flex:0 0 auto; display:flex; flex-direction:column; justify-content:center;
   padding-right:10px; border-right:1px solid var(--border); }
 .dd-grid { flex:1; display:grid; grid-template-columns:repeat(3,1fr); grid-auto-rows:1fr; gap:4px; }
@@ -1583,7 +1582,7 @@ function renderAnalytics(){
   // KPI strip
   const kpis=[
     {l:'Total P&L',    v:fmtK(s.final_equity-DATA.meta.start_capital), sub:fmtPct(s.total_return,2)+' total return', c:s.total_return>=0?'pos':'neg'},
-    {l:'Drawdown stats', v:fmtPct(s.max_drawdown,1), sub:'Max peak-to-trough', c:'neg', wide:true,
+    {l:'Max Drawdown', v:fmtPct(s.max_drawdown,1), sub:'Max peak-to-trough', c:'neg', wide:true,
      insets:(()=>{ const R=DATA.dd_recovery||{};
        const _m=v=>v==null?'N/A':(v<1?(v*30.44).toFixed(0)+'d':v.toFixed(1)+'mo');
        const _p=v=>v==null?'N/A':v.toFixed(0)+'%';
@@ -1591,7 +1590,7 @@ function renderAnalytics(){
        // trough back to a fresh all-time high.
        return [['Avg. recovery',_m(R.avg_recovery_m),'Average time from a drawdown trough back to a new all-time high, across all '+(R.n_episodes||0)+' drawdowns deeper than 10%'],
                ['Median recovery',_m(R.median_recovery_m),'The typical (median) trough-to-new-high time — half of drawdowns recover faster than this'],
-               ['Median recovery (DD>30%)',_m(R.deep_median_recovery_m),'Median recovery time for just the '+(R.n_deep||0)+' deepest drawdowns (those exceeding 30%)'],
+               ['Median Recov. (DD>30%)',_m(R.deep_median_recovery_m),'Median recovery time for just the '+(R.n_deep||0)+' deepest drawdowns (those exceeding 30%)'],
                ['% healed < 3 mo',_p(R.pct_recovered_3m),'Share of all drawdowns that fully recovered to a new high within three months'],
                ['% healed < 6 mo',_p(R.pct_recovered_6m),'Share of all drawdowns that fully recovered to a new high within six months'],
                ['Slowest recovery',_m(R.max_recovery_m),'The single worst case — the 2015 flash-crash aftermath, which chopped sideways for over a year']]; })()},
@@ -2910,6 +2909,9 @@ function renderSignalMonitor(histBar){
     if(k==='SQQQ') return `<span class="sig-ind" style="color:${d?'var(--coralmut)':'var(--coral)'};font-weight:700">SQQQ</span>`;
     if(k==='NA')   return '<span style="color:var(--namut);font-weight:700">N/A</span>';
     if(k==='BLOCK')return `<span class="sig-ind" style="color:var(--cashc);font-weight:700">Blocks</span>`;
+    // Regime reads Bullish/Bearish — it sets eligibility, it isn't a side signal.
+    if(k==='BULL') return `<span class="sig-ind" style="color:var(--teal);font-weight:700">Bullish</span>`;
+    if(k==='BEAR') return `<span class="sig-ind" style="color:var(--coral);font-weight:700">Bearish</span>`;
     return `<span class="sig-ind" style="color:${d?'var(--cashmut)':'var(--cashc)'};font-weight:700">Cash</span>`; };
   const num=(v,d=2)=>v==null||isNaN(v)?'<span style="color:var(--dim)">—</span>':(+v).toFixed(d);
   const pct=(v,d=1)=>v==null||isNaN(v)?'<span style="color:var(--dim)">—</span>':(v>=0?'+':'')+(v*100).toFixed(d)+'%';
@@ -3053,7 +3055,7 @@ function renderSignalMonitor(histBar){
       emaDist!=null?(emaDist>=0?'TQQQ':'SQQQ'):'NEU', gEma],
     ['QQQ 200-day Regime','Added filter: SQQQ entries only while QQQ holds below its 200-day SMA',
       'Above &rarr; bear trades off','Below &rarr; bear trades allowed',
-      b.qqq_below_sma200?'Below':'Above', b.qqq_below_sma200?'SQQQ':'NEU', gReg],
+      b.qqq_below_sma200?'Below':'Above', b.qqq_below_sma200?'BEAR':'BULL', gReg],
     ['VIX Contango','VIX3M / VIX &minus; 1 — added filter from the VIX Swing Strategy',
       'Steep (&gt;+10%) blocks SQQQ','Deep backwardation (&lt;&minus;3%) blocks TQQQ',
       pct(b.contango,1), b.contango!=null?(b.contango>0.10?'TQQQ':b.contango<-0.03?'SQQQ':'NEU'):'NEU', gCt],
@@ -3068,11 +3070,11 @@ function renderSignalMonitor(histBar){
   // These four are the ones that move the needle; each vetoes SQQQ entries only.
   const blockRows=[
     ['Stochastic Floor','%K &lt; 25 (oversold) blocks SQQQ entries AND exits an open SQQQ &mdash; the single most valuable gate (+2.4 CAGR pts)','','&ge; 25 clear',
-      num(b.stoch_k,1), (b.stoch_k!=null&&b.stoch_k<25)?'BLOCK':'NA', gK],
+      num(b.stoch_k,1), (b.stoch_k!=null&&b.stoch_k<25)?'BLOCK':'SQQQ', gK],
     ['ATR Collapse','Volatility-spectrum extreme-low blocks SQQQ entries AND exits an open SQQQ (no fuel for a bear move) &mdash; worth +0.9 CAGR and 1.5 DD pts','','Not extreme-low clear',
-      num(b.atr_sig,1), 'NA', gAtr],
+      num(b.atr_sig,1), 'SQQQ', gAtr],
     ['MFI Floor','Money Flow Index &lt; 25 blocks SQQQ entries (selling already exhausted)','','&ge; 25 clear',
-      num(b.mfi,1), (b.mfi!=null&&b.mfi<25)?'BLOCK':'NA', gMfi],
+      num(b.mfi,1), (b.mfi!=null&&b.mfi<25)?'BLOCK':'SQQQ', gMfi],
   ];
 
   // ── Exit rules (status: Hold / Exit / N/A). Applicability per held side. ──
@@ -3217,14 +3219,10 @@ function renderSignalMonitor(histBar){
   const body='<tbody>'
     + _div('<b>REGIME</b> &mdash; the master switch. QQQ vs its 200-day SMA decides everything below: <b>Bull</b> (ride TQQQ dips, SQQQ off) or <b>Bear</b> (Ichimoku exits arm, SQQQ may trade).','regime-hd')
     + rowHtml(coreRows[3])
-    + _div('Enter TQQQ &mdash; the long entry spine. Just two conditions: close above the 20-day EMA and the VIX curve not in deep backwardation. Deliberately easy; the edge lives in the exits.')
-    + rows(coreRows,[2,4])
-    + _div('Exit TQQQ &mdash; <b>regime-gated</b>. In a bull regime only a VXN crash-spike or the 40% catastrophe trail can force an exit; below the 200-day SMA the Ichimoku structure (bearish bar / Chikou) exits too. Suppressed while the entry still holds.')
-    + exRows([0,1,2,3])
-    + _div('Enter SQQQ (half position) &mdash; on the same close: <b>close below the 20-day EMA</b>, <b>QQQ below its 200-day SMA</b> (the regime gate, above), the VIX curve <b>not in steep contango</b>, and none of the three exhaustion blockers below vetoing it. Deliberately rare.')
-    + rows(blockRows,[0,1,2])
-    + _div('Exit SQQQ &mdash; a stochastic-oversold or ATR-collapse exhaustion reading, the 12% trailing stop, or the &minus;12% hard stop &mdash; whichever fires first.')
-    + exRows([4,5,6,7])
+    + _div('Entry Indicators &mdash; which side each gate currently permits. <b>TQQQ</b> needs only the first two (close above the 20-day EMA, VIX curve not deeply backwardated). <b>SQQQ</b> needs the mirror of those two plus a bear regime above, and none of the three exhaustion gates vetoing it.')
+    + rows(coreRows,[2,4]) + rows(blockRows,[0,1,2])
+    + _div('Exit Indicators &mdash; any ONE closes the open position at the next open. The TQQQ trend exits are <b>regime-gated</b> (in a bull regime only a VXN crash-spike or the 40% trail can force it out); the SQQQ exits are exhaustion readings plus its two stops. Rows that don&rsquo;t apply to the side you hold read N/A.')
+    + exRows([0,1,2,4,5,3,6,7])
     + '</tbody>';
   document.getElementById('signal-monitor').innerHTML=head+body;
 
@@ -3236,6 +3234,8 @@ function renderSignalMonitor(histBar){
       if(s==='SQQQ') return `<span style="color:${d?'var(--coralmut)':'var(--coral)'}">SQQQ</span>`;
       if(s==='BLOCK')return `<span style="color:var(--cashc)">Block</span>`;
       if(s==='NA')   return '<span style="color:var(--namut)">N/A</span>';
+      if(s==='BULL') return `<span style="color:var(--teal)">Bullish</span>`;
+      if(s==='BEAR') return `<span style="color:var(--coral)">Bearish</span>`;
       return `<span style="color:${d?'var(--cashmut)':'var(--cashc)'}">Cash</span>`; };
     const mStat=i=>{ const s=exState(i);
       if(s==='exit') return '<span style="color:var(--cashc)">Exit</span>';
@@ -3256,23 +3256,21 @@ function renderSignalMonitor(histBar){
       : `Spine ${tqBase?'ON':'off'} &nbsp;·&nbsp; Guard ${bwGuard?'clear':'BLOCK'} &nbsp;·&nbsp; SQQQ ${b.long_sqqq?'ALIGNED':'—'}`;
     mh+=`<div class="mini-combo"><span>${_cmbo}</span></div>`;
     mh+=`<div class="mini-why">${explain}</div>`;
-    const mnames=['Bear bar','Chikou-','VXN spike','Trail 40%','Stoch OS','ATR low','Trail 12%','Stop −12%'];
+    const mnames=['Ichimoku bar','Chikou','VXN %ile','Trail 40%','Stoch %K','ATR spec','Trail 12%','Stop −12%'];
     const mExit=i=>{ const s=exState(i); const g=xdef[i][7]?{...xdef[i][7],trig:s==='exit'}:null;
       return mRow(mnames[i], g, stripTags(''+xdef[i][6])||'—', mStat(i), s==='na'); };
-    // Regime → Enter TQQQ → Exit TQQQ → Enter SQQQ → Exit SQQQ (same order as the table)
+    // Regime (eligibility) → Entry Indicators → Exit Indicators. Gates that do
+    // both jobs (Stoch %K, ATR spectrum) deliberately appear in BOTH sections.
     mh+=`<div class="mini-sub mini-regime">Regime</div>`;
     mh+=mRow('&#8593;&#8595; 200 SMA', gReg, b.qqq_below_sma200?'Bear':'Bull', mSig(coreRows[3][5]));
-    mh+=`<div class="mini-sub">Enter TQQQ</div>`;
-    mh+=mRow('EMA20', gEma, stripTags(''+coreRows[2][4]), mSig(coreRows[2][5]));
-    mh+=mRow('Contango', gCt, stripTags(''+coreRows[4][4]), mSig(coreRows[4][5]));
-    mh+=`<div class="mini-sub">Exit TQQQ ${help(xTip)}</div>`;
-    [0,1,2,3].forEach(i=>{ mh+=mExit(i); });
-    mh+=`<div class="mini-sub">Enter SQQQ ${help(eTip)}</div>`;
+    mh+=`<div class="mini-sub">Entry indicators ${help(eTip)}</div>`;
+    mh+=mRow('20D EMA', gEma, stripTags(''+coreRows[2][4]), mSig(coreRows[2][5]));
+    mh+=mRow('VIX3M:VIX1M', gCt, stripTags(''+coreRows[4][4]), mSig(coreRows[4][5]));
     mh+=mRow('Stoch %K', gK, stripTags(''+num(b.stoch_k,0)), mSig(blockRows[0][5]));
     mh+=mRow('ATR spec', gAtr, stripTags(''+num(b.atr_sig,0)), mSig(blockRows[1][5]));
     mh+=mRow('MFI', gMfi, stripTags(''+num(b.mfi,0)), mSig(blockRows[2][5]));
-    mh+=`<div class="mini-sub">Exit SQQQ</div>`;
-    [4,5,6,7].forEach(i=>{ mh+=mExit(i); });
+    mh+=`<div class="mini-sub">Exit indicators ${help(xTip)}</div>`;
+    [0,1,2,4,5,3,6,7].forEach(i=>{ mh+=mExit(i); });
     mh+=`<div class="mini-note"><b>NOTE:</b> Signals computed from TQQQ daily bars</div>`;
     const _mm=document.getElementById('mini-monitor');
     let _miniColl=false; try{ _miniColl=localStorage.getItem('miniCollapsed')==='1'; }catch(_){}
