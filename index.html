@@ -639,9 +639,9 @@ table.sig-mon tr.sig-divider td { color:var(--dim); font-size:0.6rem; text-trans
 .theme-miami .spinner { border-top-color: var(--pink); }
 .theme-miami a { color: var(--cyan); }
 .theme-miami .live-dot { background: var(--pink); box-shadow: 0 0 8px var(--pink); }
-/* Neon horizon scanline under the live strip */
-.theme-miami #live-strip { border-bottom: 1px solid var(--border2);
-  box-shadow: inset 0 -1px 0 rgba(46,230,255,0.25); }
+/* No rule under the live strip — the pink #tod-bar hairline is the only divider
+   (a border + cyan scanline here read as a stray blue line above the pink one). */
+.theme-miami #live-strip { border-bottom: none; box-shadow: none; }
 /* ── Header accent: a hairline pink rule under the top bar (kept thin, matching
       the sibling VIX dashboard's weight). ── */
 #tod-bar { height:1px; width:100%;
