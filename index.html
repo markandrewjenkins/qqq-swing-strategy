@@ -414,7 +414,7 @@ tr:hover td { background: #e3dbc6 }
 .mkt-legend .ml-item { display:inline-flex; align-items:center; gap:4px; white-space:nowrap; }
 .mkt-legend .ml-ico { font-size:0.92rem; display:inline-flex; }
 .mkt-ico { display:inline-flex; align-items:center; line-height:0; }
-.mkt-ico svg { width:16px; height:16px; display:block; }
+.mkt-ico svg { width:13px; height:13px; display:block; }
 .mkt-legend .ml-ico svg { width:13px; height:13px; display:block; }
 .cdl-toggle-group { display:inline-flex; border:1px dotted var(--border2); border-radius:5px; overflow:hidden; }
 .cdl-seg { background:transparent; color:var(--dim); border:none; padding:3px 11px; font-family:'JetBrains Mono',monospace; font-size:0.7rem; font-weight:600; letter-spacing:0.03em; cursor:pointer; }
@@ -642,10 +642,11 @@ table.sig-mon tr.sig-divider td { color:var(--dim); font-size:0.6rem; text-trans
 /* Neon horizon scanline under the live strip */
 .theme-miami #live-strip { border-bottom: 1px solid var(--border2);
   box-shadow: inset 0 -1px 0 rgba(46,230,255,0.25); }
-/* ── Time-of-day accent: a thin sky-gradient rule under the top bar that
-      shifts from dawn → daylight → dusk → night as the clock advances. ── */
-#tod-bar { height:4px; width:100%; transition: background 1.5s linear;
-  box-shadow: 0 0 12px -1px currentColor; }
+/* ── Header accent: a hairline pink rule under the top bar (kept thin, matching
+      the sibling VIX dashboard's weight). ── */
+#tod-bar { height:1px; width:100%;
+  background: linear-gradient(90deg, rgba(246,96,182,0.35), var(--pink,#f660b6), rgba(246,96,182,0.35));
+  box-shadow: 0 0 6px -1px rgba(246,96,182,0.55); }
 #tod-glow { position:fixed; top:0; left:0; right:0; height:150px; pointer-events:none;
   z-index:0; opacity:0.7; transition: background 1.5s linear; }
 .topbar { position: sticky; top: 0; z-index: 100; }
@@ -797,7 +798,7 @@ table.sig-mon tr.sig-divider.regime-hd td b { color: var(--cyan); }
     <div class="live-quotes">
       <div class="live-row">
         <span class="live-item"><span class="live-lbl">VXN</span><span class="live-val" id="lv-vxn">—</span><span class="live-chg" id="lv-vxn-c"></span></span>
-        <span class="live-item"><span class="live-lbl">VIX</span><span class="live-val" id="lv-vix">—</span><span class="live-chg" id="lv-vix-c"></span></span>
+        <span class="live-item"><span class="live-lbl" title="CBOE VIX — 30-day (1-month) S&amp;P implied volatility">VIX1M</span><span class="live-val" id="lv-vix">—</span><span class="live-chg" id="lv-vix-c"></span></span>
         <span class="live-item"><span class="live-lbl">VIX3M</span><span class="live-val" id="lv-vix3m">—</span><span class="live-chg" id="lv-vix3m-c"></span></span>
         <span class="live-item"><span class="live-lbl" title="VIX3M ÷ VIX − 1: positive = contango (calm), negative = backwardation (stress)">CONTANGO</span><span class="live-val" id="lv-contango">—</span><span class="live-chg" id="lv-contango-c"></span></span>
         <span class="live-item"><span class="live-lbl" title="TQQQ close vs its 20-day EMA — this IS the TQQQ entry condition: above the line the bull side is live">TQQQ vs EMA20</span><span class="live-val" id="lv-ema">—</span><span class="live-chg" id="lv-ema-c"></span></span>
@@ -846,7 +847,6 @@ table.sig-mon tr.sig-divider.regime-hd td b { color: var(--cyan); }
         <div id="mkt-row">
           <span class="mkt-block"><span id="mkt-ico" class="mkt-ico"></span><span id="mkt-label">Market closed</span><span id="mkt-countdown"></span></span>
           <span class="mkt-sessbar" title="Trading day timeline — the white marker is the current time in New York"><span class="seg c1"></span><span class="seg pre"></span><span class="seg reg"></span><span class="seg aft"></span><span class="seg c2"></span><span class="mkt-marker" id="mkt-marker"></span></span>
-          <span class="mkt-legend" id="mkt-legend"></span>
         </div>
         <button id="cdl-fs" class="rp-btn" title="Full screen" onclick="toggleChartFs()" style="margin-left:auto;color:var(--yellow);font-variant-emoji:text">&#9974;&#65038; Full screen</button>
       </div>
@@ -2230,9 +2230,15 @@ async function loadLive(){
     z=_lv(m.vix3m_used, q.vix3m, cv.vix3m, cv.vix3m_chg); vx('vix3m', z[0], z[1], _fresh(_qt(q.vix3m), cv.vix3m_date), _qt(q.vix3m)||cv.vix3m_date);
     // Contango = VIX3M/VIX − 1 (derived live); shown as a signed % without a %chg cell.
     { const ct=(L.derived&&L.derived.contango!=null)?L.derived.contango:null;
-      const ctFresh=_fresh(_qt(q.vix), _qt(q.vix3m), cv.vix_date);
+      // VIX runs through extended hours but VIX3M is regular-hours only, so the
+      // engine only computes a LIVE curve when both legs are as-of the same
+      // session; otherwise it falls back to the (self-consistent) CBOE EOD pair.
+      const ctLive=!(L.derived&&L.derived.contango_live===false);
+      const ctAsof=(L.derived&&L.derived.contango_asof)||null;
+      const ctFresh=ctLive&&_fresh(_qt(q.vix), _qt(q.vix3m), cv.vix_date);
       setVal('lv-contango', ct==null?'—':((ct>=0?'+':'')+(ct*100).toFixed(1)+'%'), ct==null?'':(ct>=0?'up':'down'), !ctFresh);
-      _setTip('contango', _tip('vix', ctFresh, _qt(q.vix)||cv.vix_date)); }
+      _setTip('contango', ctLive ? _tip('vix', ctFresh, _qt(q.vix)||cv.vix_date)
+        : 'VIX1M and VIX3M are not from the same session (VIX3M publishes only 9:30–4:00 ET), so this is the CBOE end-of-day pair as of '+(ctAsof||'the last close')+' rather than a live reading.'); }
     updateGateReadouts();
 
 
@@ -2248,7 +2254,7 @@ async function loadLive(){
       if(!show){ if(ext) ext.remove(); return; }
       if(!ext){ ext=document.createElement('span'); ext.className='live-ext'; item.appendChild(ext); }
       const tag=sess==='pre'?'PRE':'AH';
-      const px=x.ext_price!=null?(isPrice?price(x.ext_price):(+x.ext_price).toLocaleString('en-US',{maximumFractionDigits:0})):'';
+      const px=x.ext_price!=null?(isPrice?price(x.ext_price):(+x.ext_price).toFixed(2)):'';
       ext.innerHTML='<span class="live-ext-tag">'+tag+'</span>'+px+' '+signed(emov*100,1,'%');
       ext.className='live-ext '+clsOf(emov);
       _setTip(id, _tip('etf', _fresh(x.time), x.time)+' · '+(sess==='pre'?'pre-market':'after-hours')+' move vs '+(sess==='pre'?'prior close':'today’s close'));
@@ -2262,6 +2268,9 @@ async function loadLive(){
       setExt(id, x, true);
     };
     tk('tqqq','tqqq'); tk('sqqq','sqqq'); tk('qqq','qqq');
+    // Vol indices get the same PRE/AH chip where the index actually publishes
+    // outside regular hours (VIX does; VXN and VIX3M are regular-hours only).
+    setExt('vxn', q.vxn, false); setExt('vix', q.vix, false); setExt('vix3m', q.vix3m, false);
 
 
     // ── Feed freshness: live vs paused ──────────────────────────────────
@@ -2389,11 +2398,12 @@ function _mktSVG(kind){
     +'<g stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none">'
     +'<line x1="1.7" y1="14.5" x2="18.3" y2="14.5"/><line x1="10" y1="2.2" x2="10" y2="4.3"/>'
     +'<line x1="3.9" y1="6.6" x2="5.3" y2="7.9"/><line x1="16.1" y1="6.6" x2="14.7" y2="7.9"/></g></svg>';
-  if(kind==='after') return s
+  if(kind==='after') return s   // mirrored horizontally = sun setting on the other side
+    +'<g transform="translate(20,0) scale(-1,1)">'
     +'<path d="M5.8 8.5 a4.2 4.2 0 0 0 8.4 0 Z" fill="currentColor"/>'
     +'<g stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none">'
     +'<line x1="1.7" y1="8.5" x2="18.3" y2="8.5"/><line x1="10" y1="15.7" x2="10" y2="17.8"/>'
-    +'<line x1="3.9" y1="14.4" x2="5.3" y2="13.1"/><line x1="16.1" y1="14.4" x2="14.7" y2="13.1"/></g></svg>';
+    +'<line x1="3.9" y1="14.4" x2="5.3" y2="13.1"/><line x1="16.1" y1="14.4" x2="14.7" y2="13.1"/></g></g></svg>';
   return s
     +'<path d="M13.6 4.1 a6.4 6.4 0 1 0 0.2 11.8 A5 5 0 0 1 13.6 4.1 Z" fill="currentColor"/></svg>';
 }
@@ -2403,13 +2413,8 @@ function updateMarket(){
   // Dusk palette: sunrise yellow → daylight orange → sunset pink → night blue
   if(isWk&&dec>=9.5&&dec<16){ label='Market open'; color='#ffb347'; kind='open'; sep=GAP; }
   else if(isWk&&dec>=4&&dec<9.5){ label='Pre-market'; color='#f0cc4a'; kind='pre'; sep=GAP; }
-  else if(isWk&&dec>=16&&dec<20){ label='After hours'; color='#ff5f3c'; kind='after'; sep=GAP; }
+  else if(isWk&&dec>=16&&dec<20){ label='After hours'; color='#d1481a'; kind='after'; sep=GAP; }
   else { label='Market closed'; color='#a7c0e8'; kind='closed'; sep=GAP; }
-  const leg=document.getElementById('mkt-legend');
-  if(leg && !leg._built){ leg._built=true;
-    leg.innerHTML=[['pre','Pre-market','4:00-9:30a','#f0cc4a'],['open','Open','9:30a-4:00p','#ffb347'],
-                   ['after','After hours','4:00-8:00p','#ff5f3c'],['closed','Closed','overnight / weekend','#a7c0e8']]
-      .map(([k,n,hh,c])=>`<span class="ml-item" title="${n}: ${hh} ET"><span class="ml-ico" style="color:${c}">${_mktSVG(k)}</span>${n}</span>`).join(''); }
   const ico=document.getElementById('mkt-ico'), lab=document.getElementById('mkt-label'), mk=document.getElementById('mkt-marker'), cd=document.getElementById('mkt-countdown');
   if(ico){ ico.innerHTML=_mktSVG(kind); ico.style.color=color; }
   if(lab){ lab.textContent=label; lab.style.color=color; }   // match the phase colour
@@ -2434,9 +2439,8 @@ function updateSkyAccent(dec){
   const mix=(c1,c2)=>c1.map((v,i)=>Math.round(v+(c2[i]-v)*t));
   const c1=mix(a[1][0],b[1][0]), c2=mix(a[1][1],b[1][1]);
   const rgb=c=>`rgb(${c[0]},${c[1]},${c[2]})`;
-  const bar=document.getElementById('tod-bar');
-  if(bar){ bar.style.background=`linear-gradient(90deg, ${rgb(c1)}, ${rgb(c2)}, ${rgb(c1)})`;
-           bar.style.color=rgb(c2); }
+  // The header rule stays a fixed pink hairline (see #tod-bar in CSS) — only the
+  // ambient glow tracks the time of day.
   const glow=document.getElementById('tod-glow');
   if(glow) glow.style.background=
     `radial-gradient(ellipse at 50% -30%, rgba(${c2[0]},${c2[1]},${c2[2]},0.28), transparent 70%)`;
@@ -3257,7 +3261,7 @@ function renderSignalMonitor(histBar){
       return mRow(mnames[i], g, stripTags(''+xdef[i][6])||'—', mStat(i), s==='na'); };
     // Regime → Enter TQQQ → Exit TQQQ → Enter SQQQ → Exit SQQQ (same order as the table)
     mh+=`<div class="mini-sub mini-regime">Regime</div>`;
-    mh+=mRow('Regime', gReg, b.qqq_below_sma200?'Bear':'Bull', mSig(coreRows[3][5]));
+    mh+=mRow('&#8593;&#8595; 200 SMA', gReg, b.qqq_below_sma200?'Bear':'Bull', mSig(coreRows[3][5]));
     mh+=`<div class="mini-sub">Enter TQQQ</div>`;
     mh+=mRow('EMA20', gEma, stripTags(''+coreRows[2][4]), mSig(coreRows[2][5]));
     mh+=mRow('Contango', gCt, stripTags(''+coreRows[4][4]), mSig(coreRows[4][5]));

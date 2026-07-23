@@ -111,31 +111,38 @@ def fred_last(series_id: str) -> float | None:
 
 
 # ── Yahoo v8 live quote ───────────────────────────────────────────────────────
-def yahoo_quote(symbol: str, prepost: bool = False) -> dict:
-    """Return a session-aware quote whose %change matches the market convention.
+def _et_bar(ts):
+    """(ET date string, minutes-since-midnight ET) for an epoch timestamp."""
+    dt = (datetime.fromtimestamp(ts, tz=_ET) if _ET
+          else datetime.fromtimestamp(ts, tz=timezone.utc))
+    return dt.strftime("%Y-%m-%d"), dt.hour * 60 + dt.minute
 
-    The industry convention (Yahoo/Google/TradingView/brokers) is:
-      • Regular hours  → daily change = last / previous *regular* close.
-      • Pre-market     → change = pre-market last / previous regular close,
-                         shown SEPARATELY (labelled "pre"); the regular day
-                         hasn't traded yet, so there is no "daily" change.
-      • After-hours    → the day's change stays frozen at (today's regular
-                         close / previous close); the AH move is a SEPARATE
-                         number measured from *today's* regular close.
-    The old code always used (latest-extended-price / prev-close), which is why
-    a pre-/post-market reading disagreed with the authoritative daily %.
+
+_RTH_OPEN, _RTH_CLOSE = 9 * 60 + 30, 16 * 60      # 9:30 / 16:00 ET
+
+
+def yahoo_quote(symbol: str, prepost: bool = False) -> dict:
+    """Session-aware quote following the standard market convention.
+
+    Built from a 5-day 5-minute series so we know each session's real close:
+      • Regular hours → price = live regular print, % = vs the PRIOR regular close.
+      • After-hours   → price/% stay frozen at today's regular close vs the prior
+                        close (the day's official change); the AH move is a
+                        SEPARATE number measured from *today's* close.
+      • Pre-market    → today hasn't traded regular yet, so price/% show the LAST
+                        COMPLETED session (yesterday's close and its own daily
+                        change); the pre-market move is the separate number,
+                        measured from yesterday's close.
+    That last rule is the fix for the pre-market reading previously duplicating
+    the headline quote.
 
     Emitted fields:
-      price            latest traded price (any session) — the number to show big
-      change_pct       the PRIMARY % to show next to it (see per-session rules)
-      prev_close       previous regular-session close (the daily baseline)
-      session          'pre' | 'regular' | 'post' | 'closed'
-      regular_price    today's regular close / current regular price (None pre-open)
-      regular_change   authoritative daily change (None until regular trades today)
-      ext_price        latest pre/post price (None in regular hours)
-      ext_change       extended-hours move vs its correct baseline (pre: prev
-                       close; post: today's regular close)
-      time             ISO timestamp of the latest print
+      price / change_pct   the headline pair (always internally consistent)
+      prev_close           the regular close the headline % is measured against
+      session              'pre' | 'regular' | 'post' | 'closed'
+      ext_price/ext_change extended-hours move vs its correct baseline
+      asof_date            ET date of the reading shown as `price` (pairing/staleness)
+      time                 ISO timestamp of the freshest print
     """
     try:
         try:
@@ -147,102 +154,91 @@ def yahoo_quote(symbol: str, prepost: bool = False) -> dict:
         except Exception:
             cookie = ""
         url = (f"https://query1.finance.yahoo.com/v8/finance/chart/"
-               f"{urllib.parse.quote(symbol)}?range=1d&interval=5m"
+               f"{urllib.parse.quote(symbol)}?range=5d&interval=5m"
                + ("&includePrePost=true" if prepost else ""))
         data = json.loads(_get(url, extra={"Cookie": cookie} if cookie else None))
-        res   = data["chart"]["result"][0]
-        meta  = res["meta"]
-        prev  = meta.get("chartPreviousClose") or meta.get("previousClose")
-        reg_meta_price = meta.get("regularMarketPrice")
-        t_meta = meta.get("regularMarketTime")
+        res  = data["chart"]["result"][0]
+        ts   = res.get("timestamp") or []
+        cl   = (((res.get("indicators") or {}).get("quote") or [{}])[0].get("close")) or []
 
-        def _emit(price, chg, session, reg_px, reg_chg, ext_px, ext_chg, t):
-            r6 = lambda v: round(v, 6) if v is not None else None
-            r4 = lambda v: round(v, 4) if v is not None else None
-            return {
-                "price": r4(price), "prev_close": r4(prev),
-                "change_pct": r6(chg), "session": session,
-                "regular_price": r4(reg_px), "regular_change": r6(reg_chg),
-                "ext_price": r4(ext_px), "ext_change": r6(ext_chg),
-                "time": (datetime.fromtimestamp(t, tz=timezone.utc).isoformat()
-                         if t else None),
-            }
-
-        if not prepost:
-            # Indices (^VXN etc.): no extended hours; one number vs prev close.
-            chg = (reg_meta_price / prev - 1.0) if (reg_meta_price and prev) else None
-            return _emit(reg_meta_price, chg, "regular", reg_meta_price, chg,
-                         None, None, t_meta)
-
-        # ── Session-aware path (ETFs) ─────────────────────────────────────────
-        ts = res.get("timestamp") or []
-        cl = (((res.get("indicators") or {}).get("quote") or [{}])[0].get("close")) or []
-        cp = meta.get("currentTradingPeriod") or {}
-        reg_start = ((cp.get("regular") or {}).get("start"))
-        reg_end   = ((cp.get("regular") or {}).get("end"))
-
-        last_reg = last_reg_t = None
-        last_pre = last_post = None
-        last_any = last_any_t = None
+        grace = 15 if symbol.startswith("^") else 0
+        reg_close, pre_last, post_last, reg_time = {}, {}, {}, {}
+        last_t = last_date = last_tod = None
         for i, c in enumerate(cl):
-            if c is None:
+            if c is None or i >= len(ts):
                 continue
-            t = ts[i] if i < len(ts) else None
-            last_any, last_any_t = c, t
-            if reg_start is not None and reg_end is not None and t is not None:
-                if reg_start <= t < reg_end:
-                    last_reg, last_reg_t = c, t
-                elif t < reg_start:
-                    last_pre = c
-                else:
-                    last_post = c
-            else:                      # boundaries missing → treat as regular
-                last_reg, last_reg_t = c, t
+            t = ts[i]
+            dstr, tod = _et_bar(t)
+            last_t, last_date, last_tod = t, dstr, tod
+            # Indices get a 15-minute settle grace: VXN/VIX3M publish 09:30-16:15
+            # and VIX 03:15-16:10, so their post-4pm prints are the closing settle,
+            # not after-hours trading. ETFs genuinely trade from 16:00, so no grace.
+            if _RTH_OPEN <= tod <= _RTH_CLOSE + grace:
+                reg_close[dstr] = c; reg_time[dstr] = t
+            elif tod < _RTH_OPEN:
+                pre_last[dstr] = c
+            else:
+                post_last[dstr] = c
 
-        # Regular price/change: valid only once the regular session has traded
-        # today. Fall back to meta.regularMarketPrice (today's close post-session).
-        reg_px = last_reg if last_reg is not None else None
-        if reg_px is None and last_post is not None:
-            reg_px = reg_meta_price     # after-hours: meta holds today's close
-        reg_chg = (reg_px / prev - 1.0) if (reg_px and prev) else None
+        rdates = sorted(reg_close)
+        if not rdates:
+            raise ValueError("no regular-session bars")
 
-        # Classify the current session from the freshest print.
-        if last_any_t is None:
+        # Which session are we in, per the freshest print?
+        today = last_date
+        has_reg_today = today in reg_close
+        if last_t is None:
             session = "closed"
-        elif reg_start is not None and reg_start <= last_any_t < (reg_end or 0):
+        elif has_reg_today and _RTH_OPEN <= last_tod <= _RTH_CLOSE + grace:
             session = "regular"
-        elif reg_start is not None and last_any_t < reg_start:
+        elif last_tod is not None and last_tod < _RTH_OPEN and not has_reg_today:
             session = "pre"
-        elif reg_end is not None and last_any_t >= reg_end:
+        elif last_tod is not None and last_tod > _RTH_CLOSE + grace and has_reg_today:
             session = "post"
         else:
-            session = "regular"
+            session = "regular" if has_reg_today else "closed"
 
-        if session == "pre":
-            ext_px = last_pre
-            ext_chg = (ext_px / prev - 1.0) if (ext_px and prev) else None
-            price, chg = ext_px, ext_chg          # no regular day yet → pre IS the read
-        elif session == "post":
-            ext_px = last_post
-            ext_chg = (ext_px / reg_px - 1.0) if (ext_px and reg_px) else None
-            price, chg = reg_px, reg_chg           # headline = the day's regular change
-        elif session == "regular":
-            ext_px = ext_chg = None
-            price = last_reg if last_reg is not None else reg_meta_price
-            chg = (price / prev - 1.0) if (price and prev) else None
-            reg_px, reg_chg = price, chg
-        else:                                       # closed (weekend / holiday)
-            ext_px = ext_chg = None
-            price = reg_meta_price
-            chg = (price / prev - 1.0) if (price and prev) else None
-            reg_px, reg_chg = price, chg
+        def _chg(a, b):
+            return (a / b - 1.0) if (a and b) else None
 
-        return _emit(price, chg, session, reg_px, reg_chg, ext_px, ext_chg, last_any_t)
+        if session in ("regular", "post"):
+            cur_d  = rdates[-1]
+            prev_d = rdates[-2] if len(rdates) >= 2 else None
+            price  = reg_close[cur_d]
+            prev   = reg_close[prev_d] if prev_d else None
+            chg    = _chg(price, prev)
+            asof   = cur_d
+            ext_px = post_last.get(today) if session == "post" else None
+            ext_chg = _chg(ext_px, price) if ext_px else None
+        else:
+            # pre-market or closed → show the last COMPLETED regular session
+            cur_d  = rdates[-1]
+            prev_d = rdates[-2] if len(rdates) >= 2 else None
+            price  = reg_close[cur_d]
+            prev   = reg_close[prev_d] if prev_d else None
+            chg    = _chg(price, prev)
+            asof   = cur_d
+            ext_px = pre_last.get(today) if session == "pre" else None
+            ext_chg = _chg(ext_px, price) if ext_px else None
+
+        r6 = lambda v: round(v, 6) if v is not None else None
+        r4 = lambda v: round(v, 4) if v is not None else None
+        return {
+            "price": r4(price), "prev_close": r4(prev), "change_pct": r6(chg),
+            "session": session, "asof_date": asof,
+            "regular_price": r4(price), "regular_change": r6(chg),
+            "ext_price": r4(ext_px), "ext_change": r6(ext_chg),
+            "reg_time": (datetime.fromtimestamp(reg_time.get(asof), tz=timezone.utc).isoformat()
+                         if reg_time.get(asof) else None),
+            "time": (datetime.fromtimestamp(last_t, tz=timezone.utc).isoformat()
+                     if last_t else None),
+        }
     except Exception as e:
         print(f"  yahoo {symbol:6s} FAILED: {e}")
         return {"price": None, "prev_close": None, "change_pct": None,
-                "session": None, "regular_price": None, "regular_change": None,
-                "ext_price": None, "ext_change": None, "time": None}
+                "session": None, "asof_date": None,
+                "regular_price": None, "regular_change": None,
+                "ext_price": None, "ext_change": None, "reg_time": None, "time": None}
 
 
 # ── Last official position from the (privately generated) backtest ───────────
@@ -339,15 +335,18 @@ def main() -> None:
 
     # ── Live quotes ───────────────────────────────────────────────────────────
     quotes = {}
+    # VIX is disseminated through extended hours; VXN/VIX3M are regular-hours only
+    # (so outside 9:30-16:00 ET they simply carry the last regular print).
     for sym in ["^VXN", "^VIX", "^VIX3M", "^NDX"]:
-        quotes[sym.lower().lstrip("^")] = yahoo_quote(sym, prepost=False)
+        quotes[sym.lower().lstrip("^")] = yahoo_quote(sym, prepost=True)
     for sym in ["TQQQ", "SQQQ", "QQQ", "SPY", "UPRO", "SPXU"]:
         quotes[sym.lower()] = yahoo_quote(sym, prepost=True)
     quotes["spx"] = yahoo_quote("^GSPC", prepost=False)   # S&P 500 index level
-    # Re-base index %change on the authoritative CBOE prior close.
+    # Re-base index %change on the authoritative CBOE prior close — but only for a
+    # settled regular reading, so it never clobbers the pre/post-market convention.
     for qkey, ckey in [("vxn", "vxn"), ("vix", "vix"), ("vix3m", "vix3m")]:
         q = quotes.get(qkey); ref = curve.get(ckey + "_ref")
-        if q and q.get("price") and ref:
+        if q and q.get("price") and ref and q.get("session") in ("regular", "post", "closed"):
             q["change_pct"] = round(q["price"] / ref - 1.0, 6)
             q["prev_close"] = round(ref, 4)
 
@@ -365,7 +364,24 @@ def main() -> None:
     vix  = quotes["vix"]["price"];   vix  = vix  if vix  is not None else curve.get("vix")
     vix3 = quotes["vix3m"]["price"]; vix3 = vix3 if vix3 is not None else curve.get("vix3m")
 
-    contango = (vix3 / vix - 1.0) if (vix and vix3) else None
+    # ── Contango must compare VIX and VIX3M from the SAME session ────────────────
+    # VIX updates through extended hours while VIX3M is regular-hours only, so a
+    # naive vix3m/vix during pre-market mixes today's VIX with yesterday's VIX3M
+    # and reports a bogus curve. Only use the live pair when both readings are
+    # as-of the same trading date; otherwise fall back to the CBOE EOD pair (which
+    # is internally consistent by construction) and flag it as not-live.
+    a1 = (quotes.get("vix") or {}).get("asof_date")
+    a3 = (quotes.get("vix3m") or {}).get("asof_date")
+    if vix and vix3 and a1 and a3 and a1 == a3:
+        contango = vix3 / vix - 1.0
+        contango_live, contango_asof = True, a1
+    elif curve.get("vix") and curve.get("vix3m"):
+        contango = curve["vix3m"] / curve["vix"] - 1.0
+        contango_live, contango_asof = False, curve.get("vix_date")
+        print(f"  contango: VIX({a1}) / VIX3M({a3}) out of sync "
+              f"-> using CBOE EOD pair ({contango_asof})")
+    else:
+        contango, contango_live, contango_asof = None, False, None
     regime = None
     if contango is not None:
         regime = "contango" if contango > 0 else "backwardation"
@@ -386,6 +402,8 @@ def main() -> None:
         },
         "derived": {
             "contango": round(contango, 6) if contango is not None else None,
+            "contango_live": contango_live,     # False → VIX/VIX3M were out of
+            "contango_asof": contango_asof,     #   sync; this is the EOD pair
             "yc_spread": yc,
             "regime": regime,
         },
