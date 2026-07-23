@@ -170,9 +170,9 @@ body {
   border-radius: 6px;
   padding: 12px 14px 10px;
   position: relative;
-  /* 136px basis but allowed to GROW so the strip fills the full page width
+  /* 146px basis but allowed to GROW so the strip fills the full page width
      (they share the leftover space evenly rather than leaving a ragged edge). */
-  flex: 1 1 136px;
+  flex: 1 1 146px;
 }
 .kpi-label {
   font-size: 0.72rem;
@@ -658,14 +658,14 @@ table.sig-mon tr.sig-divider td { color:var(--dim); font-size:0.6rem; text-trans
 
 /* Drawdown-stats card: headline max-DD on the left, six recovery chips in a
    3×2 grid on the right, all in one card. */
-.kpi.kpi-wide { flex: 1 1 340px; display:flex; align-items:stretch; gap:10px; }
+.kpi.kpi-wide { flex: 1 1 450px; display:flex; align-items:stretch; gap:12px; }
 .kpi.kpi-wide .dd-left { flex:0 0 auto; display:flex; flex-direction:column; justify-content:center;
-  padding-right:10px; border-right:1px solid var(--border); }
-.dd-grid { flex:1; display:grid; grid-template-columns:repeat(3,1fr); grid-auto-rows:1fr; gap:4px; }
-.kpi-inset { display:flex; flex-direction:column; justify-content:center; gap:1px; padding:4px 6px;
+  padding-right:12px; border-right:1px solid var(--border); }
+.dd-grid { flex:1; display:grid; grid-template-columns:repeat(3,1fr); grid-auto-rows:1fr; gap:5px; }
+.kpi-inset { display:flex; flex-direction:column; justify-content:center; gap:2px; padding:5px 8px;
   border-radius:5px; background:rgba(120,90,200,0.10); border:1px solid var(--border); cursor:help; }
-.kpi-inset .ki-l { font-size:0.58rem; letter-spacing:0.01em; text-transform:uppercase; color:var(--dim);
-  line-height:1.12; }
+.kpi-inset .ki-l { font-size:0.62rem; letter-spacing:0.02em; text-transform:uppercase; color:var(--dim);
+  line-height:1.14; }
 .kpi-inset .ki-v { font-family:'JetBrains Mono',monospace; font-weight:700;
   color:var(--sun-dusk); line-height:1.1; }
 .page-disclaimer { max-width:1180px; margin:20px auto 16px; padding:10px 16px 0;
@@ -720,14 +720,14 @@ table.sig-stats td .ss-sub { font-size: var(--fs-micro); }
    CSS-transform-scales to the chart height, so it must stay self-consistent
    rather than match the page grid. SVG gauge tick labels likewise. */
 .sig-info { font-size: var(--fs-xs); }
-.kpi-inset .ki-l { font-size: 0.58rem; }
-.kpi-inset .ki-v { font-size: 0.84rem; }
+.kpi-inset .ki-l { font-size: 0.62rem; }
+.kpi-inset .ki-v { font-size: 0.90rem; }
 .rp-btn, .rp-lab, .rp-date, #replay-status { font-size: var(--fs-micro); }
 .sig-proj .lbl, .sig-proj-mixline, .sig-logic { font-size: var(--fs-xs); }
 .sig-proj-row1 { font-size: var(--fs-sm); }
 .sig-proj-row2, .sig-proj-tally, .sig-rf { font-size: var(--fs-xs); }
 .leg-item, .cmp-badge, .pill, .eb { font-size: var(--fs-xs); }
-.mini-mon .mini-inner { font-size: var(--fs-micro); }
+.mini-mon .mini-inner { font-size: 0.70rem; }
 .mini-row .mini-name, .mini-row .mini-val, .mini-row .mini-sig { font-size: 1em; }
 .mini-mon .mini-hd, .mini-mon .mini-sub, .mini-mon .mini-note,
 .mini-mon .mini-combo, .mini-mon .mini-why { font-size: 0.92em; }
@@ -754,9 +754,9 @@ table.sig-mon tr.sig-divider td { font-size: 0.58rem; }
 /* Regime section = the master switch: bigger, bolder than the other dividers */
 table.sig-mon tr.sig-divider.regime-hd td { font-size: 0.74rem; color: var(--white);
   letter-spacing: 0.04em; padding-top: 4px; background: rgba(46,230,255,0.05); }
-table.sig-mon tr.sig-divider.regime-hd td b { color: var(--cyan); }
-.mini-mon .mini-sub.mini-regime { font-size: 1.02em; font-weight: 800; color: var(--cyan);
-  letter-spacing: 0.03em; }
+table.sig-mon tr.sig-divider.regime-hd td b { color: inherit; }
+/* Regime header: same colour as the other section headers, just bolder. */
+.mini-mon .mini-sub.mini-regime { font-weight: 800; }
 /* Chakra Petch is the default; strip JetBrains Mono from monitors + prose. */
 .sig-mon, .sig-mon *, .sig-proj, .sig-proj *, .mini-mon, .mini-mon *,
 #mkt-row, #mkt-row *, .cdl-info, #daily-info, .cdl-legend, .exit-legend,
@@ -1486,6 +1486,9 @@ function switchTab(n){
   document.querySelectorAll('.tab').forEach((el,i)=>el.classList.toggle('active',TABS[i]===n));
   // Charts need a non-zero container width, so (re)build when the tab becomes visible.
   if(n==='analytics' && typeof buildDaily==='function') setTimeout(()=>{try{buildDaily();}catch(_){}},40);
+  // The equity curve is built on first load while this tab is still hidden (zero
+  // width), so rebuild it at the real width whenever the tab is shown.
+  if(n==='analytics' && typeof window._buildEq==='function') setTimeout(()=>{try{window._buildEq();}catch(_){}},60);
   if(n==='risk' && typeof renderRisk==='function') setTimeout(()=>{try{renderRisk();}catch(_){}},40);
   if(n==='markets' && typeof renderMarkets==='function') setTimeout(()=>{try{renderMarkets();}catch(_){}},40);
 }
@@ -1635,12 +1638,20 @@ function renderAnalytics(){
   // Daily P&L chart (Chart.js only pans once zoomed in). Equity area on the right
   // $ axis, TQQQ buy-and-hold as a dashed line, drawdown as an inverted red
   // histogram on the left % axis (fixed −100%..0%).
-  (function buildEqLW(){
+  window._buildEq = function buildEqLW(){
     const el=document.getElementById('eqChart'); if(!el||!window.LightweightCharts) return;
     const LC=LightweightCharts;
     // Full-resolution series (same grid as the Daily P&L chart) so it drag-scrolls
     // identically; values in $K to keep the $-abbrev formatter.
-    const ecF=aEq();
+    // Lightweight-Charts holds a ~6px default bar spacing and won't zoom out past
+    // it (fitContent / setVisibleLogicalRange are both ignored below that), so a
+    // full-resolution 3,700-bar series only ever shows its last ~200 bars. Sample
+    // down to roughly the bar count that fills the container instead — that makes
+    // the DEFAULT view the entire history, which is the point of this chart.
+    const _ecAll=aEq();
+    const _target=Math.max(150, Math.floor((el.clientWidth||1200)/6));
+    const _step=Math.max(1, Math.ceil(_ecAll.length/_target));
+    const ecF=_ecAll.filter((_,i)=>i%_step===0 || i===_ecAll.length-1);
     const eqLW=ecF.map(b=>({time:b.date,value:+(b.equity/1000).toFixed(3)}));
     const ddLW=ecF.map(b=>({time:b.date,value:+((b.drawdown||0)).toFixed(2)}));
     const eqDates=new Set(ecF.map(b=>b.date));
@@ -1666,9 +1677,21 @@ function renderAnalytics(){
       priceLineVisible:true,priceLineColor:LCTX,priceLineWidth:1,priceLineStyle:2,
       priceFormat:{type:'custom',formatter:v=>'$'+abbrev(v*1000)}});
     eqS.setData(eqLW);
-    ch.timeScale().fitContent();
+    // The panel can be display:none when this first runs (tab not yet shown), so
+    // the chart would keep a stale ~900px width and a clipped range. Re-apply the
+    // real width and refit whenever the container resizes / becomes visible.
+    const _fit=()=>{ const w=el.clientWidth; if(!w) return;
+      try{ ch.applyOptions({width:w, height:el.clientHeight||320}); ch.timeScale().fitContent(); }catch(_){} };
+    _fit(); requestAnimationFrame(_fit); setTimeout(_fit,120); setTimeout(_fit,400);
+    if(!el._eqRO && window.ResizeObserver){
+      el._eqRO=new ResizeObserver(()=>{ const c=window._eqChart; if(!c) return;
+        const w=el.clientWidth; if(!w) return;
+        try{ c.applyOptions({width:w, height:el.clientHeight||320}); }catch(_){} });
+      el._eqRO.observe(el);
+    }
     if(!el._eqResize){ el._eqResize=true; window.addEventListener('resize',()=>{ try{ch.applyOptions({width:el.clientWidth||900});}catch(_){} }); }
-  })();
+  };
+  window._buildEq();
 
 
   // Daily mark-to-market chart (Lightweight-Charts) — built/refreshed via buildDaily().
@@ -2623,11 +2646,18 @@ function buildDaily(){
 function scaleMini(){ const mm=document.getElementById('mini-monitor'); if(!mm) return;
   const inner=mm.querySelector('.mini-inner'); if(!inner) return;
   if(mm.classList.contains('mini-collapsed')){ inner.style.transform='none'; return; }  // title bar only
-  inner.style.transform='none';                                  // measure natural size
   const H=mm.clientHeight, wrap=mm.parentElement, maxW=(wrap?wrap.clientWidth:600)*0.42;
+  // Cache the scale per container size. Re-measuring on every re-render meant
+  // resetting the transform mid-frame, which made the card visibly twitch while
+  // scrubbing across candles. Row count and text heights are fixed, so the scale
+  // only needs recomputing when the chart itself resizes.
+  const key=Math.round(H)+'x'+Math.round(maxW);
+  if(inner._sk===key && inner._ss){ inner.style.transform='scale('+inner._ss+')'; return; }
+  inner.style.transform='none';                                  // measure natural size
   const ih=inner.offsetHeight, iw=inner.offsetWidth; if(!ih||!iw) return;
   let s=H/ih; if(iw*s>maxW) s=maxW/iw; s=Math.max(0.45, Math.min(s, 2.4));
-  inner.style.transform='scale('+s.toFixed(4)+')'; }
+  inner._sk=key; inner._ss=s.toFixed(4);
+  inner.style.transform='scale('+inner._ss+')'; }
 function miniToggle(){ const mm=document.getElementById('mini-monitor'); if(!mm) return;
   const c=mm.classList.toggle('mini-collapsed');
   try{ localStorage.setItem('miniCollapsed', c?'1':'0'); }catch(_){}
@@ -2924,7 +2954,11 @@ function renderSignalMonitor(histBar){
     if(c==='P') return (hit&&!trig&&inPos)?{fill:POSC,op:0.95}:{fill:POSCM,op:0.4};
     if(c==='C') return trig?{fill:CASHB,op:1}:((hit&&inPos)?{fill:POSC,op:0.95}:{fill:CASHD,op:1});
     if(c==='d') return {fill:'var(--cashmut)',op:0.5};
-    if(inPos){ const f={r:'var(--coralmut)',t:'var(--tealmut)',n:'var(--gray)'}[c]; return {fill:f,op:0.4}; }
+    // While holding, the zone the marker actually sits in still lights up — a dulled
+    // bar everywhere made live exit readings impossible to spot. Only the OTHER
+    // zones recede.
+    if(inPos){ if(hit){ const lf={r:'var(--coral)',t:'var(--teal)',n:'var(--cashc)'}[c]; return {fill:lf,op:0.95}; }
+               const f={r:'var(--coralmut)',t:'var(--tealmut)',n:'var(--gray)'}[c]; return {fill:f,op:0.4}; }
     if(hit){ const f={r:'var(--coral)',t:'var(--teal)',n:'var(--cashc)'}[c]; return {fill:f,op:0.95}; }
     const f={r:'var(--coral)',t:'var(--teal)',n:'var(--gray)'}[c]; return {fill:f,op:0.4}; };
   let _hcn=0;
@@ -3010,7 +3044,7 @@ function renderSignalMonitor(histBar){
   const dF=_domain('frr',[0.95]);
   const gFrr={lo:dF.lo,hi:dF.hi,z:[[dF.lo,0.95,'r'],[0.95,dF.hi,'t']],v:b.frr,fmt:fN2,
     tip:`yield-curve ratio FRR2-10 = (5×10Y − 2Y)/(4×10Y) — below 0.95 (2Y > 1.2×10Y, deep inversion) blocks TQQQ entries · now ${b.frr!=null?b.frr.toFixed(3):'—'}`};
-  const gVxnR={lo:0,hi:100,z:[[0,0.5,'r'],[0.5,99.5,'t'],[99.5,100,'r']],v:b.vxn_rank,fmt:fN0,
+  const gVxnR={lo:88,hi:100,z:[[88,99,'t'],[99,100,'r']],v:b.vxn_rank,fmt:fN0,
     tip:`VXN 2-year percentile — above the 99.5th blocks TQQQ entries AND exits TQQQ (crash regime); below the 0.5th blocks/exits SQQQ · now ${b.vxn_rank!=null?b.vxn_rank.toFixed(1):'—'} (VXN ${b.vxn!=null?b.vxn.toFixed(1):'—'})`};
   const dAr={lo:0,hi:100};
   const gAr={lo:0,hi:100,z:[[0,95,'t'],[95,100,'r']],v:b.aroon_dn,fmt:fN0,
@@ -3055,7 +3089,7 @@ function renderSignalMonitor(histBar){
       emaDist!=null?(emaDist>=0?'TQQQ':'SQQQ'):'NEU', gEma],
     ['QQQ 200-day Regime','Added filter: SQQQ entries only while QQQ holds below its 200-day SMA',
       'Above &rarr; bear trades off','Below &rarr; bear trades allowed',
-      b.qqq_below_sma200?'Below':'Above', b.qqq_below_sma200?'BEAR':'BULL', gReg],
+      b.qqq_below_sma200?'Below':'Above', b.qqq_below_sma200?'SQQQ':'TQQQ', gReg],
     ['VIX Contango','VIX3M / VIX &minus; 1 — added filter from the VIX Swing Strategy',
       'Steep (&gt;+10%) blocks SQQQ','Deep backwardation (&lt;&minus;3%) blocks TQQQ',
       pct(b.contango,1), b.contango!=null?(b.contango>0.10?'TQQQ':b.contango<-0.03?'SQQQ':'NEU'):'NEU', gCt],
@@ -3070,11 +3104,11 @@ function renderSignalMonitor(histBar){
   // These four are the ones that move the needle; each vetoes SQQQ entries only.
   const blockRows=[
     ['Stochastic Floor','%K &lt; 25 (oversold) blocks SQQQ entries AND exits an open SQQQ &mdash; the single most valuable gate (+2.4 CAGR pts)','','&ge; 25 clear',
-      num(b.stoch_k,1), (b.stoch_k!=null&&b.stoch_k<25)?'BLOCK':'SQQQ', gK],
+      num(b.stoch_k,1), (b.stoch_k!=null&&b.stoch_k>=25)?'SQQQ':'NA', gK],
     ['ATR Collapse','Volatility-spectrum extreme-low blocks SQQQ entries AND exits an open SQQQ (no fuel for a bear move) &mdash; worth +0.9 CAGR and 1.5 DD pts','','Not extreme-low clear',
       num(b.atr_sig,1), 'SQQQ', gAtr],
     ['MFI Floor','Money Flow Index &lt; 25 blocks SQQQ entries (selling already exhausted)','','&ge; 25 clear',
-      num(b.mfi,1), (b.mfi!=null&&b.mfi<25)?'BLOCK':'SQQQ', gMfi],
+      num(b.mfi,1), (b.mfi!=null&&b.mfi>=25)?'SQQQ':'NA', gMfi],
   ];
 
   // ── Exit rules (status: Hold / Exit / N/A). Applicability per held side. ──
@@ -3091,29 +3125,32 @@ function renderSignalMonitor(histBar){
   const giveback=(peakPnl!=null&&openpnl!=null)?Math.max(0,peakPnl-openpnl):null;
   const xdef=[
     // [name, desc, holdTxt, exitTxt, applies, fired, current, gauge]
-    ['Ichimoku Bear Cross (bear regime)','TQQQ closes below BOTH the adaptive Tenkan-Sen (fast) and Kijun-Sen (slow) Ichimoku lines — the trend has flipped down. Fires ONLY while QQQ is below its 200-day SMA, so in a bull market dips are held through.', 'Bull regime, or above a line','Bear regime + below both lines',
-      isSV, b.bear_bar&&b.qqq_below_sma200, barState, gBar],
-    ['Chikou Span Breakdown (bear regime)','The Ichimoku Chikou span (price shifted back 25 bars) drops below the price from 25 bars ago — momentum confirmation that the down-move is real, not noise. Bear-regime only.', 'Bull regime, or not bearish','Bear regime + bearish',
-      isSV, b.chikou_bear&&b.qqq_below_sma200, b.chikou_sig===1?'Bullish':b.chikou_sig===-1?'Bearish':'Consol.', gChik],
-    ['VXN Crash Spike','VXN above its 99.5th 2-year percentile — crash regime, de-risk', 'Below 99.5 pct','Above 99.5 pct',
+    // Armed ONLY in a bear regime — in a bull regime they read N/A rather than a
+    // misleading "Hold", which is why a bearish bar can print without exiting TQQQ.
+    ['Ichimoku Price Bar','TQQQ closes below BOTH the adaptive Tenkan-Sen (fast) and Kijun-Sen (slow) Ichimoku lines — the trend has flipped down. Armed ONLY while QQQ is below its 200-day SMA, so in a bull market dips are held through and this reads N/A.', 'Above a line, or bull regime','Bear regime + below both lines',
+      (isSV&&!!b.qqq_below_sma200), b.bear_bar&&b.qqq_below_sma200, barState, gBar],
+    ['Chikou Span','The Ichimoku Chikou span (price shifted back 25 bars) drops below the price from 25 bars ago — momentum confirmation that the down-move is real, not noise. Armed only in a bear regime; reads N/A above the 200-day SMA.', 'Not bearish, or bull regime','Bear regime + bearish',
+      (isSV&&!!b.qqq_below_sma200), b.chikou_bear&&b.qqq_below_sma200, b.chikou_sig===1?'Bullish':b.chikou_sig===-1?'Bearish':'Consol.', gChik],
+    ['VXN Percentile','VXN above its 99th 2-year percentile — crash regime, de-risk', 'Below 99 pct','Above 99 pct',
       isSV, b.vxn_extreme_high, num(b.vxn_rank,1), gVxnR],
-    ['Catastrophe Trail 40%','Safety net: TQQQ closes 40% below its highest close since entry', 'Give-back &lt; 40%','Give-back &ge; 40%',
-      isSV, (isSV&&giveback!=null&&giveback>=TRL),
-      giveback!=null?('−'+(giveback*100).toFixed(0)+'% pk'):num(null),
-      {lo:-TRL*0.15,hi:Math.max(TRL*1.8,(giveback||0)*1.15),z:[[-TRL*0.15,TRL,'P'],[TRL,Math.max(TRL*1.8,(giveback||0)*1.15),'C']],v:giveback,fmt:fPP,
-       tip:`give-back from peak close vs the 40% catastrophe trail · now ${giveback!=null?(giveback*100).toFixed(1)+'%':'—'}`}],
-    ['Stoch Oversold','%K under 25 — the bear move is stretched; rebound risk, so the SQQQ short is closed', '&ge; 25','&lt; 25',
+    ['Stoch %K','%K under 25 — the bear move is stretched; rebound risk, so the SQQQ short is closed', '&ge; 25','&lt; 25',
       isUV, (b.stoch_k!=null&&b.stoch_k<25), num(b.stoch_k,1), gK],
-    ['ATR Collapse','Volatility spectrum extreme-low — no fuel left for the bear trade, so the SQQQ short is closed', 'Not extreme','Extreme low',
+    ['ATR Vol Spectrum','Volatility spectrum extreme-low — no fuel left for the bear trade, so the SQQQ short is closed', 'Not extreme','Extreme low',
       isUV, false /* engine flag not exported per-bar as extreme_low boolean; gauge shows the reading */, num(b.atr_sig,1), gAtr],
-    ['Trailing Stop 12%','Locks in bear-leg gains: exits if SQQQ gives back 12% from its highest close since entry', 'Give-back &lt; 12%','Give-back &ge; 12%',
-      isUV, (isUV&&giveback!=null&&giveback>=SQTRL),
+    // ONE trailing-stop row for both sides: same measurement (give-back from the
+    // peak close since entry), different thresholds. 0% sits at the RIGHT, so the
+    // marker travels left as the trade gives back. 0-12% hold; 12-40% exits SQQQ
+    // only (N/A while holding TQQQ); beyond 40% exits either side.
+    ['Trailing Stop','Give-back from the highest close since entry. SQQQ trails at 12%; TQQQ only has the 40% catastrophe trail, so between 12% and 40% this closes a short but not a long.',
+      'Give-back &lt; 12%','&ge; 12% (SQQQ) / &ge; 40% (TQQQ)',
+      inPos, (giveback!=null && (giveback>=TRL || (isUV && giveback>=SQTRL))),
       giveback!=null?('−'+(giveback*100).toFixed(0)+'% pk'):num(null),
-      {lo:-SQTRL*0.15,hi:Math.max(SQTRL*1.8,(giveback||0)*1.15),z:[[-SQTRL*0.15,SQTRL,'P'],[SQTRL,Math.max(SQTRL*1.8,(giveback||0)*1.15),'C']],v:giveback,fmt:fPP,
-       tip:`give-back from peak close vs the 12% SQQQ trailing stop · now ${giveback!=null?(giveback*100).toFixed(1)+'%':'—'}`}],
+      {lo:-0.48,hi:0,v:(giveback==null?null:-giveback),fmt:v=>Math.round(Math.abs(v)*100)+'%',
+       z:[[-SQTRL,0,'P'],[-TRL,-SQTRL,(isUV?'C':'d')],[-0.48,-TRL,'C']],
+       tip:`give-back from the peak close since entry · now ${giveback!=null?(giveback*100).toFixed(1)+'%':'—'} · exits SQQQ at 12%, TQQQ at 40%`}],
     ['Hard Stop &minus;12%','SQQQ down 12% from entry — cap the damage', 'Above &minus;12%','At/under &minus;12%',
       isUV, (isUV&&openpnl!=null&&openpnl<=HSTP), pct(openpnl,1),
-      {lo:HSTP*1.8,hi:0.06,z:[[HSTP*1.8,HSTP,'C'],[HSTP,0.06,'P']],v:openpnl,fmt:fPP,
+      {lo:-0.18,hi:0,z:[[-0.18,HSTP,'C'],[HSTP,0,'P']],v:openpnl,fmt:v=>Math.round(v*100)+'%',
        tip:`open P&L vs the −12% hard stop · now ${openpnl!=null?(openpnl*100).toFixed(1)+'%':'—'}`}],
   ];
   const exState=i=>{ const r=xdef[i];
@@ -3222,7 +3259,7 @@ function renderSignalMonitor(histBar){
     + _div('Entry Indicators &mdash; which side each gate currently permits. <b>TQQQ</b> needs only the first two (close above the 20-day EMA, VIX curve not deeply backwardated). <b>SQQQ</b> needs the mirror of those two plus a bear regime above, and none of the three exhaustion gates vetoing it.')
     + rows(coreRows,[2,4]) + rows(blockRows,[0,1,2])
     + _div('Exit Indicators &mdash; any ONE closes the open position at the next open. The TQQQ trend exits are <b>regime-gated</b> (in a bull regime only a VXN crash-spike or the 40% trail can force it out); the SQQQ exits are exhaustion readings plus its two stops. Rows that don&rsquo;t apply to the side you hold read N/A.')
-    + exRows([0,1,2,4,5,3,6,7])
+    + exRows([0,1,2,3,4,5,6])
     + '</tbody>';
   document.getElementById('signal-monitor').innerHTML=head+body;
 
@@ -3251,26 +3288,32 @@ function renderSignalMonitor(histBar){
     const eTip=[...coreRows,...blockRows].map(r=>stripTags(r[0])+': '+_ds(r[1])).join('\n');
     const xTip=xdef.map(r=>stripTags(r[0])+': '+_ds(r[1])).join('\n');
     let mh=`<div class="mini-pos">${posCell('Current',curPos,'var(--yellow)')} <span class="sig-proj-arrow">&rarr;</span> ${posCell('Next open',proj,'var(--white)')}</div>`;
+    // Out of a position we show the same pip dots, counting how many of each
+    // side's entry conditions are currently met (no jargon).
+    const _tqMet=(tqBase?1:0)+(bwGuard?1:0);
+    const _sqMet=((emaDist!=null&&emaDist<0)?1:0)+(b.qqq_below_sma200?1:0)
+      +(!(b.contango!=null&&b.contango>0.10)?1:0)
+      +((b.stoch_k==null||b.stoch_k>=25)&&(b.mfi==null||b.mfi>=25)?1:0);
     const _cmbo = inPos
       ? `Hold ${_pips(exHold,nApplicable,holdColor)} ${exHold}/${nApplicable} &nbsp; Exit ${_pips(exExit,nApplicable,'var(--cashc)')} ${exExit}/${nApplicable}`
-      : `Spine ${tqBase?'ON':'off'} &nbsp;·&nbsp; Guard ${bwGuard?'clear':'BLOCK'} &nbsp;·&nbsp; SQQQ ${b.long_sqqq?'ALIGNED':'—'}`;
+      : `Enter TQQQ ${_pips(_tqMet,2,'var(--teal)')} ${_tqMet}/2 &nbsp; Enter SQQQ ${_pips(_sqMet,4,'var(--coral)')} ${_sqMet}/4`;
     mh+=`<div class="mini-combo"><span>${_cmbo}</span></div>`;
     mh+=`<div class="mini-why">${explain}</div>`;
-    const mnames=['Ichimoku bar','Chikou','VXN %ile','Trail 40%','Stoch %K','ATR spec','Trail 12%','Stop −12%'];
+    const mnames=['Ichimoku Bar','Chikou Span','VXN %ile','Stoch %K','ATR Vol Spec','Trailing Stop','Hard Stop'];
     const mExit=i=>{ const s=exState(i); const g=xdef[i][7]?{...xdef[i][7],trig:s==='exit'}:null;
       return mRow(mnames[i], g, stripTags(''+xdef[i][6])||'—', mStat(i), s==='na'); };
     // Regime (eligibility) → Entry Indicators → Exit Indicators. Gates that do
     // both jobs (Stoch %K, ATR spectrum) deliberately appear in BOTH sections.
     mh+=`<div class="mini-sub mini-regime">Regime</div>`;
-    mh+=mRow('&#8593;&#8595; 200 SMA', gReg, b.qqq_below_sma200?'Bear':'Bull', mSig(coreRows[3][5]));
+    mh+=mRow('200 D SMA', gReg, b.qqq_below_sma200?'Below':'Above', mSig(coreRows[3][5]));
     mh+=`<div class="mini-sub">Entry indicators ${help(eTip)}</div>`;
-    mh+=mRow('20D EMA', gEma, stripTags(''+coreRows[2][4]), mSig(coreRows[2][5]));
+    mh+=mRow('20 D EMA', gEma, (emaDist==null?'—':(emaDist>=0?'Above':'Below')), mSig(coreRows[2][5]));
     mh+=mRow('VIX3M:VIX1M', gCt, stripTags(''+coreRows[4][4]), mSig(coreRows[4][5]));
     mh+=mRow('Stoch %K', gK, stripTags(''+num(b.stoch_k,0)), mSig(blockRows[0][5]));
-    mh+=mRow('ATR spec', gAtr, stripTags(''+num(b.atr_sig,0)), mSig(blockRows[1][5]));
+    mh+=mRow('ATR Vol Spec', gAtr, stripTags(''+num(b.atr_sig,0)), mSig(blockRows[1][5]));
     mh+=mRow('MFI', gMfi, stripTags(''+num(b.mfi,0)), mSig(blockRows[2][5]));
     mh+=`<div class="mini-sub">Exit indicators ${help(xTip)}</div>`;
-    [0,1,2,4,5,3,6,7].forEach(i=>{ mh+=mExit(i); });
+    [0,1,2,3,4,5,6].forEach(i=>{ mh+=mExit(i); });
     mh+=`<div class="mini-note"><b>NOTE:</b> Signals computed from TQQQ daily bars</div>`;
     const _mm=document.getElementById('mini-monitor');
     let _miniColl=false; try{ _miniColl=localStorage.getItem('miniCollapsed')==='1'; }catch(_){}
