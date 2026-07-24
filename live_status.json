@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-07-24T14:20:40+00:00",
+  "generated_utc": "2026-07-24T14:25:31+00:00",
   "market": {
     "vxn_used": 28.62,
     "vix_used": 18.63,
@@ -111,17 +111,17 @@
         "time": "2026-07-24T14:04:04+00:00"
       },
       "spy": {
-        "price": 738.5995,
+        "price": 738.4,
         "prev_close": 739.13,
-        "change_pct": -0.000718,
+        "change_pct": -0.000988,
         "session": "regular",
         "asof_date": "2026-07-24",
-        "regular_price": 738.5995,
-        "regular_change": -0.000718,
+        "regular_price": 738.4,
+        "regular_change": -0.000988,
         "ext_price": null,
         "ext_change": null,
-        "reg_time": "2026-07-24T14:21:02+00:00",
-        "time": "2026-07-24T14:21:02+00:00"
+        "reg_time": "2026-07-24T14:04:08+00:00",
+        "time": "2026-07-24T14:04:08+00:00"
       },
       "upro": {
         "price": 135.915,
