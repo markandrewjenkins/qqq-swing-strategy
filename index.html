@@ -782,6 +782,7 @@ table.sig-mon tr.sig-divider.regime-hd td b { color: inherit; }
     <button class="tab" onclick="switchTab('trades')">Trades Detail</button>
     <button class="tab" onclick="switchTab('risk')">Risk Analysis</button>
     <button class="tab" onclick="switchTab('markets')">Markets &amp; Regime</button>
+    <button class="tab" onclick="switchTab('forward')">Forward-Looking Analysis</button>
     <button class="tab" onclick="switchTab('howto')">About</button>
   </div>
 </div>
@@ -1051,6 +1052,38 @@ table.sig-mon tr.sig-divider.regime-hd td b { color: inherit; }
           <b>median</b> is the middle trade and is the more honest read on a bucket. <b>Total P&amp;L</b> is dollars, so it is
           dominated by the few trades that happened to be sized large late in the compounding, not by how good the bucket was.</p>
       </div>
+    </div>
+  </div>
+
+  <!-- ══ FORWARD-LOOKING ANALYSIS TAB ═════════════════════════════════ -->
+  <div id="tab-forward" style="display:none">
+    <div class="row" style="align-items:stretch;gap:12px">
+      <div class="panel" style="flex:1 1 0;min-width:230px;display:flex;flex-direction:column">
+        <div class="ph"><span>Signal state</span></div>
+        <div class="pb" style="flex:1">
+          <input type="date" id="fwd-date" onchange="renderForward(this.value)"
+            style="width:100%;background:var(--panel2);color:var(--yellow);border:1px solid var(--border2);border-radius:8px;padding:5px 8px;font-family:'Chakra Petch',sans-serif;font-size:0.8rem;margin-bottom:8px;color-scheme:dark">
+          <div id="fwd-state" style="overflow-x:auto"></div>
+          <div id="fwd-method" style="color:var(--dim);font-size:0.72rem;line-height:1.5;margin-top:8px"></div>
+        </div>
+      </div>
+      <div class="panel" style="flex:3 1 0">
+        <div class="ph"><span id="fwd-chart-title">Next 10 sessions &mdash; what similar days did</span>
+          <div id="fwd-legend" style="display:flex;gap:14px;align-items:center"></div></div>
+        <div class="pb" style="position:relative;height:400px"><canvas id="fwdChart" style="cursor:grab"></canvas></div>
+      </div>
+    </div>
+    <div class="row" style="margin-top:12px">
+      <div class="panel" style="flex:1.4 1 0"><div class="ph"><span id="fwd-table-title">Day-by-day odds</span></div>
+        <div class="pb" style="overflow-x:auto"><div id="fwd-table"></div></div></div>
+      <div class="panel" style="flex:1 1 0"><div class="ph"><span>Closest historical analogs</span></div>
+        <div class="pb" style="overflow-x:auto"><div id="fwd-analogs"></div></div></div>
+    </div>
+    <div style="margin-top:10px;color:var(--dim);font-size:0.72rem;line-height:1.6;padding:0 4px">
+      Probabilities here are <b>historical frequencies among similar past days</b>, not forecasts.
+      Similarity is measured on end-of-day signals only, the sample is finite, and volatility
+      regimes change &mdash; a 70% historical up-rate can and does produce losing streaks. This is
+      intended as context for short-dated options, not investment advice.
     </div>
   </div>
 
@@ -1480,7 +1513,7 @@ function buildPositionState(){
 }
 
 // ── Tabs ──────────────────────────────────────────────────────────────────
-const TABS=['summary','analytics','trades','risk','markets','howto'];
+const TABS=['summary','analytics','trades','risk','markets','forward','howto'];
 function switchTab(n){
   TABS.forEach(t=>{const el=document.getElementById('tab-'+t); if(el) el.style.display=t===n?'':'none';});
   document.querySelectorAll('.tab').forEach((el,i)=>el.classList.toggle('active',TABS[i]===n));
@@ -1491,6 +1524,7 @@ function switchTab(n){
   if(n==='analytics' && typeof window._buildEq==='function') setTimeout(()=>{try{window._buildEq();}catch(_){}},60);
   if(n==='risk' && typeof renderRisk==='function') setTimeout(()=>{try{renderRisk();}catch(_){}},40);
   if(n==='markets' && typeof renderMarkets==='function') setTimeout(()=>{try{renderMarkets();}catch(_){}},40);
+  if(n==='forward' && typeof renderForward==='function') setTimeout(()=>{try{renderForward();}catch(_){}},40);
 }
 // Global instrument toggle — switches the whole dashboard TQQQ/SQQQ <-> QLD/QID
 function setInstr(m){
@@ -1530,6 +1564,169 @@ function render(){
   renderSummary();
 }
 // Re-render all instrument-dependent surfaces when the global toggle flips
+// ── Forward-Looking Analysis: nearest-neighbour analogs of TODAY's signal state ──
+// Finds the K most-similar historical days (same position state, weighted z-distance
+// on the continuous signal-monitor indicators) and shows what the active instrument
+// did over the following 10 sessions: every analog path, the median/quartile fan, and
+// day-by-day P(cumulative return > 0). All client-side from bar_history.
+const FWD_H = 10;
+const FWD_FEATS = [                        // [field, weight, label, formatter]
+  ['vxn_rank',   1.25, 'VXN %ile',  v=>v.toFixed(0)],
+  ['contango',   1.0,  'VIX3M:VIX1M', v=>(v*100).toFixed(1)+'%'],
+  ['_emadist',   1.25, 'Px vs 20D EMA', v=>(v*100).toFixed(1)+'%'],
+  ['stoch_k',    1.0,  'Stoch %K',  v=>v.toFixed(0)],
+  ['rsi',        0.9,  'RSI',       v=>v.toFixed(0)],
+  ['macd_pct',   0.75, 'MACD %',    v=>v.toFixed(2)],
+  ['mfi',        0.6,  'MFI',       v=>v.toFixed(0)],
+];
+function _fwdCls(b){ return b.position==='LONG_TQQQ'?'SV':(b.position==='LONG_SQQQ'?'UV':'CASH'); }
+function _fwdQuant(sorted,q){ if(!sorted.length) return null;
+  const i=(sorted.length-1)*q, lo=Math.floor(i), hi=Math.ceil(i);
+  return sorted[lo]+(sorted[hi]-sorted[lo])*(i-lo); }
+function _fwdPrep(H){ if(H._prepped) return; H._prepped=true;         // derive px-vs-EMA once
+  H.forEach(b=>{ b._emadist=(b.tqqq_price!=null&&b.ema20)? b.tqqq_price/b.ema20-1 : null; }); }
+function renderForward(selDate){
+  const H=(typeof DATA!=='undefined'&&DATA&&DATA.bar_history)||[]; if(H.length<300) return;
+  _fwdPrep(H);
+  let li=H.length-1;
+  if(selDate){ for(let i=H.length-1;i>=0;i--){ if(H[i].date<=selDate){ li=i; break; } } }
+  const dEl=document.getElementById('fwd-date');
+  if(dEl){ dEl.min=H[0].date; dEl.max=H[H.length-1].date; if(dEl.value!==H[li].date) dEl.value=H[li].date; }
+  const last=H[li], curCls=_fwdCls(last);
+  const feats=[...FWD_FEATS];
+  if(curCls!=='CASH') feats.push(['open_pnl_pct',1.75,'Open P&L',v=>(v*100).toFixed(1)+'%']);
+  const stats={};
+  feats.forEach(([f])=>{ const xs=H.map(b=>b[f]).filter(v=>v!=null&&isFinite(v));
+    const mu=xs.reduce((a,v)=>a+v,0)/xs.length;
+    const sd=Math.sqrt(xs.reduce((a,v)=>a+(v-mu)*(v-mu),0)/xs.length)||1;
+    stats[f]={mu,sd}; });
+  const okBar=b=>feats.every(([f])=>b[f]!=null&&isFinite(b[f]));
+  if(!okBar(last)){ const el=document.getElementById('fwd-state');
+    if(el) el.innerHTML='<span style="color:var(--dim)">Latest bar is missing indicator data — check back after the next refresh.</span>'; return; }
+  const sv=curCls!=='UV';                               // CASH analyses the long (TQQQ) side
+  const pxf=sv?'tqqq_price':'sqqq_price', pxo=sv?'sqqq_price':'tqqq_price';
+  const cands=[];
+  for(let i=0;i<H.length-FWD_H-1;i++){ const b=H[i];
+    if(Math.abs(i-li)<=FWD_H) continue;
+    if(_fwdCls(b)!==curCls||!okBar(b)) continue;
+    let ok=b[pxf]!=null&&b[pxf]>0;
+    for(let h=1;ok&&h<=FWD_H;h++){ const p_=H[i+h][pxf]; if(p_==null||!(p_>0)) ok=false; }
+    if(!ok) continue;
+    let d2=0; feats.forEach(([f,w])=>{ const z=(b[f]-last[f])/stats[f].sd; d2+=w*z*z; });
+    cands.push([Math.sqrt(d2),i]); }
+  if(cands.length<30){ const el=document.getElementById('fwd-state');
+    if(el) el.innerHTML='<span style="color:var(--dim)">Not enough comparable historical days ('+cands.length+') for a meaningful sample.</span>'; return; }
+  cands.sort((a,b)=>a[0]-b[0]);
+  const K=Math.min(140,Math.max(50,Math.round(cands.length*0.12)));
+  const picks=cands.slice(0,K);
+  const iName=sv?svN():uvN(), oName=sv?uvN():svN();
+  const paths=picks.map(([dist,i])=>{ const base=H[i][pxf], arr=[0];
+    for(let h=1;h<=FWD_H;h++) arr.push(H[i+h][pxf]/base-1);
+    return {dist,i,arr}; });
+  const rows=[];
+  for(let h=1;h<=FWD_H;h++){ const xs=paths.map(p=>p.arr[h]).sort((a,b)=>a-b);
+    rows.push({h, pos:xs.filter(v=>v>0).length/xs.length, n:xs.length,
+      med:_fwdQuant(xs,0.5), mean:xs.reduce((a,v)=>a+v,0)/xs.length,
+      p10:_fwdQuant(xs,0.10), p25:_fwdQuant(xs,0.25), p75:_fwdQuant(xs,0.75), p90:_fwdQuant(xs,0.90),
+      min:xs[0], max:xs[xs.length-1]}); }
+  const oPos=[];
+  for(let h=1;h<=FWD_H;h++){ let n=0,u=0;
+    picks.forEach(([_,i])=>{ const a=H[i][pxo], b=H[i+h][pxo]; if(a>0&&b>0){n++; if(b>a)u++;} });
+    oPos.push(n?u/n:null); }
+  // ── signal-state table ──
+  const _stC=(good,bad)=>good?'var(--teal)':bad?'var(--coral)':'var(--yellow)';
+  const posName=curCls==='CASH'?'CASH':('in '+(curCls==='SV'?svN():uvN()));
+  const srows=[['Position', posName, curCls==='UV'?'var(--coral)':curCls==='SV'?'var(--teal)':'var(--cashc)'],
+               ['Regime', last.qqq_below_sma200?'Below 200D':'Above 200D', last.qqq_below_sma200?'var(--coral)':'var(--teal)']];
+  feats.forEach(([f,w,lab,fmt])=>{ let c='var(--yellow)';
+    if(f==='vxn_rank')  c=_stC(last[f]>=90&&last[f]<99, last[f]>=99);
+    if(f==='contango')  c=_stC(last[f]>0, last[f]<-0.03);
+    if(f==='_emadist')  c=_stC(last[f]>=0, last[f]<0);
+    if(f==='stoch_k')   c=_stC(last[f]>=25&&last[f]<=75, last[f]<25);
+    if(f==='rsi')       c=_stC(last[f]>=30&&last[f]<=70, last[f]<30);
+    if(f==='macd_pct')  c=_stC(last[f]>0, last[f]<0);
+    if(f==='mfi')       c=_stC(last[f]>=25, last[f]<25);
+    if(f==='open_pnl_pct') c=last[f]>=0?'var(--teal)':'var(--coral)';
+    srows.push([lab, fmt(last[f]), c]); });
+  document.getElementById('fwd-state').innerHTML=
+    '<table style="width:100%;border-collapse:collapse;font-size:0.78rem">'+
+    srows.map(r=>'<tr style="border-top:1px solid var(--border)">'
+      +'<td style="padding:4px 6px;color:var(--dim)">'+r[0]+'</td>'
+      +'<td style="padding:4px 6px;text-align:right"><b style="color:'+r[2]+'">'+r[1]+'</b></td></tr>').join('')
+    +'</table>';
+  document.getElementById('fwd-method').innerHTML=
+    'Matched <b>'+K+'</b> of '+cands.length+' comparable days (same position state, weighted similarity on the '
+    +'indicators above). Chart shows <b>'+iName+'</b> over the next '+FWD_H+' sessions from each analog day'
+    +(li<H.length-1-FWD_H?' — the white dashed line is what actually followed the selected day':'')
+    +(curCls==='CASH'?'. Strategy is in cash: read as "what TQQQ did from similar setups"':'')+'.';
+  // ── chart ──
+  const labels=['Now']; for(let h=1;h<=FWD_H;h++) labels.push('+'+h);
+  const dsets=[];
+  dsets.push({label:'p10–p90',data:[0,...rows.map(r=>r.p90)],borderColor:'rgba(0,0,0,0)',backgroundColor:'rgba(46,230,255,0.07)',pointRadius:0,fill:'+1',tension:0.25});
+  dsets.push({label:'_p10',data:[0,...rows.map(r=>r.p10)],borderColor:'rgba(0,0,0,0)',pointRadius:0,fill:false,tension:0.25});
+  dsets.push({label:'p25–p75',data:[0,...rows.map(r=>r.p75)],borderColor:'rgba(0,0,0,0)',backgroundColor:'rgba(46,230,255,0.15)',pointRadius:0,fill:'+1',tension:0.25});
+  dsets.push({label:'_p25',data:[0,...rows.map(r=>r.p25)],borderColor:'rgba(0,0,0,0)',pointRadius:0,fill:false,tension:0.25});
+  const MAXL=80, step=Math.max(1,Math.floor(paths.length/MAXL));
+  for(let k=0;k<paths.length;k+=step) dsets.push({data:paths[k].arr,borderColor:'rgba(246,96,182,0.06)',borderWidth:1,pointRadius:0,fill:false,tension:0});
+  dsets.push({label:'Median analog',data:[0,...rows.map(r=>r.med)],borderColor:TEAL,borderWidth:2.5,pointRadius:0,fill:false,tension:0.25});
+  const legend=[[TEAL,'median'],['rgba(46,230,255,0.35)','25–75%'],['rgba(46,230,255,0.15)','10–90%'],['rgba(246,96,182,0.35)','analog paths']];
+  if(li<H.length-1-FWD_H && last[pxf]>0){ const act=[0];
+    let ok=true; for(let h=1;h<=FWD_H;h++){ const p_=H[li+h][pxf]; if(!(p_>0)){ok=false;break;} act.push(p_/last[pxf]-1); }
+    if(ok){ dsets.push({label:'Actual result',data:act,borderColor:'#fff0a0',borderWidth:2,borderDash:[6,4],pointRadius:0,fill:false,tension:0});
+            legend.push(['#fff0a0','actual result']); } }
+  const _fp=v=>(v>=0?'+':'')+(v*100).toFixed(2)+'%';
+  mkChart('fwdChart',{type:'line',data:{labels,datasets:dsets},
+    options:{responsive:true,maintainAspectRatio:false,animation:false,
+      interaction:{mode:'index',intersect:false},
+      plugins:{legend:{display:false},tooltip:{filter:it=>!!it.dataset.label&&!it.dataset.label.startsWith('_'),
+        callbacks:{label:c=>' '+c.dataset.label+': '+_fp(c.parsed.y),
+          footer:items=>{ const ix=items.length?items[0].dataIndex:0; if(ix<1) return '';
+            const r=rows[ix-1]; if(!r) return '';
+            return ['— analog distribution —',
+                    'P(up): '+(r.pos*100).toFixed(0)+'%   n='+r.n,
+                    'Max: '+_fp(r.max)+'   p90: '+_fp(r.p90),
+                    'p75: '+_fp(r.p75)+'   median: '+_fp(r.med),
+                    'mean: '+_fp(r.mean)+'   p25: '+_fp(r.p25),
+                    'p10: '+_fp(r.p10)+'   Min: '+_fp(r.min)]; }}},
+        zoom:{ pan:{enabled:true,mode:'x'},
+               zoom:{wheel:{enabled:true,speed:0.09},pinch:{enabled:true},mode:'x'},
+               limits:{x:{min:'original',max:'original',minRange:3}} }},
+      scales:{x:{ticks:{color:TICK,font:{size:12,family:FONT}},grid:{color:GRID}},
+              y:{ticks:{color:TICK,font:{size:12,family:FONT},callback:v=>(v*100).toFixed(0)+'%'},grid:{color:GRID}}}}});
+  const _fc=document.getElementById('fwdChart');
+  if(_fc&&!_fc._dblBound){ _fc.addEventListener('dblclick',()=>{ try{ Chart.getChart('fwdChart').resetZoom(); }catch(_){} }); _fc._dblBound=true; }
+  document.getElementById('fwd-legend').innerHTML=legHtml(legend);
+  document.getElementById('fwd-chart-title').textContent='Next '+FWD_H+' sessions after '+last.date+' — '+K+' most-similar days ('+iName+')';
+  // ── table ──
+  const pc=v=>{ const c=v>=0.6?'var(--teal)':v>=0.5?'var(--yellow)':'var(--coral)';
+    return '<b style="color:'+c+'">'+(v*100).toFixed(0)+'%</b>'; };
+  const f2=v=>{ const c=v>=0?'var(--teal)':'var(--coral)';
+    return '<span style="color:'+c+'">'+(v>=0?'+':'')+(v*100).toFixed(2)+'%</span>'; };
+  const _rth=s=>'<th style="text-align:right;padding:5px 8px">'+s+'</th>';
+  let tb='<table style="width:100%;border-collapse:collapse;font-size:0.8rem"><tr style="color:var(--dim)">'
+    +'<th style="text-align:left;padding:5px 8px">Session</th>'+_rth('P('+iName+' &uarr;)')+_rth('Median')+_rth('Mean')
+    +_rth('10th pct')+_rth('90th pct')+_rth('P('+oName+' &uarr;)')+'</tr>';
+  rows.forEach((r,ix)=>{ tb+='<tr style="text-align:right;border-top:1px solid var(--border)">'
+    +'<td style="text-align:left;padding:5px 8px;color:var(--dim)">EOD +'+r.h+(r.h===1?' (tomorrow)':'')+'</td>'
+    +'<td style="padding:5px 8px">'+pc(r.pos)+'</td><td style="padding:5px 8px">'+f2(r.med)+'</td><td style="padding:5px 8px">'+f2(r.mean)+'</td>'
+    +'<td style="padding:5px 8px">'+f2(r.p10)+'</td><td style="padding:5px 8px">'+f2(r.p90)+'</td>'
+    +'<td style="padding:5px 8px">'+(oPos[ix]!=null?pc(oPos[ix]):'<span style="color:var(--namut)">—</span>')+'</td></tr>'; });
+  tb+='</table>';
+  document.getElementById('fwd-table').innerHTML=tb;
+  document.getElementById('fwd-table-title').textContent='Day-by-day odds — cumulative return from today ('+K+' analogs)';
+  // ── nearest-analog list ──
+  let an='<table style="width:100%;border-collapse:collapse;font-size:0.78rem"><tr style="color:var(--dim)">'
+    +'<th style="text-align:left;padding:5px 8px">Date</th>'+_rth('Match')+_rth('+1d')+_rth('+5d')+_rth('+10d')+'</tr>';
+  const dmax=picks[picks.length-1][0]||1;
+  paths.slice(0,10).forEach(p=>{ const b=H[p.i];
+    an+='<tr style="text-align:right;border-top:1px solid var(--border)">'
+      +'<td style="text-align:left;padding:5px 8px">'+b.date+'</td>'
+      +'<td style="padding:5px 8px;color:var(--dim)">'+Math.max(1,Math.round(100*(1-p.dist/dmax)))+'%</td>'
+      +'<td style="padding:5px 8px">'+f2(p.arr[1])+'</td><td style="padding:5px 8px">'+f2(p.arr[5])+'</td><td style="padding:5px 8px">'+f2(p.arr[10])+'</td></tr>'; });
+  an+='</table>';
+  document.getElementById('fwd-analogs').innerHTML=an;
+}
+
 function rerenderActive(){
   renderAnalytics();renderSigPerf();renderSigStats();renderSigDist();renderExitReasons();renderTrades();
   const pl=document.getElementById('pos-band-label');
@@ -1540,6 +1737,7 @@ function rerenderActive(){
   if(window._sigMonReady && typeof renderSignalMonitor==='function') renderSignalMonitor();  // monitor chips follow toggle
   const rt=document.getElementById('tab-risk'); if(rt && rt.style.display!=='none' && typeof renderRisk==='function') renderRisk();
   const mt=document.getElementById('tab-markets'); if(mt && mt.style.display!=='none' && typeof renderMarkets==='function') renderMarkets();
+  const ft=document.getElementById('tab-forward'); if(ft && ft.style.display!=='none' && typeof renderForward==='function') renderForward();
 }
 
 // Open-position return in the CURRENT toggle basis. Used by BOTH the header badge and the
