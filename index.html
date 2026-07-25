@@ -3242,8 +3242,8 @@ function renderSignalMonitor(histBar){
   const dF=_domain('frr',[0.95]);
   const gFrr={lo:dF.lo,hi:dF.hi,z:[[dF.lo,0.95,'r'],[0.95,dF.hi,'t']],v:b.frr,fmt:fN2,
     tip:`yield-curve ratio FRR2-10 = (5×10Y − 2Y)/(4×10Y) — below 0.95 (2Y > 1.2×10Y, deep inversion) blocks TQQQ entries · now ${b.frr!=null?b.frr.toFixed(3):'—'}`};
-  const gVxnR={lo:88,hi:100,z:[[88,99,'t'],[99,100,'r']],v:b.vxn_rank,fmt:fN0,
-    tip:`VXN 2-year percentile — above the 99.5th blocks TQQQ entries AND exits TQQQ (crash regime); below the 0.5th blocks/exits SQQQ · now ${b.vxn_rank!=null?b.vxn_rank.toFixed(1):'—'} (VXN ${b.vxn!=null?b.vxn.toFixed(1):'—'})`};
+  const gVxnR={lo:88,hi:100,z:[[88,99.8,'t'],[99.8,100,'r']],v:b.vxn_rank,fmt:fN0,
+    tip:`VXN 2-year percentile — above the 99.8th exits TQQQ (crash regime) · now ${b.vxn_rank!=null?b.vxn_rank.toFixed(1):'—'} (VXN ${b.vxn!=null?b.vxn.toFixed(1):'—'})`};
   const dAr={lo:0,hi:100};
   const gAr={lo:0,hi:100,z:[[0,95,'t'],[95,100,'r']],v:b.aroon_dn,fmt:fN0,
     tip:`Aroon-Down — a fresh 14-day low · now ${b.aroon_dn!=null?b.aroon_dn.toFixed(0):'—'}`};
@@ -3329,7 +3329,7 @@ function renderSignalMonitor(histBar){
       (isSV&&!!b.qqq_below_sma200), b.bear_bar&&b.qqq_below_sma200, barState, gBar],
     ['Chikou Span','The Ichimoku Chikou span (price shifted back 25 bars) drops below the price from 25 bars ago — momentum confirmation that the down-move is real, not noise. Armed only in a bear regime; reads N/A above the 200-day SMA.', 'Not bearish, or bull regime','Bear regime + bearish',
       (isSV&&!!b.qqq_below_sma200), b.chikou_bear&&b.qqq_below_sma200, b.chikou_sig===1?'Bullish':b.chikou_sig===-1?'Bearish':'Consol.', gChik],
-    ['VXN Percentile','VXN above its 99th 2-year percentile — crash regime, de-risk', 'Below 99 pct','Above 99 pct',
+    ['VXN Percentile','VXN above its 99.8th 2-year percentile — crash regime, de-risk', 'Below 99.8 pct','Above 99.8 pct',
       isSV, b.vxn_extreme_high, num(b.vxn_rank,1), gVxnR],
     ['Stoch %K','%K under 25 — the bear move is stretched; rebound risk, so the SQQQ short is closed', '&ge; 25','&lt; 25',
       isUV, (b.stoch_k!=null&&b.stoch_k<25), num(b.stoch_k,1), gK],
