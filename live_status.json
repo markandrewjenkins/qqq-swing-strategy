@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-07-28T00:55:22+00:00",
+  "generated_utc": "2026-07-28T08:00:34+00:00",
   "market": {
     "vxn_used": 28.65,
     "vix_used": 18.67,
@@ -8,21 +8,21 @@
       "vxn": 28.65,
       "vxn_date": "2026-07-27",
       "vxn_chg": 0.009158,
-      "vxn_ref": 28.39,
+      "vxn_ref": 28.65,
       "vix": 18.67,
       "vix_date": "2026-07-27",
       "vix_chg": 0.004844,
-      "vix_ref": 18.58,
+      "vix_ref": 18.67,
       "vix3m": 20.2,
       "vix3m_date": "2026-07-27",
       "vix3m_chg": -0.015115,
-      "vix3m_ref": 20.51
+      "vix3m_ref": 20.2
     },
     "quotes": {
       "vxn": {
         "price": 28.65,
-        "prev_close": 28.39,
-        "change_pct": 0.009158,
+        "prev_close": 28.65,
+        "change_pct": 0.0,
         "session": "regular",
         "asof_date": "2026-07-27",
         "regular_price": 28.65,
@@ -34,21 +34,21 @@
       },
       "vix": {
         "price": 18.67,
-        "prev_close": 18.58,
-        "change_pct": 0.004844,
-        "session": "regular",
+        "prev_close": 18.57,
+        "change_pct": 0.005385,
+        "session": "pre",
         "asof_date": "2026-07-27",
         "regular_price": 18.67,
         "regular_change": 0.005385,
-        "ext_price": null,
-        "ext_change": null,
+        "ext_price": 19.06,
+        "ext_change": 0.020889,
         "reg_time": "2026-07-27T20:10:00+00:00",
-        "time": "2026-07-27T20:10:00+00:00"
+        "time": "2026-07-28T07:45:31+00:00"
       },
       "vix3m": {
         "price": 20.2,
-        "prev_close": 20.51,
-        "change_pct": -0.015115,
+        "prev_close": 20.2,
+        "change_pct": 0.0,
         "session": "regular",
         "asof_date": "2026-07-27",
         "regular_price": 20.2,
@@ -69,7 +69,7 @@
         "ext_price": 28039.21,
         "ext_change": 0.0,
         "reg_time": "2026-07-27T20:15:00+00:00",
-        "time": "2026-07-27T23:59:58+00:00"
+        "time": "2026-07-27T23:55:00+00:00"
       },
       "tqqq": {
         "price": 63.41,
@@ -82,7 +82,7 @@
         "ext_price": 63.15,
         "ext_change": -0.0041,
         "reg_time": "2026-07-27T20:00:00+00:00",
-        "time": "2026-07-27T23:59:59+00:00"
+        "time": "2026-07-27T23:55:00+00:00"
       },
       "sqqq": {
         "price": 45.19,
@@ -95,7 +95,7 @@
         "ext_price": 45.38,
         "ext_change": 0.004204,
         "reg_time": "2026-07-27T20:00:00+00:00",
-        "time": "2026-07-27T23:59:59+00:00"
+        "time": "2026-07-27T23:55:00+00:00"
       },
       "qqq": {
         "price": 682.218,
@@ -108,7 +108,7 @@
         "ext_price": 681.33,
         "ext_change": -0.001302,
         "reg_time": "2026-07-27T20:00:00+00:00",
-        "time": "2026-07-27T23:59:58+00:00"
+        "time": "2026-07-27T23:55:00+00:00"
       },
       "spy": {
         "price": 739.04,
@@ -121,7 +121,7 @@
         "ext_price": 738.9277,
         "ext_change": -0.000152,
         "reg_time": "2026-07-27T20:00:00+00:00",
-        "time": "2026-07-27T23:59:53+00:00"
+        "time": "2026-07-27T23:55:00+00:00"
       },
       "upro": {
         "price": 136.36,
@@ -134,7 +134,7 @@
         "ext_price": 136.36,
         "ext_change": 0.0,
         "reg_time": "2026-07-27T20:00:00+00:00",
-        "time": "2026-07-27T23:59:56+00:00"
+        "time": "2026-07-27T23:55:00+00:00"
       },
       "spxu": {
         "price": 38.49,
@@ -147,7 +147,7 @@
         "ext_price": 38.53,
         "ext_change": 0.001039,
         "reg_time": "2026-07-27T20:00:00+00:00",
-        "time": "2026-07-27T23:59:23+00:00"
+        "time": "2026-07-27T23:55:00+00:00"
       },
       "spx": {
         "price": 7413.1802,
@@ -171,13 +171,13 @@
     "yc_spread": null,
     "regime": "contango"
   },
-  "cboe_refreshed": true,
+  "cboe_refreshed": false,
   "official": {
     "date": "2026-07-27",
     "position": "LONG_TQQQ",
     "signal": "LONG_TQQQ",
     "open_pnl": 0.292578,
-    "equity": 199761244.0,
+    "equity": 199761565.51,
     "entry_date": "2026-04-10",
     "entry_price": 49.057,
     "open_pnl_live": true
