@@ -113,7 +113,7 @@ body {
 .tabs { display: flex; gap: 4px; flex-wrap: wrap }
 .tab {
   background: transparent;
-  border: 1px dotted var(--border2);
+  border: 2px solid var(--border2);
   color: var(--dim);
   padding: 6px 16px;
   border-radius: 3px;
@@ -349,8 +349,8 @@ tr:hover td { background: #e3dbc6 }
 .live-main { display: flex; align-items: stretch; gap: 16px; flex-wrap: wrap; }
 .live-pos-block { display: flex; flex-direction: column; justify-content: center; gap: 1px; padding-right: 2px; }
 .live-pos-lbl { color: var(--dim, #909090); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.8rem; }
-.live-pos-val { font-weight: 700; font-size: 1.85rem; letter-spacing: 0.01em; display: inline-flex; align-items: baseline; gap: 10px; }
-.live-pos-val .live-chg { font-size: 1.05rem; }
+.live-pos-val { font-weight: 700; font-size: 2.1rem; letter-spacing: 0.01em; display: inline-flex; align-items: baseline; gap: 10px; }
+.live-pos-val .live-chg { font-size: 0.9rem; }
 .live-vdiv { width: 1px; align-self: stretch; background: var(--border2, #555); }
 .live-quotes { display: flex; flex-direction: column; justify-content: center; gap: 6px; min-width: 0; flex: 1; }
 .live-row { display: flex; align-items: baseline; gap: 13px; flex-wrap: wrap; }
@@ -413,7 +413,7 @@ tr:hover td { background: #e3dbc6 }
 .mkt-legend .ml-item { display:inline-flex; align-items:center; gap:4px; white-space:nowrap; }
 .mkt-legend .ml-ico { font-size:0.92rem; display:inline-flex; }
 .mkt-ico { display:inline-flex; align-items:center; line-height:0; }
-.mkt-ico svg { width:13px; height:13px; display:block; }
+.mkt-ico svg { width:16px; height:16px; display:block; }
 .mkt-legend .ml-ico svg { width:13px; height:13px; display:block; }
 .cdl-toggle-group { display:inline-flex; border:1px dotted var(--border2); border-radius:5px; overflow:hidden; }
 .cdl-seg { background:transparent; color:var(--dim); border:none; padding:3px 11px; font-family:'JetBrains Mono',monospace; font-size:0.7rem; font-weight:600; letter-spacing:0.03em; cursor:pointer; }
@@ -481,7 +481,7 @@ table.sig-mon th:nth-child(6),table.sig-mon td:nth-child(6){ width:9%; }
 #candle-chart { position:relative; }
 /* Bar Replay control bar (TradingView-style playback). */
 #replay-bar { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-bottom:9px; font-size:0.72rem; }
-.rp-btn { background:rgba(237,230,214,0.88); color:var(--yellow); border:1px dotted var(--border2); border-radius:11px;
+.rp-btn { background:rgba(237,230,214,0.88); color:var(--yellow); border:1px solid var(--border2); border-radius:11px;
   padding:4px 11px; font-family:'JetBrains Mono',monospace; font-size:0.72rem; letter-spacing:0.02em; cursor:pointer; transition:background .15s,border-color .15s;
   font-variant-emoji:text; }
 /* Force the playback glyphs to render as monochrome text so they inherit the yellow. */
@@ -491,7 +491,7 @@ table.sig-mon th:nth-child(6),table.sig-mon td:nth-child(6){ width:9%; }
 .rp-main.on { background:rgba(201,123,162,0.18); border-color:var(--yellow); }
 .rp-exit:hover { background:rgba(207,74,63,0.18); border-color:var(--coral); color:var(--coral); }
 .rp-lab { color:var(--dim); display:inline-flex; align-items:center; gap:5px; }
-.rp-date { background:#ede6d6; color:var(--cdbf,#57503f); border:1px dotted var(--border2); border-radius:8px; padding:3px 6px; font-family:'JetBrains Mono',monospace; font-size:0.7rem; color-scheme:light; }
+.rp-date { background:#ede6d6; color:var(--cdbf,#57503f); border:1px solid var(--border2); border-radius:8px; padding:3px 6px; font-family:'JetBrains Mono',monospace; font-size:0.7rem; color-scheme:light; }
 #replay-status { color:var(--dim); font-variant-numeric:tabular-nums; }
 /* Full-screen Live Chart: the panel fills the screen and the chart grows to fit. */
 /* Full screen: panel fills the viewport as a flex column so the candle chart grows
@@ -712,8 +712,8 @@ table.sig-stats td .ss-sub { font-size: var(--fs-micro); }
 .live-val { font-size: 0.78rem; }
 .live-chg { font-size: 0.69rem; }
 .tab { font-size: var(--fs-xs); }
-.ph { font-size: var(--fs-xs); }
-.page-disclaimer { font-size: var(--fs-xs); }
+.ph { font-size: 0.95rem; }
+.page-disclaimer { font-size: 0.68rem; }
 
 /* Snap the remaining named outliers onto the scale. The mini-monitor keeps its
    own two-step internal scale on purpose: it is a floating card that JS
@@ -727,7 +727,7 @@ table.sig-stats td .ss-sub { font-size: var(--fs-micro); }
 .sig-proj-row1 { font-size: var(--fs-sm); }
 .sig-proj-row2, .sig-proj-tally, .sig-rf { font-size: var(--fs-xs); }
 .leg-item, .cmp-badge, .pill, .eb { font-size: var(--fs-xs); }
-.mini-mon .mini-inner { font-size: 0.70rem; }
+.mini-mon .mini-inner { font-size: 0.665rem; }
 .mini-row .mini-name, .mini-row .mini-val, .mini-row .mini-sig { font-size: 1em; }
 .mini-mon .mini-hd, .mini-mon .mini-sub, .mini-mon .mini-note,
 .mini-mon .mini-combo, .mini-mon .mini-why { font-size: 0.92em; }
@@ -737,10 +737,10 @@ table.sig-stats td .ss-sub { font-size: var(--fs-micro); }
 /* Top-right tab buttons a touch smaller */
 .tab { font-size: 0.72rem; padding: 5px 12px; }
 /* Market-status row beside the Live Chart header */
-#mkt-row { font-size: 0.66rem; }
+#mkt-row { font-size: 0.8rem; }
 /* Live Chart controls (Bar Replay etc.) + hover hint */
-.rp-btn, .rp-lab, .rp-date, #replay-status { font-size: 0.64rem; }
-.cdl-info, #daily-info { font-size: 0.72rem; }
+.rp-btn, .rp-lab, .rp-date, #replay-status { font-size: 0.74rem; }
+.cdl-info, #daily-info { font-size: 0.84rem; }
 /* Detailed signal monitor — smaller */
 table.sig-mon { font-size: 0.72rem; }
 table.sig-mon td.sig-desc { font-size: 0.68rem; }
@@ -873,7 +873,7 @@ table.sig-mon tr.sig-divider.regime-hd td b { color: inherit; }
         <div id="cdl-wrap" style="position:relative;width:100%;height:620px">
           <div id="candle-chart" style="width:100%;height:100%"></div>
           <div id="mini-monitor" class="mini-mon"></div>
-          <button id="cdl-toend" title="Jump to latest" onclick="summaryToEnd()" style="position:absolute;bottom:46px;right:78px;z-index:6;display:none;background:rgba(237,230,214,0.88);color:var(--yellow);border:1px dotted var(--border2);border-radius:12px;padding:3px 11px;font-family:'JetBrains Mono',monospace;font-size:0.7rem;letter-spacing:0.03em;cursor:pointer">Latest &#8594;</button>
+          <button id="cdl-toend" class="rp-btn" title="Jump to latest" onclick="summaryToEnd()" style="position:absolute;bottom:46px;right:78px;z-index:6;display:none;letter-spacing:0.03em">Latest &#8594;</button>
           <div id="cdl-lock" style="position:absolute;top:8px;left:10px;z-index:6;display:none;background:rgba(237,230,214,0.9);color:var(--yellow);border:1px dotted var(--border2);border-radius:12px;padding:3px 11px;font-size:0.66rem;letter-spacing:0.02em;pointer-events:none"></div>
         </div>
         <div class="cdl-legend">
@@ -883,8 +883,6 @@ table.sig-mon tr.sig-divider.regime-hd td b { color: inherit; }
           <span><span class="cdl-sw" style="background:var(--teal)"></span> Profit exit</span>
           <span><span class="cdl-sw" style="background:var(--coral)"></span> Loss exit</span>
         </div>
-        <div class="pos-band-label" id="pos-band-label">POSITION &nbsp;<span style="color:var(--teal)">&#9646; TQQQ</span> &nbsp;<span style="color:var(--coral)">&#9646; SQQQ</span> &nbsp;<span style="color:var(--cashc)">&#9646; CASH</span></div>
-        <div id="pos-band" style="width:100%;height:30px"></div>
       </div>
     </div>
     <div class="panel" style="margin-top:12px">
@@ -909,7 +907,7 @@ table.sig-mon tr.sig-divider.regime-hd td b { color: inherit; }
         <div style="position:relative;width:100%;height:360px">
           <div id="daily-lock" style="position:absolute;top:8px;left:10px;z-index:6;display:none;background:rgba(237,230,214,0.9);color:var(--yellow);border:1px dotted var(--border2);border-radius:12px;padding:3px 11px;font-size:0.66rem;letter-spacing:0.02em;pointer-events:none"></div>
           <div id="daily-lc" style="position:relative;width:100%;height:100%"></div>
-          <button id="daily-toend" title="Jump to latest" onclick="dailyToEnd()" style="position:absolute;bottom:40px;right:78px;z-index:6;display:none;background:rgba(237,230,214,0.88);color:var(--yellow);border:1px dotted var(--border2);border-radius:12px;padding:3px 11px;font-family:'JetBrains Mono',monospace;font-size:0.7rem;letter-spacing:0.03em;cursor:pointer">Latest &#8594;</button>
+          <button id="daily-toend" class="rp-btn" title="Jump to latest" onclick="dailyToEnd()" style="position:absolute;bottom:40px;right:78px;z-index:6;display:none;letter-spacing:0.03em">Latest &#8594;</button>
           <button class="rp-btn" title="Reset zoom to full history" onclick="try{window._dailyChart&&window._dailyChart.timeScale().fitContent();}catch(_){}" style="position:absolute;top:8px;right:16px;z-index:6;font-size:0.66rem">Reset zoom</button>
         </div>
       </div>
@@ -951,16 +949,8 @@ table.sig-mon tr.sig-divider.regime-hd td b { color: inherit; }
         <div class="ph"><span>Risk-adjusted metrics</span></div>
         <div class="pb" id="risk-metrics"></div>
       </div>
-      <div class="panel" style="flex:1 1 0">
-        <div class="ph"><span>Run-ups &amp; drawdowns</span></div>
-        <div class="pb" style="position:relative;height:190px"><canvas id="runupChart"></canvas></div>
-      </div>
-    </div>
-
-    <!-- merged from Overview: per-signal performance / distribution / exit reasons -->
-    <div class="row" style="margin-top:12px">
-      <div class="panel" style="flex:1 1 0"><div class="ph"><span>Per-signal performance</span></div><div class="pb" id="sig-perf"></div></div>
       <div class="panel" style="flex:1 1 0"><div class="ph"><span>Signal distribution</span></div><div class="pb" style="position:relative;height:210px"><canvas id="sigDistChart"></canvas></div></div>
+      <div class="panel" style="flex:1 1 0"><div class="ph"><span>Per-signal performance</span></div><div class="pb" id="sig-perf"></div></div>
       <div class="panel" style="flex:1 1 0"><div class="ph"><span>Exit reasons</span></div><div class="pb" id="exit-reasons"></div></div>
     </div>
 
@@ -978,7 +968,7 @@ table.sig-mon tr.sig-divider.regime-hd td b { color: inherit; }
         <span>All closed trades</span>
         <div style="display:flex;gap:8px;align-items:center">
           <label style="font-size:0.7rem;color:var(--dim)">Filter:</label>
-          <select id="tfilter" onchange="renderTrades()" style="font-size:0.8rem;background:var(--panel2);color:var(--text);border:1px dotted var(--border2);border-radius:3px;padding:4px 10px;font-family:'JetBrains Mono', monospace">
+          <select id="tfilter" onchange="renderTrades()" style="font-size:0.8rem;background:var(--panel2);color:var(--text);border:1px solid var(--border2);border-radius:3px;padding:4px 10px;font-family:'JetBrains Mono', monospace">
             <option value="ALL">All</option><option value="SV">TQQQ</option>
             <option value="UV">SQQQ</option><option value="WIN">Wins</option><option value="LOSS">Losses</option>
           </select>
@@ -1061,8 +1051,18 @@ table.sig-mon tr.sig-divider.regime-hd td b { color: inherit; }
       <div class="panel" style="flex:1 1 0;min-width:230px;display:flex;flex-direction:column">
         <div class="ph"><span>Signal state</span></div>
         <div class="pb" style="flex:1">
-          <input type="date" id="fwd-date" onchange="renderForward(this.value)"
+          <input type="date" id="fwd-date" onchange="window._fwdLive=false;renderForward(this.value)"
             style="width:100%;background:var(--panel2);color:var(--yellow);border:1px solid var(--border2);border-radius:8px;padding:5px 8px;font-family:'Chakra Petch',sans-serif;font-size:0.8rem;margin-bottom:8px;color-scheme:dark">
+          <div style="display:flex;gap:6px;margin-bottom:8px">
+            <select id="fwd-tight" onchange="renderForward()" title="How similar an analog must be to count. Tighter = fewer but closer matches."
+              style="flex:1;background:var(--panel2);color:var(--text);border:1px solid var(--border2);border-radius:8px;padding:4px 6px;font-family:'Chakra Petch',sans-serif;font-size:0.74rem;color-scheme:dark">
+              <option value="tight">Tight (closest 3%)</option>
+              <option value="balanced" selected>Balanced (closest 6%)</option>
+              <option value="broad">Broad (closest 12%)</option>
+            </select>
+            <button id="fwd-livebtn" class="rp-btn" title="Re-evaluate against the live intraday reading instead of the last close"
+              onclick="window._fwdLive=!window._fwdLive;renderForward()" style="font-size:0.7rem">Live</button>
+          </div>
           <div id="fwd-state" style="overflow-x:auto"></div>
           <div id="fwd-method" style="color:var(--dim);font-size:0.72rem;line-height:1.5;margin-top:8px"></div>
         </div>
@@ -1585,6 +1585,46 @@ function _fwdQuant(sorted,q){ if(!sorted.length) return null;
   return sorted[lo]+(sorted[hi]-sorted[lo])*(i-lo); }
 function _fwdPrep(H){ if(H._prepped) return; H._prepped=true;         // derive px-vs-EMA once
   H.forEach(b=>{ b._emadist=(b.tqqq_price!=null&&b.ema20)? b.tqqq_price/b.ema20-1 : null; }); }
+// ── Live intraday feature vector ──────────────────────────────────────────────
+// Rebuilds TODAY's signal state from the live feed + the forming OHLC bar, so the
+// analog match re-evaluates through the session instead of being frozen at the
+// last close. Price-derived indicators are recomputed client-side; MFI keeps its
+// EOD value (the OHLC feed carries no volume). Returns null if anything is missing.
+function _fwdLiveBar(H){
+  try{
+    if(!window.OHLC || !OHLC.length || !LIVE) return null;
+    const q=(LIVE.market&&LIVE.market.quotes)||{};
+    const px=(q.tqqq&&q.tqqq.price)||null; if(!(px>0)) return null;
+    const base=H[H.length-1];
+    const closes=OHLC.map(r=>r[4]), highs=OHLC.map(r=>r[2]), lows=OHLC.map(r=>r[3]);
+    const n=closes.length-1;
+    closes[n]=px; highs[n]=Math.max(highs[n],px); lows[n]=Math.min(lows[n],px);
+    const ema=(a,p)=>{ const k=2/(p+1); let e=a[0]; for(let i=1;i<a.length;i++) e=a[i]*k+e*(1-k); return e; };
+    const rsiW=(a,p)=>{ let u=0,d=0;
+      for(let i=1;i<=p;i++){ const x=a[i]-a[i-1]; if(x>0)u+=x; else d-=x; }
+      u/=p; d/=p;
+      for(let i=p+1;i<a.length;i++){ const x=a[i]-a[i-1];
+        u=(u*(p-1)+(x>0?x:0))/p; d=(d*(p-1)+(x<0?-x:0))/p; }
+      return d===0?100:100-100/(1+u/d); };
+    const W=14, hh=Math.max(...highs.slice(-W)), ll=Math.min(...lows.slice(-W));
+    let vxr=base.vxn_rank;
+    const lv=(q.vxn&&q.vxn.price)||null;
+    if(lv!=null){ const hist=H.slice(-504).map(b=>b.vxn).filter(v=>v!=null);
+      if(hist.length>50) vxr=100*hist.filter(v=>v<=lv).length/hist.length; }
+    const ct=(LIVE.derived&&LIVE.derived.contango!=null)?LIVE.derived.contango:base.contango;
+    const op=(LIVE.official&&LIVE.official.open_pnl!=null)?LIVE.official.open_pnl:base.open_pnl_pct;
+    return {...base, _live:true, tqqq_price:px,
+      _emadist:px/ema(closes,20)-1,
+      stoch_k: hh>ll ? 100*(px-ll)/(hh-ll) : 50,
+      rsi: rsiW(closes,14),
+      macd_pct: (ema(closes,12)-ema(closes,26))/px*100,
+      vxn_rank: vxr, contango: ct, open_pnl_pct: op };
+  }catch(e){ return null; }
+}
+// Wilson score interval for a proportion — honest error bars on P(up).
+function _wilson(k,n,z){ if(!n) return [0,0]; z=z||1.96;
+  const p=k/n, d=1+z*z/n, c=p+z*z/(2*n), m=z*Math.sqrt(p*(1-p)/n+z*z/(4*n*n));
+  return [Math.max(0,(c-m)/d), Math.min(1,(c+m)/d)]; }
 function renderForward(selDate){
   const H=(typeof DATA!=='undefined'&&DATA&&DATA.bar_history)||[]; if(H.length<300) return;
   _fwdPrep(H);
@@ -1592,7 +1632,13 @@ function renderForward(selDate){
   if(selDate){ for(let i=H.length-1;i>=0;i--){ if(H[i].date<=selDate){ li=i; break; } } }
   const dEl=document.getElementById('fwd-date');
   if(dEl){ dEl.min=H[0].date; dEl.max=H[H.length-1].date; if(dEl.value!==H[li].date) dEl.value=H[li].date; }
-  const last=H[li], curCls=_fwdCls(last);
+  // Live mode re-derives TODAY's state intraday; only valid on the latest bar.
+  const liveOn = !!window._fwdLive && li===H.length-1;
+  const liveBar = liveOn ? _fwdLiveBar(H) : null;
+  const last = liveBar || H[li], curCls=_fwdCls(last);
+  { const lb=document.getElementById('fwd-livebtn');
+    if(lb){ const on=!!liveBar; lb.textContent = on?'Live ●':'Live';
+      lb.style.borderColor = on?'var(--teal)':''; lb.style.color = on?'var(--teal)':''; } }
   const feats=[...FWD_FEATS];
   if(curCls!=='CASH') feats.push(['open_pnl_pct',1.75,'Open P&L',v=>(v*100).toFixed(1)+'%']);
   const stats={};
@@ -1617,8 +1663,19 @@ function renderForward(selDate){
   if(cands.length<30){ const el=document.getElementById('fwd-state');
     if(el) el.innerHTML='<span style="color:var(--dim)">Not enough comparable historical days ('+cands.length+') for a meaningful sample.</span>'; return; }
   cands.sort((a,b)=>a[0]-b[0]);
-  const K=Math.min(140,Math.max(50,Math.round(cands.length*0.12)));
+  // Tightness: what share of the candidate pool counts as an "analog". Tighter =
+  // closer matches but a smaller (noisier) sample — the trade-off is surfaced as an
+  // effective-n and a confidence interval below.
+  const TIGHT={tight:0.03, balanced:0.06, broad:0.12};
+  const tKey=(document.getElementById('fwd-tight')||{}).value||'balanced';
+  const frac=TIGHT[tKey]||0.06;
+  const K=Math.min(200,Math.max(25,Math.round(cands.length*frac)));
   const picks=cands.slice(0,K);
+  // Effective sample size: analogs from adjacent days are the same episode, so the
+  // raw count overstates independence badly. Count distinct clusters >=10 sessions apart.
+  const _idxs=picks.map(p=>p[1]).sort((a,b)=>a-b);
+  let effN=0, lastI=-1e9;
+  _idxs.forEach(ix=>{ if(ix-lastI>=10){ effN++; lastI=ix; } });
   const iName=sv?svN():uvN(), oName=sv?uvN():svN();
   const paths=picks.map(([dist,i])=>{ const base=H[i][pxf], arr=[0];
     for(let h=1;h<=FWD_H;h++) arr.push(H[i+h][pxf]/base-1);
@@ -1636,7 +1693,8 @@ function renderForward(selDate){
   // ── signal-state table ──
   const _stC=(good,bad)=>good?'var(--teal)':bad?'var(--coral)':'var(--yellow)';
   const posName=curCls==='CASH'?'CASH':('in '+(curCls==='SV'?svN():uvN()));
-  const srows=[['Position', posName, curCls==='UV'?'var(--coral)':curCls==='SV'?'var(--teal)':'var(--cashc)'],
+  const srows=[['Reading', last._live?'LIVE (intraday)':'Last close', last._live?'var(--teal)':'var(--dim)'],
+               ['Position', posName, curCls==='UV'?'var(--coral)':curCls==='SV'?'var(--teal)':'var(--cashc)'],
                ['Regime', last.qqq_below_sma200?'Below 200D':'Above 200D', last.qqq_below_sma200?'var(--coral)':'var(--teal)']];
   feats.forEach(([f,w,lab,fmt])=>{ let c='var(--yellow)';
     if(f==='vxn_rank')  c=_stC(last[f]>=90&&last[f]<99, last[f]>=99);
@@ -1654,9 +1712,14 @@ function renderForward(selDate){
       +'<td style="padding:4px 6px;color:var(--dim)">'+r[0]+'</td>'
       +'<td style="padding:4px 6px;text-align:right"><b style="color:'+r[2]+'">'+r[1]+'</b></td></tr>').join('')
     +'</table>';
+  const _p1=rows[0]?rows[0].pos:0, _ci1=_wilson(Math.round(_p1*effN),effN);
   document.getElementById('fwd-method').innerHTML=
-    'Matched <b>'+K+'</b> of '+cands.length+' comparable days (same position state, weighted similarity on the '
-    +'indicators above). Chart shows <b>'+iName+'</b> over the next '+FWD_H+' sessions from each analog day'
+    'Matched <b>'+K+'</b> of '+cands.length+' comparable days, but adjacent days are the same episode &mdash; '
+    +'the <b>effective sample is '+effN+' independent episodes</b>. Tomorrow&rsquo;s P(up) '
+    +(_p1*100).toFixed(0)+'% carries a 95% interval of <b>'+(_ci1[0]*100).toFixed(0)+'&ndash;'+(_ci1[1]*100).toFixed(0)+'%</b> on that basis'
+    +(effN<12?' &mdash; <span style="color:var(--coral)">too few episodes to lean on; widen the match</span>':'')
+    +'. '+(last._live?'<b style="color:var(--teal)">Live intraday reading.</b> ':'Based on the last close. ')
+    +'Brighter, thicker paths are closer matches. Chart shows <b>'+iName+'</b> over the next '+FWD_H+' sessions from each analog day'
     +(li<H.length-1-FWD_H?' — the white dashed line is what actually followed the selected day':'')
     +(curCls==='CASH'?'. Strategy is in cash: read as "what TQQQ did from similar setups"':'')+'.';
   // ── chart ──
@@ -1666,8 +1729,14 @@ function renderForward(selDate){
   dsets.push({label:'_p10',data:[0,...rows.map(r=>r.p10)],borderColor:'rgba(0,0,0,0)',pointRadius:0,fill:false,tension:0.25});
   dsets.push({label:'p25–p75',data:[0,...rows.map(r=>r.p75)],borderColor:'rgba(0,0,0,0)',backgroundColor:'rgba(46,230,255,0.15)',pointRadius:0,fill:'+1',tension:0.25});
   dsets.push({label:'_p25',data:[0,...rows.map(r=>r.p25)],borderColor:'rgba(0,0,0,0)',pointRadius:0,fill:false,tension:0.25});
+  // Analog paths shaded BY SIMILARITY — the closest matches are drawn brightest and
+  // thickest, so the eye weights the most relevant history rather than the blend.
+  const _dmin=picks[0][0], _dmax=picks[picks.length-1][0]||1;
+  const _sim=dist=>_dmax>_dmin ? 1-(dist-_dmin)/(_dmax-_dmin) : 1;
   const MAXL=80, step=Math.max(1,Math.floor(paths.length/MAXL));
-  for(let k=0;k<paths.length;k+=step) dsets.push({data:paths[k].arr,borderColor:'rgba(246,96,182,0.06)',borderWidth:1,pointRadius:0,fill:false,tension:0});
+  for(let k=paths.length-1;k>=0;k-=step){ const s=_sim(paths[k].dist);
+    dsets.push({data:paths[k].arr,borderColor:`rgba(246,96,182,${(0.03+0.42*s*s).toFixed(3)})`,
+      borderWidth:0.8+1.4*s*s,pointRadius:0,fill:false,tension:0}); }
   dsets.push({label:'Median analog',data:[0,...rows.map(r=>r.med)],borderColor:TEAL,borderWidth:2.5,pointRadius:0,fill:false,tension:0.25});
   const legend=[[TEAL,'median'],['rgba(46,230,255,0.35)','25–75%'],['rgba(46,230,255,0.15)','10–90%'],['rgba(246,96,182,0.35)','analog paths']];
   if(li<H.length-1-FWD_H && last[pxf]>0){ const act=[0];
@@ -1717,11 +1786,11 @@ function renderForward(selDate){
   // ── nearest-analog list ──
   let an='<table style="width:100%;border-collapse:collapse;font-size:0.78rem"><tr style="color:var(--dim)">'
     +'<th style="text-align:left;padding:5px 8px">Date</th>'+_rth('Match')+_rth('+1d')+_rth('+5d')+_rth('+10d')+'</tr>';
-  const dmax=picks[picks.length-1][0]||1;
+  const dmax=_dmax;
   paths.slice(0,10).forEach(p=>{ const b=H[p.i];
     an+='<tr style="text-align:right;border-top:1px solid var(--border)">'
       +'<td style="text-align:left;padding:5px 8px">'+b.date+'</td>'
-      +'<td style="padding:5px 8px;color:var(--dim)">'+Math.max(1,Math.round(100*(1-p.dist/dmax)))+'%</td>'
+      +'<td style="padding:5px 8px;color:var(--dim)">'+Math.max(1,Math.round(100*_sim(p.dist)))+'%</td>'
       +'<td style="padding:5px 8px">'+f2(p.arr[1])+'</td><td style="padding:5px 8px">'+f2(p.arr[5])+'</td><td style="padding:5px 8px">'+f2(p.arr[10])+'</td></tr>'; });
   an+='</table>';
   document.getElementById('fwd-analogs').innerHTML=an;
@@ -1729,7 +1798,7 @@ function renderForward(selDate){
 
 function rerenderActive(){
   renderAnalytics();renderSigPerf();renderSigStats();renderSigDist();renderExitReasons();renderTrades();
-  const pl=document.getElementById('pos-band-label');
+  const pl=document.getElementById('pos-band-label');   // removed from the DOM; guarded below
   if(pl) pl.innerHTML='POSITION &nbsp;<span style="color:var(--teal)">&#9646; '+svN()+'</span> &nbsp;<span style="color:var(--coral)">&#9646; '+uvN()+'</span> &nbsp;<span style="color:var(--cashc)">&#9646; CASH</span>';
   const tf=document.getElementById('tfilter');
   if(tf){ tf.options[1].text=svN(); tf.options[2].text=uvN(); }
@@ -1965,21 +2034,6 @@ function renderAnalytics(){
     <span style="font-family:'JetBrains Mono', monospace;font-size:0.88rem${c==='yel'?';color:var(--yellow)':''}" class="${c!=='yel'?c:''}">${v}</span>
   </div>`).join('');
 
-  // Run-up / drawdown
-  const step2=Math.max(1,Math.floor(ec.length/130));
-  const ecd=ec.filter((_,i)=>i%step2===0);
-  let trough=DATA.meta.start_capital;const runups=[];
-  ec.forEach(d=>{trough=Math.min(trough,d.equity);runups.push((d.equity-trough)/trough*100);});
-  mkChart('runupChart',{
-    data:{labels:ecd.map(b=>b.date),datasets:[
-      {type:'bar',label:'Run-up',data:ec.filter((_,i)=>i%step2===0).map((_,i)=>+(runups[i*step2]||0).toFixed(2)),backgroundColor:'rgba(29,138,94,0.5)',yAxisID:'y',barPercentage:1,categoryPercentage:1},
-      {type:'bar',label:'Drawdown',data:ecd.map(b=>+b.drawdown.toFixed(2)),backgroundColor:'rgba(207,74,63,0.5)',yAxisID:'y',barPercentage:1,categoryPercentage:1},
-    ]},
-    options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
-      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+c.dataset.label+': '+c.parsed.y.toFixed(1)+'%'}}},
-      scales:{x:{ticks:{color:TICK,maxTicksLimit:10,font:{size:13,family:FONT}},grid:{color:GRID}},
-        y:{ticks:{color:TICK,font:{size:13,family:FONT},callback:v=>Math.round(v)+'%'},grid:{color:GRID}}}}
-  });
 }
 
 function renderSigPerf(){
@@ -2230,10 +2284,21 @@ function renderRisk(){
   const ec=aEq(); const W=252; const rl=[], rlab=[];
   for(let i=W;i<ec.length;i++){ const a=ec[i-W].equity, b=ec[i].equity; if(a>0){ rl.push(+((b/a-1)*100).toFixed(1)); rlab.push(ec[i].date); } }
   const rstep=Math.max(1,Math.floor(rl.length/150));
+  // Colour STRICTLY by the zero line: a per-segment colour can't split a segment that
+  // crosses zero (part of it ends up on the wrong side). A canvas gradient with a hard
+  // stop at the y=0 pixel splits exactly on the axis instead.
+  const _zeroSplit=(a,b)=>(ctx)=>{ const {chart}=ctx; const {ctx:c2,chartArea,scales}=chart;
+    if(!chartArea||!scales.y) return a;
+    const y0=scales.y.getPixelForValue(0);
+    let p=(y0-chartArea.top)/(chartArea.bottom-chartArea.top);
+    p=Math.min(1,Math.max(0,p));
+    const g=c2.createLinearGradient(0,chartArea.top,0,chartArea.bottom);
+    g.addColorStop(0,a); g.addColorStop(p,a); g.addColorStop(Math.min(1,p+0.0001),b); g.addColorStop(1,b);
+    return g; };
   mkChart('rollChart',{ type:'line', data:{ labels:rlab.filter((_,i)=>i%rstep===0),
     datasets:[{label:'Rolling 12-mo return',data:rl.filter((_,i)=>i%rstep===0),borderWidth:1.5,pointRadius:0,fill:true,
-      segment:{ borderColor:cx=>cx.p1.parsed.y<0?CORAL:TEAL, backgroundColor:cx=>cx.p1.parsed.y<0?'rgba(255,90,122,0.12)':'rgba(37,244,176,0.10)' },
-      borderColor:TEAL }]},
+      borderColor:_zeroSplit(TEAL,CORAL),
+      backgroundColor:_zeroSplit('rgba(37,244,176,0.10)','rgba(255,90,122,0.12)') }]},
     options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+(c.parsed.y>=0?'+':'')+c.parsed.y+'%'}}},
       scales:{x:{ticks:{color:TICK,maxTicksLimit:10,font:{size:12,family:FONT}},grid:{color:GRID}},
         y:{ticks:{color:TICK,font:{size:12,family:FONT},callback:v=>v+'%'},grid:{color:GRID}}}} });
@@ -2242,7 +2307,24 @@ function renderRisk(){
   const bins=Array(NB).fill(0); rets.forEach(r=>{ let k=Math.min(NB-1,Math.floor((r-lo)/w)); bins[k]++; });
   const blab=bins.map((_,i)=>((lo+(i+0.5)*w)*100).toFixed(0)+'%');
   const bcol=bins.map((_,i)=>(lo+(i+0.5)*w)>=0?'rgba(29,138,94,0.7)':'rgba(207,74,63,0.7)');
-  mkChart('distChart',{ type:'bar', data:{ labels:blab, datasets:[{data:bins,backgroundColor:bcol,borderWidth:0}]},
+  // Mean trade return, drawn as a dotted white vertical rule at its fractional
+  // bin position (the x scale is categorical, so interpolate between bin centres).
+  const _avgRet=rets.reduce((a,v)=>a+v,0)/(rets.length||1);
+  const _avgPos=Math.min(NB-0.5,Math.max(-0.5,(_avgRet-lo)/w-0.5));
+  const avgLine={id:'avgline',afterDatasetsDraw(ch){ const {ctx,chartArea,scales}=ch;
+    if(!chartArea||!scales.x) return;
+    const i0=Math.floor(_avgPos), fr=_avgPos-i0;
+    const p0=scales.x.getPixelForValue(Math.max(0,Math.min(NB-1,i0)));
+    const p1=scales.x.getPixelForValue(Math.max(0,Math.min(NB-1,i0+1)));
+    const x=p0+(p1-p0)*fr;
+    ctx.save(); ctx.setLineDash([5,4]); ctx.lineWidth=1.5; ctx.strokeStyle='#ffffff';
+    ctx.beginPath(); ctx.moveTo(x,chartArea.top); ctx.lineTo(x,chartArea.bottom); ctx.stroke();
+    ctx.setLineDash([]); ctx.fillStyle='#ffffff'; ctx.font='600 11px '+FONT;
+    const lab='avg '+(_avgRet>=0?'+':'')+(_avgRet*100).toFixed(1)+'%';
+    ctx.textAlign = x>chartArea.right-60 ? 'right' : 'left';
+    ctx.fillText(lab, x + (x>chartArea.right-60?-5:5), chartArea.top+11);
+    ctx.restore(); }};
+  mkChart('distChart',{ type:'bar', plugins:[avgLine], data:{ labels:blab, datasets:[{data:bins,backgroundColor:bcol,borderWidth:0}]},
     options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{title:c=>'~'+c[0].label+' return',label:c=>' '+c.parsed.y+' trades'}}},
       scales:{x:{ticks:{color:TICK,maxTicksLimit:12,font:{size:11,family:FONT}},grid:{display:false}},
         y:{ticks:{color:TICK,font:{size:12,family:FONT}},grid:{color:GRID},title:{display:true,text:'# trades',color:TICK}}}} });
@@ -2460,7 +2542,11 @@ async function loadLive(){
       _setTip('contango', ctLive ? _tip('vix', ctFresh, _qt(q.vix)||cv.vix_date)
         : 'VIX1M and VIX3M are not from the same session (VIX3M publishes only 9:30–4:00 ET), so this is the CBOE end-of-day pair as of '+(ctAsof||'the last close')+' rather than a live reading.'); }
     updateGateReadouts();
-
+    // Forward-Looking re-evaluates on every live refresh while it's the open tab and
+    // Live mode is armed, so the analog odds firm up through the session.
+    { const ft=document.getElementById('tab-forward');
+      if(window._fwdLive && ft && ft.style.display!=='none' && typeof renderForward==='function'){
+        try{ renderForward(); }catch(_){} } }
 
     // ── Tradeable tickers: price + % change ─────────────────────────────
     // Extended-hours badge: the headline % is always the authoritative regular
@@ -2715,6 +2801,18 @@ function displayMarkers(){
     if(ok) markers.push({time:_ostart,position:mp,color:ENTRY,shape:'arrowUp',size:0,
       text:'▲ '+(alt?(sv?'QLD':'QID'):(sv?'TQQQ':'SQQQ'))});
   }
+  // DD-boost annotations: mark the bar where the TQQQ position levers to 2.0x and
+  // the bar where it reverts on a new peak close, so the size change is visible on
+  // the chart rather than buried in the monitor.
+  try{
+    const bm=_boostMap(); let was=false;
+    for(const bar of (DATA.bar_history||[])){
+      const st=bm[bar.date]; if(!st) continue;
+      if(st.on && !was) markers.push({time:bar.date,position:'belowBar',color:CASHC,shape:'circle',size:0,text:'2.0×'});
+      else if(!st.on && was) markers.push({time:bar.date,position:'belowBar',color:GRAY,shape:'circle',size:0,text:'1.0×'});
+      was=st.on;
+    }
+  }catch(_){}
   markers.sort((a,b)=>a.time<b.time?-1:a.time>b.time?1:0); return markers;
 }
 function applyChartMode(){
@@ -2925,21 +3023,12 @@ function renderSummary(){
     lastValueVisible:true,priceLineVisible:true,priceLineColor:LCTX,priceLineWidth:1,priceLineStyle:2});
   candleSeries.setData(CANDLES); candleSeries.setMarkers(markers); MARKERS=markers;
 
-  // Position bar below the chart (per-session bars)
-  const pel=document.getElementById('pos-band'); pel.innerHTML='';
-  sumPos=LC.createChart(pel,{ width:pel.clientWidth||900, height:30,
-    layout:{background:{color:LCBG},textColor:'rgba(0,0,0,0)',fontFamily:"'JetBrains Mono', monospace"},
-    grid:{vertLines:{visible:false},horzLines:{visible:false}},
-    rightPriceScale:{visible:true,borderVisible:false},leftPriceScale:{visible:false},
-    timeScale:{visible:false,borderVisible:false},
-    handleScroll:false,handleScale:false,
-    crosshair:{mode:(LC.CrosshairMode?LC.CrosshairMode.Normal:1),horzLine:{visible:false,labelVisible:false},vertLine:{visible:false,labelVisible:false}} });
-  posSeries=sumPos.addHistogramSeries({priceScaleId:'right',priceFormat:{type:'volume'},base:0,lastValueVisible:false,priceLineVisible:false});
-  posSeries.setData(CANDLES.map(c=>({time:c.time,value:1,color:posColorOf(posByDate[c.time]||'CASH')})));
-  sumPos.priceScale('right').applyOptions({scaleMargins:{top:0,bottom:0}});
+  // Position bar removed — the band element is gone, so sumPos/posSeries stay null
+  // and every consumer below is guarded.
+  sumPos = null; posSeries = null;
 
   let _sync=false;
-  sumMain.timeScale().subscribeVisibleLogicalRangeChange(r=>{ if(r&&!_sync){_sync=true;try{sumPos.timeScale().setVisibleLogicalRange(r);}catch(_){} _sync=false;} _updateToEndBtn(); });
+  sumMain.timeScale().subscribeVisibleLogicalRangeChange(r=>{ if(r&&!_sync&&sumPos){_sync=true;try{sumPos.timeScale().setVisibleLogicalRange(r);}catch(_){} _sync=false;} _updateToEndBtn(); });
   // sync zoom/scroll to the Daily P&L chart (by time, datasets differ)
   sumMain.timeScale().subscribeVisibleTimeRangeChange(rng=>{ if(Date.now()<_syncUntil||_suppressSync||!rng||!dailyChart) return;
     // Open a 150ms window in which the daily chart's echo is ignored. The daily has a
@@ -2949,9 +3038,6 @@ function renderSummary(){
     _syncUntil=Date.now()+150; try{ dailyChart.timeScale().setVisibleRange(rng); }catch(_){} });
   summaryToEnd();
 
-  // Align the band's right gutter to the candle chart's price-scale width
-  const _alignBand=()=>{ try{ const w=sumMain.priceScale('right').width(); if(w) sumPos.priceScale('right').applyOptions({minimumWidth:w}); }catch(_){} };
-  _alignBand(); setTimeout(_alignBand,80); setTimeout(_alignBand,300);
 
   rebuildChartMaps();
 
@@ -3006,7 +3092,7 @@ function renderSummary(){
     monitorHover(param.time);
   });
   // Hovering the position band: drive the candle crosshair AND the same readout
-  sumPos.subscribeCrosshairMove(param=>{
+  if(sumPos) sumPos.subscribeCrosshairMove(param=>{
     if(window._pinnedDate){ _lockX(); return; }
     if(param && param.time && OHLCBYTIME[param.time]){
       sumMain.setCrosshairPosition(OHLCBYTIME[param.time].close, param.time, candleSeries);
@@ -3027,7 +3113,7 @@ function renderSummary(){
     if(_rd && _rc && _rc.style.display!=='none'){ _rd.value=t; if(window.Replay&&window.Replay.start) window.Replay.start(t); }
   };
   sumMain.subscribeClick(p=>{ if(p&&p.time) _pin(p.time); });
-  sumPos.subscribeClick(p=>{ if(p&&p.time) _pin(p.time); });
+  if(sumPos) sumPos.subscribeClick(p=>{ if(p&&p.time) _pin(p.time); });
   if(!el._ctxBound){ el.addEventListener('contextmenu',e=>{ e.preventDefault(); window._pinnedDate=null; el.classList.remove('cdl-pinned'); if(_lock)_lock.style.display='none'; try{sumMain.clearCrosshairPosition();}catch(_){} }); el._ctxBound=true; }
   // Cursor flair: faint halo follows the mouse; each click spawns its own brighter
   // ripple element (so rapid clicks never wait on a prior animation).
@@ -3065,7 +3151,7 @@ function renderSummary(){
       const cut=times[idx];
       candleSeries.setData(fullC.slice(0,idx+1));
       candleSeries.setMarkers(fullM.filter(m=>m.time<=cut));
-      posSeries.setData(posData.slice(0,idx+1));
+      if(posSeries) posSeries.setData(posData.slice(0,idx+1));
       try{ const vr=sumMain.timeScale().getVisibleLogicalRange();
         if(vr){ const w=Math.max(8, vr.to-vr.from), frac=(idx-vr.from)/w;
           if(force || idx<vr.from || frac>0.72){ const back=Math.round(w*0.55);
@@ -3100,7 +3186,7 @@ function renderSummary(){
       setSpeed(s){ speed=s||1; if(playing){ pause(); play(); } },
       stop(){ pause(); active=false; window._pinnedDate=null; el.classList.remove('cdl-pinned');
         if(ctrls) ctrls.style.display='none'; if(toggleBtn) toggleBtn.classList.remove('on');
-        candleSeries.setData(fullC); candleSeries.setMarkers(fullM); posSeries.setData(posData);
+        candleSeries.setData(fullC); candleSeries.setMarkers(fullM); if(posSeries) posSeries.setData(posData);
         try{ sumMain.clearCrosshairPosition(); }catch(_){}
         if(preRange){ try{ sumMain.timeScale().setVisibleLogicalRange(preRange); }catch(_){ summaryToEnd(); } } else summaryToEnd();
         _suppressSync=false;
@@ -3110,11 +3196,33 @@ function renderSummary(){
 
   if(!window._sumResize){ window.addEventListener('resize',()=>{
     if(sumMain&&el.clientWidth) sumMain.applyOptions({width:el.clientWidth});
-    if(sumPos&&pel.clientWidth) sumPos.applyOptions({width:pel.clientWidth}); }); window._sumResize=true; }
+    if(sumPos&&pel&&pel.clientWidth) sumPos.applyOptions({width:pel.clientWidth}); }); window._sumResize=true; }
 
   renderSignalMonitor();
 }
 
+// ── DD-boost state, derived per bar ───────────────────────────────────────────
+// The engine levers TQQQ to 2.0x when the position gives back >=20% from its peak
+// close since entry WITHOUT an exit firing, and reverts once a new peak is made.
+// bar_history doesn't carry the flag, so we reconstruct it from position + price.
+const DDB_GIVEBACK=0.20, DDB_FRAC=2.0;
+function _boostMap(){
+  if(window._bmap) return window._bmap;
+  const H=(typeof DATA!=='undefined'&&DATA&&DATA.bar_history)||[]; const m={};
+  let peak=null, prev=null, armed=false;
+  for(const b of H){
+    const p=b.position, px=b.tqqq_price;
+    if(p!=='LONG_TQQQ'){ peak=null; armed=false; prev=p; m[b.date]={on:false,gb:null}; continue; }
+    if(prev!=='LONG_TQQQ'){ peak=px; armed=false; }        // fresh entry -> reset
+    prev=p;
+    if(px!=null) peak=(peak==null)?px:Math.max(peak,px);
+    const gb=(peak&&px)?Math.max(0,1-px/peak):0;
+    if(gb<=1e-9) armed=false;
+    if(gb>=DDB_GIVEBACK) armed=true;
+    m[b.date]={on:armed, gb:gb};
+  }
+  window._bmap=m; return m;
+}
 function renderSignalMonitor(histBar){
   if(!document.getElementById('signal-monitor')) return;
   // histBar set → show that hovered chart bar's readings; otherwise live/today.
@@ -3273,6 +3381,10 @@ function renderSignalMonitor(histBar){
   const gMacd={lo:dMc.lo,hi:dMc.hi,z:[[dMc.lo,0,'r'],[0,dMc.hi,'t']],v:b.macd_pct,fmt:fN1,
     tip:`MACD as % of price (scale-invariant rework of the Pine dollar-MACD) — context only in the deployed config; crash-momentum ${b.macd_crashing?'ACTIVE':'inactive'} · now ${b.macd_pct!=null?b.macd_pct.toFixed(2)+'%':'—'}`};
 
+  // Current DD-boost state for the bar being shown
+  const _bst=(_boostMap()[b.date])||{on:false,gb:null};
+  const _bGauge={lo:0,hi:0.40,z:[[0,DDB_GIVEBACK,'t'],[DDB_GIVEBACK,0.40,'n']],v:(_bst.gb==null?null:_bst.gb),fmt:v=>Math.round(v*100)+'%',
+    tip:`give-back from the peak close since entry — at ${Math.round(DDB_GIVEBACK*100)}% the TQQQ position levers to ${DDB_FRAC.toFixed(1)}x until a new peak close · now ${_bst.gb!=null?(_bst.gb*100).toFixed(1)+'%':'—'}`};
   // [name, desc, bullTxt, bearTxt, currentHtml, sig, gauge]
   const coreRows=[
     ['Price Bar (Ichimoku)','Close vs the adaptive Tenkan-Sen &amp; Kijun-Sen (volume/volatility-adaptive Donchian midlines)',
@@ -3312,15 +3424,22 @@ function renderSignalMonitor(histBar){
   // ── Exit rules (status: Hold / Exit / N/A). Applicability per held side. ──
   const openpnl = b.open_pnl_pct;
   // Peak open P&L + days held over the current run (for the trailing-stop gauge)
-  let peakPnl=null, daysHeldN=null;
+  // Give-back must be measured the way the ENGINE measures it: 1 - close/peak_close
+  // over the current run. (It used to subtract open-P&L percentages, which inflates
+  // the figure badly on a big winner — a position up 90% then back to 30% showed a
+  // 60% give-back instead of the true 32%, so the trail looked like it should have
+  // fired when it had not.)
+  let peakPx=null, daysHeldN=null;
   if(inPos){
     let i0=bh0.lastIndexOf(b); if(i0<0) i0=bh0.length-1;
     let j=i0; while(j>0 && bh0[j-1].position===curPos) j--;
-    daysHeldN=i0-j; peakPnl=0;
-    for(let k=j;k<=i0;k++){ const v=bh0[k].open_pnl_pct; if(v!=null&&v>peakPnl) peakPnl=v; }
+    daysHeldN=i0-j;
+    const _pf = isSV ? 'tqqq_price' : 'sqqq_price';
+    for(let k=j;k<=i0;k++){ const v=bh0[k][_pf]; if(v!=null&&(peakPx==null||v>peakPx)) peakPx=v; }
   }
   const TRL=0.40, HSTP=-0.12, SQTRL=0.12;
-  const giveback=(peakPnl!=null&&openpnl!=null)?Math.max(0,peakPnl-openpnl):null;
+  const _curPx = isSV ? b.tqqq_price : b.sqqq_price;
+  const giveback=(peakPx&&_curPx)?Math.max(0,1-_curPx/peakPx):null;
   const xdef=[
     // [name, desc, holdTxt, exitTxt, applies, fired, current, gauge]
     // Armed ONLY in a bear regime — in a bull regime they read N/A rather than a
@@ -3452,8 +3571,12 @@ function renderSignalMonitor(histBar){
   const rows=(arr,idxs)=>idxs.map(i=>rowHtml(arr[i])).join('');
   const exRows=idxs=>idxs.map(i=>exitRow(i)).join('');
   const body='<tbody>'
-    + _div('<b>REGIME</b> &mdash; the master switch. QQQ vs its 200-day SMA decides everything below: <b>Bull</b> (ride TQQQ dips, SQQQ off) or <b>Bear</b> (Ichimoku exits arm, SQQQ may trade).','regime-hd')
+    + _div('<b>REGIME &amp; SIZE</b> &mdash; the master switch. QQQ vs its 200-day SMA decides everything below: <b>Bull</b> (ride TQQQ dips, SQQQ off) or <b>Bear</b> (Ichimoku exits arm, SQQQ may trade). <b>Position size</b> is 1.0&times; TQQQ / 0.5&times; SQQQ, but a TQQQ drawdown of 20%+ from its peak since entry levers the position to 2.0&times; until a new peak is reclaimed.','regime-hd')
     + rowHtml(coreRows[3])
+    + `<tr><td class="sig-name">Position Size (DD-boost)</td><td class="sig-desc">Give-back from the highest close since entry. At &ge;20% the TQQQ position doubles to 2.0&times; (deep drawdowns that don&rsquo;t trip an exit mean-revert fast); it reverts to 1.0&times; on a new peak close. SQQQ always trades at half size.</td>`
+      + `<td style="color:var(--teal)">&lt; 20% &rarr; 1.0&times;</td><td style="color:var(--coral)">&ge; 20% &rarr; 2.0&times;</td>`
+      + curCell(isSV?(_bst.on?'<b style="color:var(--cashc)">2.0&times;</b>':'1.0&times;'):(isUV?'0.5&times;':'—'), (isSV?_bGauge:null), !isSV)
+      + `<td>${isSV?(_bst.on?'<span class="sig-ind" style="color:var(--cashc);font-weight:700">BOOSTED</span>':'<span class="sig-ind" style="color:var(--teal);font-weight:700">Normal</span>'):'<span style="color:var(--namut);font-weight:700">N/A</span>'}</td></tr>`
     + _div('Entry Indicators &mdash; which side each gate currently permits. <b>TQQQ</b> needs only the first two (close above the 20-day EMA, VIX curve not deeply backwardated). <b>SQQQ</b> needs the mirror of those two plus a bear regime above, and none of the three exhaustion gates vetoing it.')
     + rows(coreRows,[2,4]) + rows(blockRows,[0,1,2])
     + _div('Exit Indicators &mdash; any ONE closes the open position at the next open. The TQQQ trend exits are <b>regime-gated</b> (in a bull regime only a VXN crash-spike or the 40% trail can force it out); the SQQQ exits are exhaustion readings plus its two stops. Rows that don&rsquo;t apply to the side you hold read N/A.')
@@ -3504,6 +3627,10 @@ function renderSignalMonitor(histBar){
     // both jobs (Stoch %K, ATR spectrum) deliberately appear in BOTH sections.
     mh+=`<div class="mini-sub mini-regime">Regime</div>`;
     mh+=mRow('200 D SMA', gReg, b.qqq_below_sma200?'Below':'Above', mSig(coreRows[3][5]));
+    mh+=mRow('Size', (isSV?_bGauge:null),
+      isSV?(_bst.on?'2.0×':'1.0×'):(isUV?'0.5×':'—'),
+      isSV?(_bst.on?'<span style="color:var(--cashc)">Boost</span>':'<span style="color:var(--teal)">Base</span>')
+          :'<span style="color:var(--namut)">N/A</span>', !isSV);
     mh+=`<div class="mini-sub">Entry indicators ${help(eTip)}</div>`;
     mh+=mRow('20 D EMA', gEma, (emaDist==null?'—':(emaDist>=0?'Above':'Below')), mSig(coreRows[2][5]));
     mh+=mRow('VIX3M:VIX1M', gCt, stripTags(''+coreRows[4][4]), mSig(coreRows[4][5]));
