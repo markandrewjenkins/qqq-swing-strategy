@@ -873,7 +873,7 @@ table.sig-mon tr.sig-divider.regime-hd td b { color: inherit; }
         <div id="cdl-wrap" style="position:relative;width:100%;height:620px">
           <div id="candle-chart" style="width:100%;height:100%"></div>
           <div id="mini-monitor" class="mini-mon"></div>
-          <button id="cdl-toend" class="rp-btn" title="Jump to latest" onclick="summaryToEnd()" style="position:absolute;bottom:46px;right:78px;z-index:6;display:none;letter-spacing:0.03em">Latest &#8594;</button>
+          <button id="cdl-toend" class="rp-btn" title="Jump to latest" onclick="summaryToEnd()" style="position:absolute;bottom:38px;right:72px;z-index:6;display:none;letter-spacing:0.03em">Latest &#8594;</button>
           <div id="cdl-lock" style="position:absolute;top:8px;left:10px;z-index:6;display:none;background:rgba(237,230,214,0.9);color:var(--yellow);border:1px dotted var(--border2);border-radius:12px;padding:3px 11px;font-size:0.66rem;letter-spacing:0.02em;pointer-events:none"></div>
         </div>
         <div class="cdl-legend">
@@ -907,8 +907,8 @@ table.sig-mon tr.sig-divider.regime-hd td b { color: inherit; }
         <div style="position:relative;width:100%;height:360px">
           <div id="daily-lock" style="position:absolute;top:8px;left:10px;z-index:6;display:none;background:rgba(237,230,214,0.9);color:var(--yellow);border:1px dotted var(--border2);border-radius:12px;padding:3px 11px;font-size:0.66rem;letter-spacing:0.02em;pointer-events:none"></div>
           <div id="daily-lc" style="position:relative;width:100%;height:100%"></div>
-          <button id="daily-toend" class="rp-btn" title="Jump to latest" onclick="dailyToEnd()" style="position:absolute;bottom:40px;right:78px;z-index:6;display:none;letter-spacing:0.03em">Latest &#8594;</button>
-          <button class="rp-btn" title="Reset zoom to full history" onclick="try{window._dailyChart&&window._dailyChart.timeScale().fitContent();}catch(_){}" style="position:absolute;top:8px;right:16px;z-index:6;font-size:0.66rem">Reset zoom</button>
+          <button id="daily-toend" class="rp-btn" title="Jump to latest" onclick="dailyToEnd()" style="position:absolute;bottom:38px;right:72px;z-index:6;display:none;letter-spacing:0.03em">Latest &#8594;</button>
+          <button class="rp-btn" title="Reset zoom to full history" onclick="try{window._dailyChart&&window._dailyChart.timeScale().fitContent();}catch(_){}" style="position:absolute;top:8px;right:72px;z-index:6;font-size:0.66rem">Reset zoom</button>
         </div>
       </div>
     </div>
@@ -919,10 +919,17 @@ table.sig-mon tr.sig-divider.regime-hd td b { color: inherit; }
         <span>Equity curve &amp; trade positions</span>
         <div style="display:flex;gap:14px;align-items:center" id="eq-legend"></div>
       </div>
-      <div class="pb" style="position:relative;height:320px">
-        <div id="eqChart" title="Scroll to zoom, click-drag to pan" style="width:100%;height:100%"></div>
-        <button class="rp-btn" onclick="try{window._eqChart&&window._eqChart.timeScale().fitContent()}catch(_){}"
-          style="position:absolute;top:10px;right:18px;z-index:5;font-size:0.66rem">Reset zoom</button>
+      <div class="pb" style="height:320px">
+        <!-- Buttons live in an UNPADDED relative wrapper (same as the Daily P&L
+             chart) so their right/bottom offsets are measured from the plot edge
+             and clear the in-canvas price scale + date axis consistently. -->
+        <div style="position:relative;width:100%;height:100%">
+          <div id="eqChart" title="Scroll to zoom, click-drag to pan" style="width:100%;height:100%"></div>
+          <button class="rp-btn" onclick="try{window._eqChart&&window._eqChart.timeScale().fitContent()}catch(_){}"
+            style="position:absolute;top:8px;right:72px;z-index:6;font-size:0.66rem">Reset zoom</button>
+          <button id="eq-toend" class="rp-btn" title="Jump to latest" onclick="eqToEnd()"
+            style="position:absolute;bottom:38px;right:72px;z-index:6;display:none;letter-spacing:0.03em">Latest &#8594;</button>
+        </div>
       </div>
     </div>
 
@@ -1944,6 +1951,11 @@ function renderAnalytics(){
       priceLineVisible:true,priceLineColor:LCTX,priceLineWidth:1,priceLineStyle:2,
       priceFormat:{type:'custom',formatter:v=>'$'+abbrev(v*1000)}});
     eqS.setData(eqLW);
+    // "Latest" button: only shown once the view has been scrolled/zoomed away from
+    // the right edge, mirroring the candle and Daily P&L charts.
+    window._eqLen = eqLW.length;
+    ch.timeScale().subscribeVisibleLogicalRangeChange(()=>{ _updateEqToEndBtn(); });
+    _updateEqToEndBtn();
     // The panel can be display:none when this first runs (tab not yet shown), so
     // the chart would keep a stale ~900px width and a clipped range. Re-apply the
     // real width and refit whenever the container resizes / becomes visible.
@@ -2846,6 +2858,13 @@ function summaryToEnd(){ if(!sumMain||!CANDLES||!CANDLES.length) return; const N
   // chart's echo settles) so its clamped range can't pull the latest bar to the edge.
   _syncUntil=Date.now()+500; set(); setTimeout(set,70); setTimeout(set,300); }
 function _updateToEndBtn(){ const btn=document.getElementById('cdl-toend'); if(!btn||!sumMain||!CANDLES) return; try{ const vr=sumMain.timeScale().getVisibleLogicalRange(); btn.style.display=(vr && vr.to < CANDLES.length-1)?'block':'none'; }catch(_){} }
+// Equity-curve "Latest": scroll back to the right edge without changing the zoom.
+function _updateEqToEndBtn(){ const btn=document.getElementById('eq-toend');
+  const c=window._eqChart; if(!btn||!c||!window._eqLen) return;
+  try{ const vr=c.timeScale().getVisibleLogicalRange();
+    btn.style.display=(vr && vr.to < window._eqLen-1)?'block':'none'; }catch(_){} }
+function eqToEnd(){ const c=window._eqChart; if(!c) return;
+  try{ c.timeScale().scrollToRealTime(); }catch(_){ try{ c.timeScale().fitContent(); }catch(__){} } }
 
 // ── Daily P&L chart (Lightweight-Charts) — mirrors the live chart: zoom/pan,
 //    crosshair, $/% tooltips, entry/exit markers, drawdown, "Latest" button. ──
