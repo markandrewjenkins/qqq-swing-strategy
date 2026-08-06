@@ -400,11 +400,11 @@ tr:hover td { background: #e3dbc6 }
 #mkt-dot { display:none; }   /* redundant with the pulsing dot in the top status bar */
 .mkt-sessbar { position:relative; display:inline-flex; width:170px; height:6px; border-radius:3px; overflow:hidden; background:#d8cfba; vertical-align:middle; }
 .mkt-sessbar .seg { height:100%; }
-.mkt-sessbar .c1 { width:16.7%; background:rgba(95,127,168,0.45); }
-.mkt-sessbar .pre { width:22.9%; background:rgba(211,163,56,0.6); }
-.mkt-sessbar .reg { width:27.1%; background:rgba(221,138,60,0.75); }
-.mkt-sessbar .aft { width:16.7%; background:rgba(201,105,141,0.6); }
-.mkt-sessbar .c2 { width:16.6%; background:rgba(95,127,168,0.45); }
+.mkt-sessbar .c1 { width:16.7%; background:#ACC0E7; }
+.mkt-sessbar .pre { width:22.9%; background:#D0B570; }
+.mkt-sessbar .reg { width:27.1%; background:#D49B5F; }
+.mkt-sessbar .aft { width:16.7%; background:#C892A0; }
+.mkt-sessbar .c2 { width:16.6%; background:#ACC0E7; }
 .mkt-marker { position:absolute; top:-5px; height:16px; width:2px; background:#ffffff; }
 #mkt-countdown { color:var(--dim); font-weight:400; }
 .mkt-block { display:inline-flex; align-items:center; gap:6px; white-space:nowrap; overflow:hidden; }
@@ -2602,14 +2602,15 @@ async function loadLive(){
     const live = regular && fresh;
     // Match the live dot + status text to the embedded market-status bar's colour,
     // and keep it pulsing through any market phase (pre-market / regular / after).
-    const phaseColor = regular?'#dd8a3c' : premkt?'#d3a338' : settle?'#c9698d' : '#5f7fa8';
+    const phaseColor = regular?MKTC.open : premkt?MKTC.pre : settle?MKTC.after : MKTC.closed;
     const phaseActive = regular||premkt||settle;
     strip.classList.toggle('stale', !phaseActive);   // grey, non-pulsing only when fully closed
-    const dot=document.querySelector('#live-strip .live-dot');
-    if(dot){ dot.style.background=phaseColor; dot.style.boxShadow = phaseActive ? '0 0 6px '+phaseColor : 'none'; }
+    // The dot carries INLINE styles, which beat the .stale rule — so its lit/unlit
+    // state has to be set explicitly here rather than left to CSS.
+    _setLiveDot(phaseActive, phaseColor);
     const feed=document.getElementById('lv-feed'), note=document.getElementById('lv-feed-note'), delay=document.getElementById('lv-delay');
     // Badge colour: LIVE teal, DELAYED/PRE-MARKET amber, AFTER HOURS cyan, else grey.
-    const feedColor = live ? '#dd8a3c' : (regular||premkt) ? '#d3a338' : settle ? '#c9698d' : '#5f7fa8';
+    const feedColor = (regular ? MKTC.open : premkt ? MKTC.pre : settle ? MKTC.after : MKTC.closed);
     if(feed){ feed.textContent = live ? 'LIVE' : regular ? 'DELAYED' : settle ? 'AFTER HOURS' : premkt ? 'PRE-MARKET' : 'OFFLINE'; feed.style.color=feedColor; }
     // After-hours: has the CBOE EOD term structure for TODAY actually posted (curve
     // dated today, not merely a 5:30 refresh attempt)? If so, record + show the ACTUAL
@@ -2675,8 +2676,9 @@ async function loadLive(){
     }
   }catch(e){
     strip.classList.add('stale');
+    _setLiveDot(false, MKTC.closed);      // offline: unlit, not pulsing
     const feed=document.getElementById('lv-feed'), note=document.getElementById('lv-feed-note'), delay=document.getElementById('lv-delay');
-    if(feed) feed.textContent='OFFLINE';
+    if(feed){ feed.textContent='OFFLINE'; feed.style.color=MKTC.closed; }
     if(note) note.textContent='Live feed error - showing last received quotes';
     if(delay) delay.style.display='none';
     document.getElementById('lv-updated').textContent = '—';
@@ -2699,6 +2701,18 @@ function _isMktHoliday(){ return _MKT_HOLIDAYS.has(_etDate()); }
 function _fmtDur(s){ if(s<0)s=0; const h=Math.floor(s/3600); const m=Math.floor((s%3600)/60); return h>0?(h+'h '+m+'m'):(m+'m'); }
 function _nextPhase(){ const {wd,sod}=_etNow(); const PRE=14400,OPEN=34200,CLOSE=57600,AFT=72000,DAY=86400; const isWk=wd!=='Sat'&&wd!=='Sun'&&!_isMktHoliday(); if(isWk&&sod>=PRE&&sod<OPEN) return {verb:'Market opens',secs:OPEN-sod}; if(isWk&&sod>=OPEN&&sod<CLOSE) return {verb:'Regular hours end',secs:CLOSE-sod}; if(isWk&&sod>=CLOSE&&sod<AFT) return {verb:'Market closes',secs:AFT-sod}; const idx={Sun:0,Mon:1,Tue:2,Wed:3,Thu:4,Fri:5,Sat:6}[wd]; const toFour=(sod<PRE)?(PRE-sod):(DAY-sod+PRE); const land=(sod<PRE)?idx:((idx+1)%7); let extra=0; if(land===6)extra=2; else if(land===0)extra=1; return {verb:'Pre-market opens',secs:toFour+extra*DAY}; }
 function toEtClock(iso){ if(!iso) return '\u2014'; try{ return new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',hour12:false,hour:'2-digit',minute:'2-digit'}).format(new Date(iso)); }catch(_){ return '\u2014'; } }
+// Single source of truth for every market-phase colour: the session bar, the
+// status text + sun/moon glyph, and the LIVE/OFFLINE badge all read from here.
+const MKTC = { pre:'#D0B570', open:'#D49B5F', after:'#C892A0', closed:'#ACC0E7' };
+// The live dot is styled inline (which outranks the .stale CSS rule), so lit vs
+// unlit has to be driven explicitly. Unlit = dimmed, no glow, no pulse.
+function _setLiveDot(active, color){
+  const dot=document.querySelector('#live-strip .live-dot'); if(!dot) return;
+  dot.style.background = color;
+  dot.style.boxShadow  = active ? '0 0 6px '+color : 'none';
+  dot.style.animation  = active ? '' : 'none';
+  dot.style.opacity    = active ? '' : '0.4';
+}
 // Simple one-colour market-phase glyphs (inherit currentColor):
 //   pre = sun half-risen above the horizon; open = full sun;
 //   after = sun sinking below the horizon; closed = crescent moon.
@@ -2729,10 +2743,10 @@ function updateMarket(){
   const {wd,sod}=_etNow(); const dec=sod/3600; const isWk=wd!=='Sat'&&wd!=='Sun'&&!_isMktHoliday(); let label,color,sep,kind;
   const DASH='\u00a0-\u00a0', GAP='\u00a0\u00a0';   // snug gap for closed/pre, dash for open/after
   // Dusk palette: sunrise yellow → daylight orange → sunset pink → night blue
-  if(isWk&&dec>=9.5&&dec<16){ label='Market open'; color='#ffb347'; kind='open'; sep=GAP; }
-  else if(isWk&&dec>=4&&dec<9.5){ label='Pre-market'; color='#f0cc4a'; kind='pre'; sep=GAP; }
-  else if(isWk&&dec>=16&&dec<20){ label='After hours'; color='#d1481a'; kind='after'; sep=GAP; }
-  else { label='Market closed'; color='#a7c0e8'; kind='closed'; sep=GAP; }
+  if(isWk&&dec>=9.5&&dec<16){ label='Market open'; color=MKTC.open; kind='open'; sep=GAP; }
+  else if(isWk&&dec>=4&&dec<9.5){ label='Pre-market'; color=MKTC.pre; kind='pre'; sep=GAP; }
+  else if(isWk&&dec>=16&&dec<20){ label='After hours'; color=MKTC.after; kind='after'; sep=GAP; }
+  else { label='Market closed'; color=MKTC.closed; kind='closed'; sep=GAP; }
   const ico=document.getElementById('mkt-ico'), lab=document.getElementById('mkt-label'), mk=document.getElementById('mkt-marker'), cd=document.getElementById('mkt-countdown');
   if(ico){ ico.innerHTML=_mktSVG(kind); ico.style.color=color; }
   if(lab){ lab.textContent=label; lab.style.color=color; }   // match the phase colour
