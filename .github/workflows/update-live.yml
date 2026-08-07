@@ -15,9 +15,18 @@ on:
     - cron: "35 21,22,23 * * 1-5"
   workflow_dispatch: {}   # manual runs + external trigger (cron-job.org etc.)
 
+# Serialise runs (two jobs pushing at once would race on git push) but do NOT
+# cancel a run that is already going.
+#
+# cancel-in-progress: true caused a hard deadlock on 2026-08-06: every 5-minute
+# ping killed the still-running previous job, so during busy periods — when runner
+# acquisition plus the job itself exceeded the 5-minute ping interval — NOTHING
+# ever completed. 68 of 100 runs that afternoon were cancelled, each with a
+# duration pinned at ~300s (exactly the ping interval), against an 80-95s normal
+# runtime. The dashboard sat on stale quotes and showed DELAYED for hours.
 concurrency:
   group: update-live
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 permissions:
   contents: write
@@ -25,6 +34,11 @@ permissions:
 jobs:
   update:
     runs-on: ubuntu-latest
+    # Backstop so a hung upstream fetch can't block the run queued behind it.
+    # Deliberately NOT tighter: evening runs finish in ~90s, but during market
+    # hours (slower upstream fetches, busier runners) they legitimately take
+    # 3-6 min, so a 5-6 min timeout would kill healthy runs.
+    timeout-minutes: 8
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -33,9 +47,11 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+          cache: pip                     # reuse the wheel cache instead of re-resolving
+          cache-dependency-path: .github/workflows/requirements.txt
 
       - name: Install dependencies
-        run: pip install --quiet pandas
+        run: pip install --quiet -r .github/workflows/requirements.txt
 
       - name: Refresh data
         run: |
@@ -49,7 +65,14 @@ jobs:
           git add live_status.json tqqq_ohlc.json sqqq_ohlc.json qqq_ohlc.json spy_ohlc.json
           if ! git diff --cached --quiet; then
             git commit -m "chore: refresh live data [skip ci]"
-            git push
+            # Retry around a concurrent push (the private engine repo also pushes
+            # backtest_results.json here via its deploy key).
+            for i in 1 2 3; do
+              git push && break
+              echo "push rejected - rebasing on origin/main (attempt $i)"
+              git pull --rebase --autostash origin main || true
+              sleep 3
+            done
           else
             echo "No data changes — nothing to commit."
           fi
