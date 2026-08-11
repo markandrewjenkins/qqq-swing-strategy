@@ -2730,12 +2730,17 @@ function _mktSVG(kind){
     +'<g stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none">'
     +'<line x1="1.7" y1="14.5" x2="18.3" y2="14.5"/><line x1="10" y1="2.2" x2="10" y2="4.3"/>'
     +'<line x1="3.9" y1="6.6" x2="5.3" y2="7.9"/><line x1="16.1" y1="6.6" x2="14.7" y2="7.9"/></g></svg>';
-  if(kind==='after') return s   // mirrored horizontally = sun setting on the other side
-    +'<g transform="translate(20,0) scale(-1,1)">'
-    +'<path d="M5.8 8.5 a4.2 4.2 0 0 0 8.4 0 Z" fill="currentColor"/>'
-    +'<g stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none">'
-    +'<line x1="1.7" y1="8.5" x2="18.3" y2="8.5"/><line x1="10" y1="15.7" x2="10" y2="17.8"/>'
-    +'<line x1="3.9" y1="14.4" x2="5.3" y2="13.1"/><line x1="16.1" y1="14.4" x2="14.7" y2="13.1"/></g></g></svg>';
+  // Sunset: the sun sits ABOVE the horizon like sunrise (it is descending toward
+  // it, not already under it) — the previous version arced the dome below the line
+  // with the rays pointing down, which just read as an upside-down sun. The
+  // descent is carried by a downward arrow instead of a horizontal mirror, since
+  // mirroring a symmetric sun is visually identical to the sunrise glyph.
+  if(kind==='after') return s
+    +'<path d="M5.8 14.5 a4.2 4.2 0 0 1 8.4 0 Z" fill="currentColor"/>'
+    +'<g stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none">'
+    +'<line x1="1.7" y1="14.5" x2="18.3" y2="14.5"/>'
+    +'<line x1="10" y1="1.9" x2="10" y2="5.1"/><path d="M8.6 3.6 L10 5.2 L11.4 3.6"/>'
+    +'<line x1="3.9" y1="6.6" x2="5.3" y2="7.9"/><line x1="16.1" y1="6.6" x2="14.7" y2="7.9"/></g></svg>';
   return s
     +'<path d="M13.6 4.1 a6.4 6.4 0 1 0 0.2 11.8 A5 5 0 0 1 13.6 4.1 Z" fill="currentColor"/></svg>';
 }
