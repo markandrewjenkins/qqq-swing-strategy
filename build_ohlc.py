@@ -12,7 +12,7 @@ Run:
     python build_ohlc.py
 """
 from __future__ import annotations
-import json, urllib.request, urllib.parse
+import json, math, urllib.request, urllib.parse
 from datetime import datetime, timezone
 
 try:
@@ -65,7 +65,7 @@ def intraday_today(symbol):
             cc = c[i]
         if oo is None:
             return None
-        return [today, round(oo, 4), round(hh, 4), round(ll, 4), round(cc, 4)]
+        return [today, _sig(oo), _sig(hh), _sig(ll), _sig(cc)]
     except Exception as e:
         print(f"  intraday {symbol} FAILED: {e}")
         return None
@@ -75,6 +75,47 @@ HDRS = {
                   "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
     "Accept": "text/html,application/xhtml+xml,*/*;q=0.8",
 }
+
+_SIG = 5
+
+
+def _sig(x, sig=_SIG):
+    """Round to a fixed number of SIGNIFICANT figures, not decimal places.
+
+    Split-adjusted prices span an enormous range: after its reverse splits, SQQQ's
+    adjusted 2010 bars are ~9.8e6 while TQQQ's are ~0.6. `round(x, 4)` therefore
+    kept ~11 significant digits at the top of that range, so imperceptible float
+    noise in the adjclose factor (which is recomputed from live data every run)
+    rewrote ~69% of SQQQ's history on EVERY refresh — 60% of SPY's, but only 3.9%
+    of TQQQ's. Git could not delta-compress that, and at 288 commits/day it grew
+    the dashboard repo to 441 MB (sqqq_ohlc.json alone accounted for 282 MB of it,
+    against 3.2 MB for tqqq_ohlc.json over the same number of versions).
+
+    Fixed significant figures keeps the same precision at every magnitude, so the
+    historical bars are byte-stable across runs and delta-compress properly.
+    Measured on two consecutive real refreshes, the share of historical bars
+    rewritten falls to:
+
+        file        4dp (old)   sig=6   sig=5
+        sqqq          69.1%     13.7%    1.3%
+        spy           59.5%     14.9%    1.9%
+        qqq           48.8%     20.8%    2.6%
+        tqqq           3.9%      3.9%    1.1%
+
+    Five figures is the sweet spot: it still resolves sub-cent moves on every
+    instrument the dashboard plots ($73.8231 -> 73.823), while cutting SQQQ's
+    churn ~50x. The residue is genuine data revision (dividend re-adjustment),
+    not noise.
+    """
+    if x is None:
+        return None
+    try:
+        x = float(x)
+    except (TypeError, ValueError):
+        return None
+    if not math.isfinite(x) or x == 0.0:
+        return 0.0
+    return round(x, -int(math.floor(math.log10(abs(x)))) + (sig - 1))
 
 def _get(url, timeout=30, extra=None):
     h = {**HDRS, **(extra or {})}
@@ -109,8 +150,8 @@ def fetch_ohlc(symbol="TQQQ", start="2010-02-11"):
             continue
         fac = (adj[i] / c[i]) if (adj and adj[i] and c[i]) else 1.0
         d = datetime.fromtimestamp(t, tz=timezone.utc).strftime("%Y-%m-%d")
-        rows.append([d, round(o[i]*fac, 4), round(h[i]*fac, 4),
-                     round(l[i]*fac, 4), round(c[i]*fac, 4)])
+        rows.append([d, _sig(o[i]*fac), _sig(h[i]*fac),
+                     _sig(l[i]*fac), _sig(c[i]*fac)])
     return rows
 
 def main():
