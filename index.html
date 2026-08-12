@@ -2660,7 +2660,16 @@ async function loadLive(){
     // has started before the official daily candle exists.
     if(candleSeries && CANDLES && CANDLES.length && L.market && L.market.quotes){
       const inst = CHART_MODE==='real' ? 'tqqq' : 'qld';
-      const q = L.market.quotes[inst], px=q&&q.price, last=CANDLES[CANDLES.length-1];
+      const q = L.market.quotes[inst];
+      // Use the LATEST TRADED price. `q.price` is deliberately the authoritative
+      // REGULAR-session price — frozen at today's close outside 9:30–16:00 so the
+      // headline % stays the official daily change — so driving the candle from it
+      // froze the forming bar all through pre-market and after-hours. The live
+      // extended-hours print lives in `ext_price`.
+      const px = q ? (((q.session==='pre'||q.session==='post') && q.ext_price!=null)
+                        ? q.ext_price : q.price)
+                   : null;
+      const last=CANDLES[CANDLES.length-1];
       const qFresh = (q&&q.time) ? (Date.now()-new Date(q.time).getTime())/60000 < 30 : false;
       const qDay = (q&&q.time) ? new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York'}).format(new Date(q.time)) : (L.generated_utc||'').slice(0,10);
       if(px!=null && last && qFresh){
@@ -2725,21 +2734,13 @@ function _mktSVG(kind){
     +'<line x1="1.6" y1="10" x2="3.7" y2="10"/><line x1="16.3" y1="10" x2="18.4" y2="10"/>'
     +'<line x1="4.2" y1="4.2" x2="5.7" y2="5.7"/><line x1="14.3" y1="14.3" x2="15.8" y2="15.8"/>'
     +'<line x1="15.8" y1="4.2" x2="14.3" y2="5.7"/><line x1="5.7" y1="14.3" x2="4.2" y2="15.8"/></g></svg>';
-  if(kind==='pre') return s
+  // Pre-market and after-hours share one glyph: a half sun above the horizon with
+  // plain rays. Both are the sun near the horizon; the phase is carried by colour
+  // (#D0B570 sunrise vs #C892A0 sunset), not by extra ornament.
+  if(kind==='pre' || kind==='after') return s
     +'<path d="M5.8 14.5 a4.2 4.2 0 0 1 8.4 0 Z" fill="currentColor"/>'
     +'<g stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none">'
     +'<line x1="1.7" y1="14.5" x2="18.3" y2="14.5"/><line x1="10" y1="2.2" x2="10" y2="4.3"/>'
-    +'<line x1="3.9" y1="6.6" x2="5.3" y2="7.9"/><line x1="16.1" y1="6.6" x2="14.7" y2="7.9"/></g></svg>';
-  // Sunset: the sun sits ABOVE the horizon like sunrise (it is descending toward
-  // it, not already under it) — the previous version arced the dome below the line
-  // with the rays pointing down, which just read as an upside-down sun. The
-  // descent is carried by a downward arrow instead of a horizontal mirror, since
-  // mirroring a symmetric sun is visually identical to the sunrise glyph.
-  if(kind==='after') return s
-    +'<path d="M5.8 14.5 a4.2 4.2 0 0 1 8.4 0 Z" fill="currentColor"/>'
-    +'<g stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none">'
-    +'<line x1="1.7" y1="14.5" x2="18.3" y2="14.5"/>'
-    +'<line x1="10" y1="1.9" x2="10" y2="5.1"/><path d="M8.6 3.6 L10 5.2 L11.4 3.6"/>'
     +'<line x1="3.9" y1="6.6" x2="5.3" y2="7.9"/><line x1="16.1" y1="6.6" x2="14.7" y2="7.9"/></g></svg>';
   return s
     +'<path d="M13.6 4.1 a6.4 6.4 0 1 0 0.2 11.8 A5 5 0 0 1 13.6 4.1 Z" fill="currentColor"/></svg>';
