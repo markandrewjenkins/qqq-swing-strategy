@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-08-28T00:55:23+00:00",
+  "generated_utc": "2026-08-28T05:32:32+00:00",
   "market": {
     "vxn_used": 20.24,
     "vix_used": 14.51,
@@ -8,21 +8,21 @@
       "vxn": 20.24,
       "vxn_date": "2026-08-27",
       "vxn_chg": -0.055089,
-      "vxn_ref": 21.42,
+      "vxn_ref": 20.24,
       "vix": 14.51,
       "vix_date": "2026-08-27",
       "vix_chg": -0.046022,
-      "vix_ref": 15.21,
+      "vix_ref": 14.51,
       "vix3m": 17.56,
       "vix3m_date": "2026-08-27",
       "vix3m_chg": -0.023902,
-      "vix3m_ref": 17.99
+      "vix3m_ref": 17.56
     },
     "quotes": {
       "vxn": {
         "price": 20.24,
-        "prev_close": 21.42,
-        "change_pct": -0.055089,
+        "prev_close": 20.24,
+        "change_pct": 0.0,
         "session": "regular",
         "asof_date": "2026-08-27",
         "regular_price": 20.24,
@@ -34,8 +34,8 @@
       },
       "vix": {
         "price": 14.51,
-        "prev_close": 15.21,
-        "change_pct": -0.046022,
+        "prev_close": 14.51,
+        "change_pct": 0.0,
         "session": "regular",
         "asof_date": "2026-08-27",
         "regular_price": 14.51,
@@ -47,8 +47,8 @@
       },
       "vix3m": {
         "price": 17.56,
-        "prev_close": 17.99,
-        "change_pct": -0.023902,
+        "prev_close": 17.56,
+        "change_pct": 0.0,
         "session": "regular",
         "asof_date": "2026-08-27",
         "regular_price": 17.56,
@@ -171,7 +171,7 @@
     "yc_spread": null,
     "regime": "contango"
   },
-  "cboe_refreshed": true,
+  "cboe_refreshed": false,
   "official": {
     "date": "2026-08-26",
     "position": "LONG_TQQQ",
