@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-09-01T00:55:29+00:00",
+  "generated_utc": "2026-09-01T08:00:30+00:00",
   "market": {
     "vxn_used": 20.18,
     "vix_used": 14.92,
@@ -8,21 +8,21 @@
       "vxn": 20.18,
       "vxn_date": "2026-08-31",
       "vxn_chg": 0.013052,
-      "vxn_ref": 19.92,
+      "vxn_ref": 20.18,
       "vix": 14.92,
       "vix_date": "2026-08-31",
       "vix_chg": 0.033957,
-      "vix_ref": 14.43,
+      "vix_ref": 14.92,
       "vix3m": 17.53,
       "vix3m_date": "2026-08-31",
       "vix3m_chg": 0.00286,
-      "vix3m_ref": 17.48
+      "vix3m_ref": 17.53
     },
     "quotes": {
       "vxn": {
         "price": 20.18,
-        "prev_close": 19.92,
-        "change_pct": 0.013052,
+        "prev_close": 20.18,
+        "change_pct": 0.0,
         "session": "regular",
         "asof_date": "2026-08-31",
         "regular_price": 20.18,
@@ -34,21 +34,21 @@
       },
       "vix": {
         "price": 14.92,
-        "prev_close": 14.43,
-        "change_pct": 0.033957,
-        "session": "regular",
+        "prev_close": 14.42,
+        "change_pct": 0.034674,
+        "session": "pre",
         "asof_date": "2026-08-31",
         "regular_price": 14.92,
         "regular_change": 0.034674,
-        "ext_price": null,
-        "ext_change": null,
+        "ext_price": 15.15,
+        "ext_change": 0.015416,
         "reg_time": "2026-08-31T20:10:00+00:00",
-        "time": "2026-08-31T20:10:00+00:00"
+        "time": "2026-09-01T07:45:16+00:00"
       },
       "vix3m": {
         "price": 17.53,
-        "prev_close": 17.48,
-        "change_pct": 0.00286,
+        "prev_close": 17.53,
+        "change_pct": 0.0,
         "session": "regular",
         "asof_date": "2026-08-31",
         "regular_price": 17.53,
@@ -69,7 +69,7 @@
         "ext_price": 29456.973,
         "ext_change": 0.0,
         "reg_time": "2026-08-31T20:15:00+00:00",
-        "time": "2026-08-31T23:59:34+00:00"
+        "time": "2026-08-31T23:55:00+00:00"
       },
       "tqqq": {
         "price": 71.99,
@@ -82,7 +82,7 @@
         "ext_price": 71.88,
         "ext_change": -0.001528,
         "reg_time": "2026-08-31T20:00:00+00:00",
-        "time": "2026-08-31T23:59:57+00:00"
+        "time": "2026-08-31T23:55:00+00:00"
       },
       "sqqq": {
         "price": 38.4499,
@@ -95,7 +95,7 @@
         "ext_price": 38.52,
         "ext_change": 0.001823,
         "reg_time": "2026-08-31T20:00:00+00:00",
-        "time": "2026-08-31T23:59:57+00:00"
+        "time": "2026-08-31T23:55:00+00:00"
       },
       "qqq": {
         "price": 717.05,
@@ -108,7 +108,7 @@
         "ext_price": 716.7,
         "ext_change": -0.000488,
         "reg_time": "2026-08-31T20:00:00+00:00",
-        "time": "2026-08-31T23:59:34+00:00"
+        "time": "2026-08-31T23:55:00+00:00"
       },
       "spy": {
         "price": 767.2615,
@@ -121,7 +121,7 @@
         "ext_price": 767.5499,
         "ext_change": 0.000376,
         "reg_time": "2026-08-31T20:00:00+00:00",
-        "time": "2026-08-31T23:59:50+00:00"
+        "time": "2026-08-31T23:55:00+00:00"
       },
       "upro": {
         "price": 150.5206,
@@ -134,7 +134,7 @@
         "ext_price": 150.69,
         "ext_change": 0.001125,
         "reg_time": "2026-08-31T20:00:00+00:00",
-        "time": "2026-08-31T23:59:51+00:00"
+        "time": "2026-08-31T23:55:00+00:00"
       },
       "spxu": {
         "price": 34.5802,
@@ -147,7 +147,7 @@
         "ext_price": 34.56,
         "ext_change": -0.000584,
         "reg_time": "2026-08-31T20:00:00+00:00",
-        "time": "2026-08-31T23:59:37+00:00"
+        "time": "2026-08-31T23:55:00+00:00"
       },
       "spx": {
         "price": 7686.1401,
@@ -171,13 +171,13 @@
     "yc_spread": null,
     "regime": "contango"
   },
-  "cboe_refreshed": true,
+  "cboe_refreshed": false,
   "official": {
-    "date": "2026-08-27",
+    "date": "2026-08-31",
     "position": "LONG_TQQQ",
     "signal": "LONG_TQQQ",
     "open_pnl": 0.467477,
-    "equity": 270299574.21,
+    "equity": 260466667.92,
     "entry_date": "2026-04-10",
     "entry_price": 49.057,
     "open_pnl_live": true
