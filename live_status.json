@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-09-02T00:45:28+00:00",
+  "generated_utc": "2026-09-02T00:50:26+00:00",
   "market": {
     "vxn_used": 21.96,
     "vix_used": 16.33,
@@ -173,11 +173,11 @@
   },
   "cboe_refreshed": true,
   "official": {
-    "date": "2026-08-31",
+    "date": "2026-09-01",
     "position": "LONG_TQQQ",
     "signal": "LONG_TQQQ",
     "open_pnl": 0.409789,
-    "equity": 260466667.92,
+    "equity": 240730099.62,
     "entry_date": "2026-04-10",
     "entry_price": 49.057,
     "open_pnl_live": true
