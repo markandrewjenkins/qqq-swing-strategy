@@ -1,9 +1,9 @@
 {
-  "generated_utc": "2026-09-04T20:45:30+00:00",
+  "generated_utc": "2026-09-04T20:50:32+00:00",
   "market": {
     "vxn_used": 20.04,
     "vix_used": 14.52,
-    "vix3m_used": 17.6,
+    "vix3m_used": 17.61,
     "curve": {
       "vxn": 20.16,
       "vxn_date": "2026-09-03",
@@ -29,8 +29,8 @@
         "regular_change": -0.005952,
         "ext_price": null,
         "ext_change": null,
-        "reg_time": "2026-09-04T20:10:00+00:00",
-        "time": "2026-09-04T20:10:00+00:00"
+        "reg_time": "2026-09-04T20:15:00+00:00",
+        "time": "2026-09-04T20:15:00+00:00"
       },
       "vix": {
         "price": 14.52,
@@ -46,17 +46,17 @@
         "time": "2026-09-04T20:10:00+00:00"
       },
       "vix3m": {
-        "price": 17.6,
+        "price": 17.61,
         "prev_close": 17.42,
-        "change_pct": 0.010333,
+        "change_pct": 0.010907,
         "session": "regular",
         "asof_date": "2026-09-04",
-        "regular_price": 17.6,
-        "regular_change": 0.010333,
+        "regular_price": 17.61,
+        "regular_change": 0.010907,
         "ext_price": null,
         "ext_change": null,
-        "reg_time": "2026-09-04T20:10:00+00:00",
-        "time": "2026-09-04T20:10:00+00:00"
+        "reg_time": "2026-09-04T20:15:00+00:00",
+        "time": "2026-09-04T20:15:00+00:00"
       },
       "ndx": {
         "price": 29530.32,
@@ -69,7 +69,7 @@
         "ext_price": 29544.154,
         "ext_change": 0.0,
         "reg_time": "2026-09-04T20:15:00+00:00",
-        "time": "2026-09-04T20:45:29+00:00"
+        "time": "2026-09-04T20:50:26+00:00"
       },
       "tqqq": {
         "price": 72.2,
@@ -79,10 +79,10 @@
         "asof_date": "2026-09-04",
         "regular_price": 72.2,
         "regular_change": 0.003893,
-        "ext_price": 72.0902,
-        "ext_change": -0.001521,
+        "ext_price": 72.06,
+        "ext_change": -0.001939,
         "reg_time": "2026-09-04T20:00:00+00:00",
-        "time": "2026-09-04T20:45:33+00:00"
+        "time": "2026-09-04T20:50:26+00:00"
       },
       "sqqq": {
         "price": 38.2777,
@@ -92,10 +92,10 @@
         "asof_date": "2026-09-04",
         "regular_price": 38.2777,
         "regular_change": -0.002925,
-        "ext_price": 38.3301,
-        "ext_change": 0.001369,
+        "ext_price": 38.34,
+        "ext_change": 0.001628,
         "reg_time": "2026-09-04T20:00:00+00:00",
-        "time": "2026-09-04T20:45:08+00:00"
+        "time": "2026-09-04T20:50:26+00:00"
       },
       "qqq": {
         "price": 718.41,
@@ -105,10 +105,10 @@
         "asof_date": "2026-09-04",
         "regular_price": 718.41,
         "regular_change": 0.001628,
-        "ext_price": 718.0281,
-        "ext_change": -0.000532,
+        "ext_price": 717.94,
+        "ext_change": -0.000654,
         "reg_time": "2026-09-04T20:00:00+00:00",
-        "time": "2026-09-04T20:45:29+00:00"
+        "time": "2026-09-04T20:50:26+00:00"
       },
       "spy": {
         "price": 769.775,
@@ -118,10 +118,10 @@
         "asof_date": "2026-09-04",
         "regular_price": 769.775,
         "regular_change": -0.00385,
-        "ext_price": 769.41,
-        "ext_change": -0.000474,
+        "ext_price": 769.33,
+        "ext_change": -0.000578,
         "reg_time": "2026-09-04T20:00:00+00:00",
-        "time": "2026-09-04T20:45:18+00:00"
+        "time": "2026-09-04T20:50:26+00:00"
       },
       "upro": {
         "price": 151.601,
@@ -131,10 +131,10 @@
         "asof_date": "2026-09-04",
         "regular_price": 151.601,
         "regular_change": -0.012629,
-        "ext_price": 151.4056,
-        "ext_change": -0.001289,
+        "ext_price": 151.43,
+        "ext_change": -0.001128,
         "reg_time": "2026-09-04T20:00:00+00:00",
-        "time": "2026-09-04T20:45:11+00:00"
+        "time": "2026-09-04T20:47:15+00:00"
       },
       "spxu": {
         "price": 34.3015,
@@ -165,7 +165,7 @@
     }
   },
   "derived": {
-    "contango": 0.212121,
+    "contango": 0.21281,
     "contango_live": true,
     "contango_asof": "2026-09-04",
     "yc_spread": null,
