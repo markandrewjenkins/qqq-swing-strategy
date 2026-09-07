@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-09-07T21:25:23+00:00",
+  "generated_utc": "2026-09-07T21:30:33+00:00",
   "market": {
     "vxn_used": 20.04,
     "vix_used": 15.3,
@@ -171,7 +171,7 @@
     "yc_spread": null,
     "regime": "contango"
   },
-  "cboe_refreshed": false,
+  "cboe_refreshed": true,
   "official": {
     "date": "2026-09-04",
     "position": "LONG_TQQQ",
