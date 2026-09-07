@@ -1,8 +1,8 @@
 {
-  "generated_utc": "2026-09-07T13:40:25+00:00",
+  "generated_utc": "2026-09-07T13:45:35+00:00",
   "market": {
     "vxn_used": 20.04,
-    "vix_used": 14.52,
+    "vix_used": 15.1,
     "vix3m_used": 17.61,
     "curve": {
       "vxn": 20.04,
@@ -33,17 +33,17 @@
         "time": "2026-09-04T20:15:00+00:00"
       },
       "vix": {
-        "price": 14.52,
-        "prev_close": 14.31,
-        "change_pct": 0.014675,
-        "session": "pre",
-        "asof_date": "2026-09-04",
-        "regular_price": 14.52,
-        "regular_change": 0.014675,
-        "ext_price": 15.09,
-        "ext_change": 0.039256,
-        "reg_time": "2026-09-04T20:10:00+00:00",
-        "time": "2026-09-07T13:25:16+00:00"
+        "price": 15.1,
+        "prev_close": 14.53,
+        "change_pct": 0.039229,
+        "session": "regular",
+        "asof_date": "2026-09-07",
+        "regular_price": 15.1,
+        "regular_change": 0.039945,
+        "ext_price": null,
+        "ext_change": null,
+        "reg_time": "2026-09-07T13:30:31+00:00",
+        "time": "2026-09-07T13:30:31+00:00"
       },
       "vix3m": {
         "price": 17.61,
@@ -165,8 +165,8 @@
     }
   },
   "derived": {
-    "contango": 0.21281,
-    "contango_live": true,
+    "contango": 0.211975,
+    "contango_live": false,
     "contango_asof": "2026-09-04",
     "yc_spread": null,
     "regime": "contango"
