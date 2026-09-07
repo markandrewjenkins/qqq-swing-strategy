@@ -1,8 +1,8 @@
 {
-  "generated_utc": "2026-09-07T14:40:27+00:00",
+  "generated_utc": "2026-09-07T14:45:26+00:00",
   "market": {
     "vxn_used": 20.04,
-    "vix_used": 15.2,
+    "vix_used": 15.21,
     "vix3m_used": 17.61,
     "curve": {
       "vxn": 20.04,
@@ -33,17 +33,17 @@
         "time": "2026-09-04T20:15:00+00:00"
       },
       "vix": {
-        "price": 15.2,
+        "price": 15.21,
         "prev_close": 14.53,
-        "change_pct": 0.046111,
+        "change_pct": 0.0468,
         "session": "regular",
         "asof_date": "2026-09-07",
-        "regular_price": 15.2,
-        "regular_change": 0.046832,
+        "regular_price": 15.21,
+        "regular_change": 0.047521,
         "ext_price": null,
         "ext_change": null,
-        "reg_time": "2026-09-07T14:25:16+00:00",
-        "time": "2026-09-07T14:25:16+00:00"
+        "reg_time": "2026-09-07T14:30:16+00:00",
+        "time": "2026-09-07T14:30:16+00:00"
       },
       "vix3m": {
         "price": 17.61,
