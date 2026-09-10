@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-09-10T01:18:58+00:00",
+  "generated_utc": "2026-09-10T08:00:31+00:00",
   "market": {
     "vxn_used": 22.32,
     "vix_used": 16.46,
@@ -8,21 +8,21 @@
       "vxn": 22.32,
       "vxn_date": "2026-09-09",
       "vxn_chg": 0.028098,
-      "vxn_ref": 21.71,
+      "vxn_ref": 22.32,
       "vix": 16.46,
       "vix_date": "2026-09-09",
       "vix_chg": 0.047074,
-      "vix_ref": 15.72,
+      "vix_ref": 16.46,
       "vix3m": 18.87,
       "vix3m_date": "2026-09-09",
       "vix3m_chg": 0.026101,
-      "vix3m_ref": 18.39
+      "vix3m_ref": 18.87
     },
     "quotes": {
       "vxn": {
         "price": 22.32,
-        "prev_close": 21.71,
-        "change_pct": 0.028098,
+        "prev_close": 22.32,
+        "change_pct": 0.0,
         "session": "regular",
         "asof_date": "2026-09-09",
         "regular_price": 22.32,
@@ -34,21 +34,21 @@
       },
       "vix": {
         "price": 16.46,
-        "prev_close": 15.72,
-        "change_pct": 0.047074,
-        "session": "regular",
+        "prev_close": 15.73,
+        "change_pct": 0.046408,
+        "session": "pre",
         "asof_date": "2026-09-09",
         "regular_price": 16.46,
         "regular_change": 0.046408,
-        "ext_price": null,
-        "ext_change": null,
+        "ext_price": 16.33,
+        "ext_change": -0.007898,
         "reg_time": "2026-09-09T20:10:00+00:00",
-        "time": "2026-09-09T20:10:00+00:00"
+        "time": "2026-09-10T07:45:16+00:00"
       },
       "vix3m": {
         "price": 18.87,
-        "prev_close": 18.39,
-        "change_pct": 0.026101,
+        "prev_close": 18.87,
+        "change_pct": 0.0,
         "session": "regular",
         "asof_date": "2026-09-09",
         "regular_price": 18.87,
@@ -69,7 +69,7 @@
         "ext_price": 29421.553,
         "ext_change": 0.0,
         "reg_time": "2026-09-09T20:15:00+00:00",
-        "time": "2026-09-09T23:59:56+00:00"
+        "time": "2026-09-09T23:55:00+00:00"
       },
       "tqqq": {
         "price": 71.42,
@@ -82,7 +82,7 @@
         "ext_price": 71.57,
         "ext_change": 0.0021,
         "reg_time": "2026-09-09T20:00:00+00:00",
-        "time": "2026-09-09T23:59:53+00:00"
+        "time": "2026-09-09T23:55:00+00:00"
       },
       "sqqq": {
         "price": 38.7,
@@ -95,7 +95,7 @@
         "ext_price": 38.61,
         "ext_change": -0.002326,
         "reg_time": "2026-09-09T20:00:00+00:00",
-        "time": "2026-09-09T23:59:55+00:00"
+        "time": "2026-09-09T23:55:00+00:00"
       },
       "qqq": {
         "price": 715.95,
@@ -108,7 +108,7 @@
         "ext_price": 716.49,
         "ext_change": 0.000754,
         "reg_time": "2026-09-09T20:00:00+00:00",
-        "time": "2026-09-09T23:59:56+00:00"
+        "time": "2026-09-09T23:55:00+00:00"
       },
       "spy": {
         "price": 762.28,
@@ -121,7 +121,7 @@
         "ext_price": 763.14,
         "ext_change": 0.001128,
         "reg_time": "2026-09-09T20:00:00+00:00",
-        "time": "2026-09-09T23:59:59+00:00"
+        "time": "2026-09-09T23:55:00+00:00"
       },
       "upro": {
         "price": 147.1276,
@@ -134,7 +134,7 @@
         "ext_price": 147.57,
         "ext_change": 0.003007,
         "reg_time": "2026-09-09T20:00:00+00:00",
-        "time": "2026-09-09T23:57:02+00:00"
+        "time": "2026-09-09T23:55:00+00:00"
       },
       "spxu": {
         "price": 35.35,
@@ -147,7 +147,7 @@
         "ext_price": 35.2385,
         "ext_change": -0.003154,
         "reg_time": "2026-09-09T20:00:00+00:00",
-        "time": "2026-09-09T23:55:23+00:00"
+        "time": "2026-09-09T23:55:00+00:00"
       },
       "spx": {
         "price": 7636.3599,
@@ -171,13 +171,13 @@
     "yc_spread": null,
     "regime": "contango"
   },
-  "cboe_refreshed": true,
+  "cboe_refreshed": false,
   "official": {
-    "date": "2026-09-08",
+    "date": "2026-09-09",
     "position": "LONG_TQQQ",
     "signal": "LONG_TQQQ",
     "open_pnl": 0.455857,
-    "equity": 262176946.7,
+    "equity": 257830561.6,
     "entry_date": "2026-04-10",
     "entry_price": 49.057,
     "open_pnl_live": true
