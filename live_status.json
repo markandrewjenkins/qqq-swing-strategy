@@ -1,8 +1,8 @@
 {
-  "generated_utc": "2026-09-16T16:45:28+00:00",
+  "generated_utc": "2026-09-16T16:50:31+00:00",
   "market": {
-    "vxn_used": 21.63,
-    "vix_used": 16.85,
+    "vxn_used": 21.61,
+    "vix_used": 16.83,
     "vix3m_used": 19.24,
     "curve": {
       "vxn": 22.26,
@@ -20,30 +20,30 @@
     },
     "quotes": {
       "vxn": {
-        "price": 21.63,
+        "price": 21.61,
         "prev_close": 22.26,
-        "change_pct": -0.028302,
+        "change_pct": -0.0292,
         "session": "regular",
         "asof_date": "2026-09-16",
-        "regular_price": 21.63,
-        "regular_change": -0.028302,
+        "regular_price": 21.61,
+        "regular_change": -0.0292,
         "ext_price": null,
         "ext_change": null,
-        "reg_time": "2026-09-16T16:30:16+00:00",
-        "time": "2026-09-16T16:30:16+00:00"
+        "reg_time": "2026-09-16T16:35:17+00:00",
+        "time": "2026-09-16T16:35:17+00:00"
       },
       "vix": {
-        "price": 16.85,
+        "price": 16.83,
         "prev_close": 17.2,
-        "change_pct": -0.020349,
+        "change_pct": -0.021512,
         "session": "regular",
         "asof_date": "2026-09-16",
-        "regular_price": 16.85,
-        "regular_change": -0.020918,
+        "regular_price": 16.83,
+        "regular_change": -0.02208,
         "ext_price": null,
         "ext_change": null,
-        "reg_time": "2026-09-16T16:30:16+00:00",
-        "time": "2026-09-16T16:30:16+00:00"
+        "reg_time": "2026-09-16T16:35:16+00:00",
+        "time": "2026-09-16T16:35:16+00:00"
       },
       "vix3m": {
         "price": 19.24,
@@ -55,99 +55,99 @@
         "regular_change": -0.006198,
         "ext_price": null,
         "ext_change": null,
-        "reg_time": "2026-09-16T16:30:16+00:00",
-        "time": "2026-09-16T16:30:16+00:00"
+        "reg_time": "2026-09-16T16:35:16+00:00",
+        "time": "2026-09-16T16:35:16+00:00"
       },
       "ndx": {
-        "price": 29139.71,
+        "price": 29148.33,
         "prev_close": 28937.838,
-        "change_pct": 0.006976,
+        "change_pct": 0.007274,
         "session": "regular",
         "asof_date": "2026-09-16",
-        "regular_price": 29169.459,
-        "regular_change": 0.008004,
+        "regular_price": 29176.5254,
+        "regular_change": 0.008248,
         "ext_price": null,
         "ext_change": null,
-        "reg_time": "2026-09-16T16:45:29+00:00",
-        "time": "2026-09-16T16:45:30+00:00"
+        "reg_time": "2026-09-16T16:50:31+00:00",
+        "time": "2026-09-16T16:50:33+00:00"
       },
       "tqqq": {
-        "price": 69.476,
+        "price": 69.5497,
         "prev_close": 68.0616,
-        "change_pct": 0.020781,
+        "change_pct": 0.021864,
         "session": "regular",
         "asof_date": "2026-09-16",
-        "regular_price": 69.476,
-        "regular_change": 0.020781,
+        "regular_price": 69.5497,
+        "regular_change": 0.021864,
         "ext_price": null,
         "ext_change": null,
-        "reg_time": "2026-09-16T16:45:29+00:00",
-        "time": "2026-09-16T16:45:29+00:00"
+        "reg_time": "2026-09-16T16:50:32+00:00",
+        "time": "2026-09-16T16:50:32+00:00"
       },
       "sqqq": {
-        "price": 39.6701,
+        "price": 39.635,
         "prev_close": 40.51,
-        "change_pct": -0.020733,
+        "change_pct": -0.0216,
         "session": "regular",
         "asof_date": "2026-09-16",
-        "regular_price": 39.6701,
-        "regular_change": -0.020733,
+        "regular_price": 39.635,
+        "regular_change": -0.0216,
         "ext_price": null,
         "ext_change": null,
-        "reg_time": "2026-09-16T16:45:30+00:00",
-        "time": "2026-09-16T16:45:30+00:00"
+        "reg_time": "2026-09-16T16:50:25+00:00",
+        "time": "2026-09-16T16:50:25+00:00"
       },
       "qqq": {
-        "price": 710.15,
+        "price": 710.36,
         "prev_close": 705.23,
-        "change_pct": 0.006976,
+        "change_pct": 0.007274,
         "session": "regular",
         "asof_date": "2026-09-16",
-        "regular_price": 710.15,
-        "regular_change": 0.006976,
+        "regular_price": 710.36,
+        "regular_change": 0.007274,
         "ext_price": null,
         "ext_change": null,
-        "reg_time": "2026-09-16T16:45:30+00:00",
-        "time": "2026-09-16T16:45:30+00:00"
+        "reg_time": "2026-09-16T16:50:33+00:00",
+        "time": "2026-09-16T16:50:33+00:00"
       },
       "spy": {
-        "price": 760.0599,
+        "price": 760.08,
         "prev_close": 757.92,
-        "change_pct": 0.002823,
+        "change_pct": 0.00285,
         "session": "regular",
         "asof_date": "2026-09-16",
-        "regular_price": 760.0599,
-        "regular_change": 0.002823,
+        "regular_price": 760.08,
+        "regular_change": 0.00285,
         "ext_price": null,
         "ext_change": null,
-        "reg_time": "2026-09-16T16:45:31+00:00",
-        "time": "2026-09-16T16:45:31+00:00"
+        "reg_time": "2026-09-16T16:50:33+00:00",
+        "time": "2026-09-16T16:50:33+00:00"
       },
       "upro": {
-        "price": 145.3743,
+        "price": 145.52,
         "prev_close": 144.28,
-        "change_pct": 0.007585,
+        "change_pct": 0.008594,
         "session": "regular",
         "asof_date": "2026-09-16",
-        "regular_price": 145.3743,
-        "regular_change": 0.007585,
+        "regular_price": 145.52,
+        "regular_change": 0.008594,
         "ext_price": null,
         "ext_change": null,
-        "reg_time": "2026-09-16T16:44:59+00:00",
-        "time": "2026-09-16T16:44:59+00:00"
+        "reg_time": "2026-09-16T16:49:00+00:00",
+        "time": "2026-09-16T16:49:00+00:00"
       },
       "spxu": {
-        "price": 35.72,
+        "price": 35.71,
         "prev_close": 36.0085,
-        "change_pct": -0.008012,
+        "change_pct": -0.00829,
         "session": "regular",
         "asof_date": "2026-09-16",
-        "regular_price": 35.72,
-        "regular_change": -0.008012,
+        "regular_price": 35.71,
+        "regular_change": -0.00829,
         "ext_price": null,
         "ext_change": null,
-        "reg_time": "2026-09-16T16:45:12+00:00",
-        "time": "2026-09-16T16:45:12+00:00"
+        "reg_time": "2026-09-16T16:50:32+00:00",
+        "time": "2026-09-16T16:50:32+00:00"
       },
       "spx": {
         "price": 7611.8799,
@@ -159,13 +159,13 @@
         "regular_change": 0.003476,
         "ext_price": null,
         "ext_change": null,
-        "reg_time": "2026-09-16T16:45:33+00:00",
-        "time": "2026-09-16T16:45:33+00:00"
+        "reg_time": "2026-09-16T16:50:35+00:00",
+        "time": "2026-09-16T16:50:35+00:00"
       }
     }
   },
   "derived": {
-    "contango": 0.14184,
+    "contango": 0.143197,
     "contango_live": true,
     "contango_asof": "2026-09-16",
     "yc_spread": null,
@@ -176,7 +176,7 @@
     "date": "2026-09-15",
     "position": "LONG_TQQQ",
     "signal": "LONG_TQQQ",
-    "open_pnl": 0.41623,
+    "open_pnl": 0.417732,
     "equity": 231823829.39,
     "entry_date": "2026-04-10",
     "entry_price": 49.057,
