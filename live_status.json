@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-09-23T00:55:28+00:00",
+  "generated_utc": "2026-09-23T08:00:32+00:00",
   "market": {
     "vxn_used": 20.18,
     "vix_used": 14.21,
@@ -8,21 +8,21 @@
       "vxn": 20.18,
       "vxn_date": "2026-09-22",
       "vxn_chg": -0.010299,
-      "vxn_ref": 20.39,
+      "vxn_ref": 20.18,
       "vix": 14.21,
       "vix_date": "2026-09-22",
       "vix_chg": -0.044385,
-      "vix_ref": 14.87,
+      "vix_ref": 14.21,
       "vix3m": 17.61,
       "vix3m_date": "2026-09-22",
       "vix3m_chg": -0.025996,
-      "vix3m_ref": 18.08
+      "vix3m_ref": 17.61
     },
     "quotes": {
       "vxn": {
         "price": 20.18,
-        "prev_close": 20.39,
-        "change_pct": -0.010299,
+        "prev_close": 20.18,
+        "change_pct": 0.0,
         "session": "regular",
         "asof_date": "2026-09-22",
         "regular_price": 20.18,
@@ -34,21 +34,21 @@
       },
       "vix": {
         "price": 14.21,
-        "prev_close": 14.87,
-        "change_pct": -0.044385,
-        "session": "regular",
+        "prev_close": 14.86,
+        "change_pct": -0.043742,
+        "session": "pre",
         "asof_date": "2026-09-22",
         "regular_price": 14.21,
         "regular_change": -0.043742,
-        "ext_price": null,
-        "ext_change": null,
+        "ext_price": 14.18,
+        "ext_change": -0.002111,
         "reg_time": "2026-09-22T20:10:00+00:00",
-        "time": "2026-09-22T20:10:00+00:00"
+        "time": "2026-09-23T07:45:31+00:00"
       },
       "vix3m": {
         "price": 17.61,
-        "prev_close": 18.08,
-        "change_pct": -0.025996,
+        "prev_close": 17.61,
+        "change_pct": 0.0,
         "session": "regular",
         "asof_date": "2026-09-22",
         "regular_price": 17.61,
@@ -69,7 +69,7 @@
         "ext_price": 30732.396,
         "ext_change": 0.0,
         "reg_time": "2026-09-22T20:15:00+00:00",
-        "time": "2026-09-22T23:59:54+00:00"
+        "time": "2026-09-22T23:55:00+00:00"
       },
       "tqqq": {
         "price": 80.79,
@@ -82,7 +82,7 @@
         "ext_price": 81.13,
         "ext_change": 0.004208,
         "reg_time": "2026-09-22T20:00:00+00:00",
-        "time": "2026-09-22T23:59:59+00:00"
+        "time": "2026-09-22T23:55:00+00:00"
       },
       "sqqq": {
         "price": 33.7795,
@@ -95,7 +95,7 @@
         "ext_price": 33.65,
         "ext_change": -0.003834,
         "reg_time": "2026-09-22T20:00:00+00:00",
-        "time": "2026-09-22T23:59:57+00:00"
+        "time": "2026-09-22T23:55:00+00:00"
       },
       "qqq": {
         "price": 747.3,
@@ -108,7 +108,7 @@
         "ext_price": 748.3192,
         "ext_change": 0.001364,
         "reg_time": "2026-09-22T20:00:00+00:00",
-        "time": "2026-09-22T23:59:54+00:00"
+        "time": "2026-09-22T23:55:00+00:00"
       },
       "spy": {
         "price": 773.58,
@@ -121,7 +121,7 @@
         "ext_price": 773.74,
         "ext_change": 0.000207,
         "reg_time": "2026-09-22T20:00:00+00:00",
-        "time": "2026-09-22T23:59:59+00:00"
+        "time": "2026-09-22T23:55:00+00:00"
       },
       "upro": {
         "price": 154.09,
@@ -134,7 +134,7 @@
         "ext_price": 154.17,
         "ext_change": 0.000519,
         "reg_time": "2026-09-22T20:00:00+00:00",
-        "time": "2026-09-22T23:59:48+00:00"
+        "time": "2026-09-22T23:55:00+00:00"
       },
       "spxu": {
         "price": 33.64,
@@ -147,7 +147,7 @@
         "ext_price": 33.6299,
         "ext_change": -0.0003,
         "reg_time": "2026-09-22T20:00:00+00:00",
-        "time": "2026-09-22T23:58:06+00:00"
+        "time": "2026-09-22T23:55:00+00:00"
       },
       "spx": {
         "price": 7764.6401,
@@ -171,13 +171,13 @@
     "yc_spread": null,
     "regime": "contango"
   },
-  "cboe_refreshed": true,
+  "cboe_refreshed": false,
   "official": {
     "date": "2026-09-21",
     "position": "LONG_TQQQ",
     "signal": "LONG_TQQQ",
     "open_pnl": 0.64686,
-    "equity": 310270836.76,
+    "equity": 310270770.98,
     "entry_date": "2026-04-10",
     "entry_price": 49.057,
     "open_pnl_live": true
