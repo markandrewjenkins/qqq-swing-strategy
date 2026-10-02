@@ -412,7 +412,6 @@ table.sig-mon th:nth-child(6),table.sig-mon td:nth-child(6){ width:9%; }
 .sig-gauge { display:inline-block; vertical-align:middle; }
 .cur-cell { display:flex; align-items:center; gap:7px; }
 .cur-cell .cur-val { width:64px; text-align:right; flex:none; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:0.82rem; }
-.cur-cell .cur-val.prelim, .live-chg.prelim { font-style:italic; }
 .cur-hd { display:inline-block; width:62px; text-align:right; }
 .cur-cell .cur-clk { width:15px; flex:none; text-align:center; }
 .cur-cell .cur-bar { flex:none; }
@@ -1132,6 +1131,7 @@ const abbrev  = v => { if(v==null||isNaN(v))return 'N/A'; const a=Math.abs(v);
                        return Math.round(v).toLocaleString('en-US'); };
 const fmtK    = v => v==null||isNaN(v)?'N/A':(v<0?'−$'+abbrev(-v):'$'+abbrev(v));
 const fmtX = v => v==null||isNaN(v)?'N/A':'×'+(v>=1000?Math.round(v).toLocaleString('en-US'):v>=100?v.toFixed(0):v>=10?v.toFixed(1):v.toFixed(2));
+const fmtAx = m => { if(m==null||!isFinite(m)) return ''; if(m>=1) return '×'+Math.round(m).toLocaleString('en-US'); const d=Math.max(1,Math.ceil(-Math.log10(m))); return '×'+m.toFixed(d); };
 function tPort(t){ const p=tPnl(t), before=t.equity_after-p; return before>0 ? p/before : 0; }
 function tGrowth(t){ return t.equity_after/DATA.meta.start_capital; }
 const fmtPct  = (v,dp=1) => v==null||isNaN(v)?'N/A':(v>=0?'+':'')+(v*100).toLocaleString('en-US',{minimumFractionDigits:dp,maximumFractionDigits:dp})+'%';
@@ -1606,7 +1606,6 @@ function renderAnalytics(){
     {l:'Sharpe ratio', v:fmtNum(s.sharpe,2), sub:'Return per unit of total vol', c:s.sharpe>=1?'pos':s.sharpe>=0?'neu':'neg'},
     {l:'Sortino ratio',v:fmtNum(s.sortino,2), sub:'Return per unit of downside vol', c:s.sortino>=1?'pos':s.sortino>=0?'neu':'neg'},
     {l:'Calmar ratio', v:fmtNum(s.calmar,2), sub:'CAGR ÷ |max drawdown|', c:s.calmar>=1?'pos':s.calmar>=0.5?'neu':'neg'},
-    {l:'Excess return vs TQQQ', v:fmtPct(s.total_return-s.benchmark_return,0), sub:'Strategy minus TQQQ buy-&-hold total return', c:s.total_return>=s.benchmark_return?'pos':'neg'},
   ];
   document.getElementById('kpi-strip').innerHTML=kpis.map(k=>{
     if(k.insets){
@@ -1657,10 +1656,10 @@ function renderAnalytics(){
       autoscaleInfoProvider:()=>({priceRange:{minValue:-100,maxValue:0}})});
     ddS.setData(ddLW);
     if(bhLW.length){ const bh=ch.addLineSeries({color:GRAY,lineWidth:1,lineStyle:2,priceScaleId:'right',lastValueVisible:false,priceLineVisible:false,
-      priceFormat:{type:'custom',formatter:v=>fmtX(v*1000/DATA.meta.start_capital)}}); bh.setData(bhLW); }
+      priceFormat:{type:'custom',formatter:v=>fmtAx(v*1000/DATA.meta.start_capital)}}); bh.setData(bhLW); }
     const eqS=ch.addAreaSeries({lineColor:YELLOW,topColor:'rgba(246,96,182,0.22)',bottomColor:'rgba(246,96,182,0.01)',lineWidth:2,priceScaleId:'right',
       priceLineVisible:true,priceLineColor:LCTX,priceLineWidth:1,priceLineStyle:2,
-      priceFormat:{type:'custom',formatter:v=>fmtX(v*1000/DATA.meta.start_capital)}});
+      priceFormat:{type:'custom',formatter:v=>fmtAx(v*1000/DATA.meta.start_capital)}});
     eqS.setData(eqLW);
     window._eqLen = eqLW.length;
     ch.timeScale().subscribeVisibleLogicalRangeChange(()=>{ _updateEqToEndBtn(); });
@@ -1687,7 +1686,7 @@ function renderAnalytics(){
     options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},
       tooltip:{callbacks:{label:c=>' '+fmtX(Math.exp(c.parsed.y))+' portfolio growth'}}},
       scales:{x:{ticks:{color:TICK,font:{size:13,family:FONT}},grid:{display:false}},
-        y:{ticks:{color:TICK,font:{size:13,family:FONT},callback:v=>fmtX(Math.exp(v))},grid:{color:GRID}}}}
+        y:{ticks:{color:TICK,font:{size:13,family:FONT},stepSize:Math.LN10,callback:v=>fmtAx(Math.exp(v))},grid:{color:GRID}}}}
   });
   const hist={};
   aTrades().forEach(t=>{ const b=Math.max(-50,Math.min(100,Math.round(tRet(t)*100/5)*5)); hist[b]=(hist[b]||0)+1; });
@@ -1951,7 +1950,7 @@ function renderRisk(){
     options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},
       tooltip:{callbacks:{title:c=>'After '+c[0].label+' trades',label:c=>' '+c.dataset.label+': '+fmtX(c.parsed.y/start)}}},
       scales:{ x:{ticks:{color:TICK,maxTicksLimit:12,font:{size:12,family:FONT}},grid:{color:GRID},title:{display:true,text:'Trade #',color:TICK}},
-        y:{type:'logarithmic',ticks:{color:TICK,font:{size:12,family:FONT},callback:v=>fmtX(v/start)},grid:{color:GRID}} } } });
+        y:{type:'logarithmic',ticks:{color:TICK,font:{size:12,family:FONT},callback:v=>{ const m=v/start, l=Math.log10(m); return Math.abs(l-Math.round(l))<1e-9?fmtAx(m):''; }},grid:{color:GRID}} } } });
   const _yrs=(DATA.meta.trading_days||n)/252;
   const fmtR=v=>{ const c=Math.pow(Math.max(v,1e-9)/start,1/_yrs)-1; return (c>=0?'+':'')+(c*100).toFixed(1)+'%'; };
   const probDD=th=>Math.round(100*dds.filter(d=>d<=th).length/SIMS);
@@ -2437,7 +2436,7 @@ function buildDaily(){
   window._dailyChart=dailyChart;
   dailySeries=dailyChart.addAreaSeries({lineColor:YELLOW,topColor:'rgba(246,96,182,0.22)',bottomColor:'rgba(246,96,182,0.01)',lineWidth:2,priceScaleId:'right',
     priceLineVisible:true,priceLineColor:LCTX,priceLineWidth:1,priceLineStyle:2,
-    priceFormat:{type:'custom',formatter:v=>fmtX(v/DATA.meta.start_capital)}});
+    priceFormat:{type:'custom',formatter:v=>fmtAx(v/DATA.meta.start_capital)}});
   dailySeries.setData(data); dailySeries.setMarkers(mk);
   const ddS=dailyChart.addHistogramSeries({priceScaleId:'left',color:'rgba(207,74,63,0.34)',base:0,priceLineVisible:false,lastValueVisible:false,
     priceFormat:{type:'custom',formatter:v=>Math.round(v)+'%'},
