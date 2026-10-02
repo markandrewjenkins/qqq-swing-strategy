@@ -402,6 +402,7 @@ table.sig-stats td:first-child { text-align:left; color:var(--dim); font-family:
 table.sig-stats td .ss-sub { display:block; font-size:0.72rem; color:var(--dim); margin-top:1px; }
 table.sig-stats tr:hover td { background:rgba(61,57,52,0.04); }
 table.sig-stats .ss-all { color:var(--yellow); }
+#sig-stats th, #sig-stats td:first-child { font-family:'Chakra Petch', sans-serif; }   
 table.sig-mon { width:100%; border-collapse:collapse; font-size:0.8rem; table-layout:fixed; }
 table.sig-mon th:nth-child(1),table.sig-mon td:nth-child(1){ width:14%; }
 table.sig-mon th:nth-child(2),table.sig-mon td:nth-child(2){ width:27%; }
@@ -1644,7 +1645,7 @@ function renderAnalytics(){
     try{ if(window._eqChart&&window._eqChart.remove) window._eqChart.remove(); }catch(_){}
     el.innerHTML='';
     const ch=LC.createChart(el,{ width:el.clientWidth||900, height:el.clientHeight||320,
-      layout:{background:{color:LCBG},textColor:LCTX,fontFamily:FONT},
+      layout:{background:{color:LCBG},textColor:TICK,fontFamily:FONT,fontSize:12},
       grid:{vertLines:{color:GRID,style:1},horzLines:{color:GRID,style:1}},
       leftPriceScale:{visible:true,borderColor:LCBD,scaleMargins:{top:0.10,bottom:0.10},mode:(LC.PriceScaleMode?LC.PriceScaleMode.Logarithmic:1)},
       rightPriceScale:{visible:true,invertScale:true,borderColor:LCBD,scaleMargins:{top:0.04,bottom:0.04}},
@@ -2427,7 +2428,7 @@ function buildDaily(){
   mk.sort((a,b)=>a.time<b.time?-1:1);
   let _keepRange=_dailyPendRange||null; if(dailyChart){ if(!_keepRange){ try{_keepRange=dailyChart.timeScale().getVisibleLogicalRange();}catch(_){} } try{dailyChart.remove();}catch(_){} dailyChart=null; }
   dailyChart=LC.createChart(el,{ width:el.clientWidth||900, height:el.clientHeight||360,
-    layout:{background:{color:LCBG},textColor:LCTX,fontFamily:"'JetBrains Mono', monospace"},
+    layout:{background:{color:LCBG},textColor:TICK,fontFamily:FONT,fontSize:12},
     grid:{vertLines:{color:GRID,style:1},horzLines:{color:GRID,style:1}},
     leftPriceScale:{visible:true,borderColor:LCBD,scaleMargins:{top:0.10,bottom:0.10},mode:(LC.PriceScaleMode?LC.PriceScaleMode.Logarithmic:1)},
     rightPriceScale:{visible:true,invertScale:true,borderColor:LCBD,scaleMargins:{top:0.04,bottom:0.04}},
