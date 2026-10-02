@@ -1589,7 +1589,7 @@ function updateLivePosition(src){
 function renderAnalytics(){
   const s=aStats();
   const kpis=[
-    {l:'Total return', v:fmtPct(s.total_return,0), sub:fmtX(1+s.total_return)+' growth · in-sample backtest', c:s.total_return>=0?'pos':'neg'},
+    {l:'Growth',       v:fmtX(s.final_equity/DATA.meta.start_capital), sub:fmtPct(s.total_return,0)+' total · in-sample backtest', c:s.total_return>=0?'pos':'neg'},
     {l:'Max Drawdown', v:fmtPct(s.max_drawdown,1), sub:'Max peak-to-trough', c:'neg', wide:true,
      insets:(()=>{ const R=DATA.dd_recovery||{};
        const _m=v=>v==null?'N/A':(v<1?(v*30.44).toFixed(0)+'d':v.toFixed(1)+'mo');
@@ -2429,16 +2429,16 @@ function buildDaily(){
   dailyChart=LC.createChart(el,{ width:el.clientWidth||900, height:el.clientHeight||360,
     layout:{background:{color:LCBG},textColor:LCTX,fontFamily:"'JetBrains Mono', monospace"},
     grid:{vertLines:{color:GRID,style:1},horzLines:{color:GRID,style:1}},
-    rightPriceScale:{borderColor:LCBD,scaleMargins:{top:0.10,bottom:0.10},mode:(LC.PriceScaleMode?LC.PriceScaleMode.Logarithmic:1)},
-    leftPriceScale:{visible:true,invertScale:true,borderColor:LCBD,scaleMargins:{top:0.04,bottom:0.04}},
+    leftPriceScale:{visible:true,borderColor:LCBD,scaleMargins:{top:0.10,bottom:0.10},mode:(LC.PriceScaleMode?LC.PriceScaleMode.Logarithmic:1)},
+    rightPriceScale:{visible:true,invertScale:true,borderColor:LCBD,scaleMargins:{top:0.04,bottom:0.04}},
     timeScale:{borderColor:LCBD,rightOffset:6,minBarSpacing:0.02,maxBarSpacing:18},
     crosshair:{mode:(LC.CrosshairMode?LC.CrosshairMode.Normal:1),vertLine:{color:LCCH,labelBackgroundColor:LCCH},horzLine:{color:LCCH,labelBackgroundColor:LCCH}} });
   window._dailyChart=dailyChart;
-  dailySeries=dailyChart.addAreaSeries({lineColor:YELLOW,topColor:'rgba(246,96,182,0.22)',bottomColor:'rgba(246,96,182,0.01)',lineWidth:2,priceScaleId:'right',
+  dailySeries=dailyChart.addAreaSeries({lineColor:YELLOW,topColor:'rgba(246,96,182,0.22)',bottomColor:'rgba(246,96,182,0.01)',lineWidth:2,priceScaleId:'left',
     priceLineVisible:true,priceLineColor:LCTX,priceLineWidth:1,priceLineStyle:2,
     priceFormat:{type:'custom',formatter:v=>fmtAx(v/DATA.meta.start_capital)}});
   dailySeries.setData(data); dailySeries.setMarkers(mk);
-  const ddS=dailyChart.addHistogramSeries({priceScaleId:'left',color:'rgba(207,74,63,0.34)',base:0,priceLineVisible:false,lastValueVisible:false,
+  const ddS=dailyChart.addHistogramSeries({priceScaleId:'right',color:'rgba(207,74,63,0.34)',base:0,priceLineVisible:false,lastValueVisible:false,
     priceFormat:{type:'custom',formatter:v=>Math.round(v)+'%'},
     autoscaleInfoProvider:()=>({priceRange:{minValue:-100,maxValue:0}})});
   ddS.setData(ec.map(b=>({time:b.date,value:+(b.drawdown||0).toFixed(2)})));
