@@ -664,6 +664,51 @@ table.sig-mon tr.sig-divider.regime-hd td b { color: inherit; }
   .kpi.kpi-wide .dd-grid { min-width: 0; }
   #sig-perf [style*="grid-template-columns:1fr 1fr 1fr 1fr"] { grid-template-columns: 1fr 1fr !important; }
 }
+.m-bar { display:none; }
+body.mob .hdr { padding:6px 12px !important; gap:6px !important; flex-wrap:wrap; }
+body.mob .hdr > div:first-child { display:flex; align-items:center; flex-wrap:wrap; gap:4px 10px; width:100%; }
+body.mob .hdr-title { font-size:0.95rem !important; letter-spacing:0.05em; margin:0 !important; }
+body.mob .m-bar { display:flex; align-items:center; gap:10px; margin-left:auto; }
+body.mob #m-pos { font-weight:700; font-size:0.92rem; white-space:nowrap; }
+body.mob #m-pos .live-chg { font-size:0.76rem; margin-left:5px; }
+body.mob #m-menu { background:transparent; border:1px solid var(--border2); color:var(--yellow); border-radius:8px;
+  font-size:1.05rem; line-height:1; padding:4px 9px; cursor:pointer; }
+body.mob .hdr:not(.m-open) .hdr-metarow, body.mob .hdr:not(.m-open) .tabs { display:none !important; }
+body.mob .hdr.m-open .hdr-metarow { width:100%; }
+body.mob .hdr.m-open .tabs { width:100%; gap:6px; }
+body.mob #live-strip { position:relative; padding:5px 34px 5px 12px !important; cursor:pointer; }
+body.mob #live-strip::after { content:'\25BE'; position:absolute; right:13px; top:5px; color:var(--yellow); font-size:0.9rem; }
+body.mob #live-strip.m-exp::after { content:'\25B4'; }
+body.mob #live-strip .live-pos-block, body.mob #live-strip .live-vdiv { display:none !important; }
+body.mob #live-strip:not(.m-exp) .live-main { flex-direction:row !important; }
+body.mob #live-strip:not(.m-exp) .live-row:not(:first-child) { display:none !important; }
+body.mob #live-strip:not(.m-exp) .live-row:first-child { flex-wrap:nowrap !important; gap:12px !important; overflow:hidden; }
+body.mob #live-strip:not(.m-exp) .live-row:first-child > .live-item:not(.live-status):nth-child(n+3) { display:none !important; }
+body.mob #live-strip:not(.m-exp) .live-status { flex-basis:auto !important; width:auto !important; margin-left:auto !important; }
+body.mob #live-strip:not(.m-exp) .live-status > :not(.live-badge) { display:none !important; }
+body.mob #live-strip:not(.m-exp) .live-ext { display:none !important; }
+body.mob #replay-bar, body.mob #cdl-info, body.mob #cdl-fs, body.mob .mkt-sessbar { display:none !important; }
+body.mob #live-panel .ph-live { padding-top:6px; padding-bottom:6px; }
+body.mob-p #mini-monitor { display:block !important; top:auto; left:0; right:0; bottom:0; max-height:68%;
+  overflow-y:auto; pointer-events:auto; z-index:7; }
+body.mob-p #mini-monitor .mini-inner { position:relative; width:auto; transform:none !important;
+  border-radius:14px 14px 0 0; font-size:0.74rem; padding:6px 12px 8px; }
+body.mob-p #mini-monitor .mini-inner::before { content:''; display:block; width:30px; height:3px; border-radius:2px;
+  background:var(--border2); margin:0 auto 5px; }
+body.mob-p #mini-monitor .mini-hd { cursor:pointer; }
+body.mob-p #mini-monitor.mini-collapsed .mini-body { display:block; }
+body.mob-p #mini-monitor.mini-collapsed .mini-body > :not(.mini-pos):not(.mini-combo) { display:none; }
+body.mob-p #cdl-toend { bottom:92px !important; }
+body.mob-p #candle-chart { height:calc(100% - 84px) !important; }   
+body.mob #mkt-countdown { display:none !important; }
+body.mob-l #candle-chart { width:60% !important; }
+body.mob-l #mini-monitor { display:block !important; left:60%; right:0; top:0; bottom:0; overflow-y:auto;
+  pointer-events:auto; border-left:1px solid var(--border2); }
+body.mob-l #mini-monitor .mini-inner { position:static; width:auto; transform:none !important; border:none;
+  border-radius:0; min-height:100%; font-size:0.7rem; }
+body.mob-l #mini-monitor.mini-collapsed .mini-body { display:block; }
+body.mob-l #mini-monitor .mini-exp { display:none; }
+body.mob-l #cdl-toend { right:calc(40% + 66px) !important; }
 </style>
 </head>
 <body>
@@ -671,6 +716,7 @@ table.sig-mon tr.sig-divider.regime-hd td b { color: inherit; }
 <div class="hdr">
   <div>
     <div class="hdr-title">QQQ SWING STRATEGY</div>
+    <div class="m-bar"><span id="m-pos"></span><button id="m-menu" onclick="mMenu()" aria-label="Menu" title="Menu">&#9776;</button></div>
     <div class="hdr-metarow">
       <span class="hdr-meta" id="hdr-meta">Loading...</span>
     </div>
@@ -697,9 +743,6 @@ table.sig-mon tr.sig-divider.regime-hd td b { color: inherit; }
         <span class="live-item"><span class="live-lbl">VXN</span><span class="live-val" id="lv-vxn">—</span><span class="live-chg" id="lv-vxn-c"></span></span>
         <span class="live-item"><span class="live-lbl" title="CBOE VIX — 30-day (1-month) S&amp;P implied volatility">VIX1M</span><span class="live-val" id="lv-vix">—</span><span class="live-chg" id="lv-vix-c"></span></span>
         <span class="live-item"><span class="live-lbl">VIX3M</span><span class="live-val" id="lv-vix3m">—</span><span class="live-chg" id="lv-vix3m-c"></span></span>
-        <span class="live-item"><span class="live-lbl" title="VIX3M ÷ VIX − 1: positive = contango (calm), negative = backwardation (stress)">CONTANGO</span><span class="live-val" id="lv-contango">—</span><span class="live-chg" id="lv-contango-c"></span></span>
-        <span class="live-item"><span class="live-lbl" title="TQQQ close vs its 20-day EMA — this IS the TQQQ entry condition: above the line the bull side is live">TQQQ vs EMA20</span><span class="live-val" id="lv-ema">—</span><span class="live-chg" id="lv-ema-c"></span></span>
-        <span class="live-item"><span class="live-lbl" title="QQQ vs its 200-day SMA — the regime gate: above = bull regime (dips are ridden, SQQQ is off), below = bear regime (Ichimoku exits arm, SQQQ may trade)">QQQ vs 200d</span><span class="live-val" id="lv-reg">—</span><span class="live-chg" id="lv-reg-c"></span></span>
         <span class="live-item live-status" style="margin-left:auto;gap:14px">
           <span class="live-badge"><span class="live-dot"></span><span id="lv-feed">LIVE</span></span>
           <span class="live-lbl" id="lv-feed-note">Updating every ~5 mins</span>
@@ -1202,7 +1245,6 @@ async function load(){
     document.getElementById('loading').style.display='none';
     document.getElementById('main-content').style.display='flex';
     render();
-    updateGateReadouts();
   }catch(e){
     document.getElementById('loading').style.display='none';
     document.getElementById('error-state').style.display='block';
@@ -2098,24 +2140,6 @@ function _fallbackQuotes(){
   { const t=n2(q.ndx&&q.ndx.price); if(t!=null) fill('ndx',t); }
   if(window.OHLC&&OHLC.length){ const t=pr(OHLC[OHLC.length-1][4]); if(t!=null) fill('tqqq',t); }
 }
-function updateGateReadouts(){
-  const bh=(typeof DATA!=='undefined'&&DATA&&DATA.bar_history)||[]; const lb=bh[bh.length-1]; if(!lb) return;
-  const q=(LIVE&&LIVE.market&&LIVE.market.quotes)||{};
-  const setV=(id,txt,cls)=>{const el=document.getElementById(id); if(el){el.textContent=txt; el.className='live-val '+(cls||'');}};
-  const setC=(id,txt,cls)=>{const el=document.getElementById(id); if(el){el.textContent=txt; el.className='live-chg '+(cls||'');}};
-  const tq=(q.tqqq&&q.tqqq.price)!=null?q.tqqq.price:lb.tqqq_price;
-  const d1=(tq!=null&&lb.ema20)?(tq/lb.ema20-1):null;
-  setV('lv-ema', d1==null?'—':((d1>=0?'+':'')+(d1*100).toFixed(1)+'%'), d1==null?'':(d1>=0?'up':'down'));
-  setC('lv-ema-c', d1==null?'':(d1>=0?'long side live':'no long'), d1>=0?'up':'down');
-  const e=document.getElementById('lv-ema'); const ei=e&&e.closest('.live-item');
-  if(ei) ei.title='TQQQ close vs its 20-day EMA — above the line the TQQQ entry condition is satisfied'+(lb.ema20?' (EMA20 ≈ $'+(+lb.ema20).toFixed(2)+')':'');
-  const qq=(q.qqq&&q.qqq.price)!=null?q.qqq.price:lb.qqq_price;
-  const d2=(qq!=null&&lb.qqq_sma200)?(qq/lb.qqq_sma200-1):null;
-  setV('lv-reg', d2==null?'—':((d2>=0?'+':'')+(d2*100).toFixed(1)+'%'), d2==null?'':(d2>=0?'up':'down'));
-  setC('lv-reg-c', d2==null?'':(d2<0?'bear regime':'bull regime'), d2<0?'down':'up');
-  const r=document.getElementById('lv-reg'); const ri=r&&r.closest('.live-item');
-  if(ri) ri.title='QQQ vs its 200-day SMA — the regime gate: above it dips are ridden and SQQQ is off; below it the Ichimoku exits arm and SQQQ may trade'+(lb.qqq_sma200?' (200-SMA ≈ $'+(+lb.qqq_sma200).toFixed(2)+')':'');
-}
 async function loadLive(){
   const strip = document.getElementById('live-strip');
   try{
@@ -2166,14 +2190,6 @@ async function loadLive(){
     z=_lv(m.vxn_used,   q.vxn,   cv.vxn,   cv.vxn_chg);   vx('vxn',   z[0], z[1], _fresh(_qt(q.vxn), cv.vxn_date), _qt(q.vxn)||cv.vxn_date);
     z=_lv(m.vix_used,   q.vix,   cv.vix,   cv.vix_chg);   vx('vix',   z[0], z[1], _fresh(_qt(q.vix), cv.vix_date), _qt(q.vix)||cv.vix_date);
     z=_lv(m.vix3m_used, q.vix3m, cv.vix3m, cv.vix3m_chg); vx('vix3m', z[0], z[1], _fresh(_qt(q.vix3m), cv.vix3m_date), _qt(q.vix3m)||cv.vix3m_date);
-    { const ct=(L.derived&&L.derived.contango!=null)?L.derived.contango:null;
-      const ctLive=!(L.derived&&L.derived.contango_live===false);
-      const ctAsof=(L.derived&&L.derived.contango_asof)||null;
-      const ctFresh=ctLive&&_fresh(_qt(q.vix), _qt(q.vix3m), cv.vix_date);
-      setVal('lv-contango', ct==null?'—':((ct>=0?'+':'')+(ct*100).toFixed(1)+'%'), ct==null?'':(ct>=0?'up':'down'), !ctFresh);
-      _setTip('contango', ctLive ? _tip('vix', ctFresh, _qt(q.vix)||cv.vix_date)
-        : 'VIX1M and VIX3M are not from the same session (VIX3M publishes only 9:30–4:00 ET), so this is the CBOE end-of-day pair as of '+(ctAsof||'the last close')+' rather than a live reading.'); }
-    updateGateReadouts();
     { const ft=document.getElementById('tab-forward');
       if(window._fwdLive && ft && ft.style.display!=='none' && typeof renderForward==='function'){
         try{ renderForward(); }catch(_){} } }
@@ -2474,6 +2490,7 @@ function buildDaily(){
   else dailyChart.timeScale().fitContent();
 }
 function scaleMini(){ const mm=document.getElementById('mini-monitor'); if(!mm) return;
+  if(document.body.classList.contains('mob')){ const _ni=mm.querySelector('.mini-inner'); if(_ni) _ni.style.transform='none'; return; }
   const inner=mm.querySelector('.mini-inner'); if(!inner) return;
   if(mm.classList.contains('mini-collapsed')){ inner.style.transform='none'; return; }
   const H=mm.clientHeight, wrap=mm.parentElement, wrapW=wrap?wrap.clientWidth:0;
@@ -2488,7 +2505,7 @@ function scaleMini(){ const mm=document.getElementById('mini-monitor'); if(!mm) 
   inner.style.transform='scale('+inner._ss+')'; }
 function miniToggle(){ const mm=document.getElementById('mini-monitor'); if(!mm) return;
   const c=mm.classList.toggle('mini-collapsed');
-  try{ localStorage.setItem('miniCollapsed', c?'1':'0'); }catch(_){}
+  try{ localStorage.setItem(_miniKey(), c?'1':'0'); }catch(_){}
   const b=mm.querySelector('.mini-exp'); if(b) b.innerHTML = c?'&#11122;':'&#11121;';
   scaleMini();
 }
@@ -3018,7 +3035,7 @@ function renderSignalMonitor(histBar){
     [0,1,2,3,4,5,6].forEach(i=>{ mh+=mExit(i); });
     mh+=`<div class="mini-note"><b>NOTE:</b> Signals computed from TQQQ daily bars</div>`;
     const _mm=document.getElementById('mini-monitor');
-    let _miniColl=false; try{ _miniColl=localStorage.getItem('miniCollapsed')==='1'; }catch(_){}
+    let _miniColl=false; try{ const _mv=localStorage.getItem(_miniKey()); _miniColl=(_mv==null)?_miniDefault():_mv==='1'; }catch(_){}
     _mm.classList.toggle('mini-collapsed', _miniColl);
     _mm.innerHTML='<div class="mini-inner"><div class="mini-hd"><span>Live signals'+((hist&&!_miniColl)?' &middot; '+b.date:'')+'</span>'
       +'<button class="mini-exp" title="Expand / collapse" onclick="miniToggle()">'+(_miniColl?'&#11122;':'&#11121;')+'</button></div>'
@@ -3039,6 +3056,55 @@ load();
 loadLive();
 setInterval(loadLive, 60000);
 updateMarket(); setInterval(updateMarket, 1000);
+</script>
+<script>
+(function(){
+  const mqP=matchMedia('(max-width: 640px)');
+  const mqL=matchMedia('(orientation: landscape) and (max-height: 500px) and (max-width: 1000px)');
+  const B=document.body;
+  window._miniKey=()=>B.classList.contains('mob')?'miniCollapsedM':'miniCollapsed';
+  window._miniDefault=()=>B.classList.contains('mob-p');
+  let origH=null;
+  function fit(){
+    const wrap=document.getElementById('cdl-wrap'), el=document.getElementById('candle-chart'); if(!wrap||!el) return;
+    if(origH===null) origH=wrap.style.height||'';
+    if(B.classList.contains('mob')){
+      const tab=document.getElementById('tab-summary'); if(tab&&tab.style.display==='none') return;
+      const sc=(document.scrollingElement?document.scrollingElement.scrollTop:0)+(B.scrollTop||0);
+      const top=wrap.getBoundingClientRect().top+sc;
+      const vh=window.visualViewport?window.visualViewport.height:window.innerHeight;
+      wrap.style.setProperty('height',Math.max(240,Math.round(vh-top-4))+'px','important');
+    } else wrap.style.setProperty('height',origH,'');
+    try{ if(typeof sumMain!=='undefined'&&sumMain&&el.clientWidth) sumMain.applyOptions({width:el.clientWidth,height:el.clientHeight}); }catch(_){}
+    try{ scaleMini(); }catch(_){}
+  }
+  function apply(){
+    const L=mqL.matches, P=!L&&mqP.matches, was=B.className;
+    B.classList.toggle('mob',L||P); B.classList.toggle('mob-p',P); B.classList.toggle('mob-l',L);
+    if(!(L||P)){ const hd=document.querySelector('.hdr'); if(hd) hd.classList.remove('m-open');
+      const ls=document.getElementById('live-strip'); if(ls) ls.classList.remove('m-exp'); }
+    if(B.className!==was){ try{ if(window._sigMonReady) renderSignalMonitor(); }catch(_){} }
+    setTimeout(fit,40);
+  }
+  window.mMenu=()=>{ const hd=document.querySelector('.hdr'); if(hd) hd.classList.toggle('m-open'); };
+  const ls=document.getElementById('live-strip');
+  if(ls) ls.addEventListener('click',e=>{ if(!B.classList.contains('mob')||e.target.closest('button,a,input,select')) return;
+    ls.classList.toggle('m-exp'); });
+  document.addEventListener('click',e=>{ if(!B.classList.contains('mob-p')) return;
+    if(e.target.closest('#mini-monitor .mini-hd')&&!e.target.closest('.mini-exp')) miniToggle(); });
+  function mirror(){ const p=document.getElementById('lv-pos'), q=document.getElementById('lv-pospnl'), m=document.getElementById('m-pos');
+    if(!p||!m) return;
+    m.innerHTML='<span class="'+p.className+'">'+p.textContent+'</span>'+(q&&q.textContent?'<span class="'+q.className+'">'+q.textContent+'</span>':''); }
+  ['lv-pos','lv-pospnl'].forEach(id=>{ const n=document.getElementById(id);
+    if(n) new MutationObserver(mirror).observe(n,{childList:true,characterData:true,subtree:true,attributes:true}); });
+  const st=window.switchTab;
+  if(typeof st==='function') window.switchTab=function(n){ st.apply(this,arguments);
+    const hd=document.querySelector('.hdr'); if(hd) hd.classList.remove('m-open'); if(n==='summary') setTimeout(fit,80); };
+  [mqP,mqL].forEach(m=>{ try{ m.addEventListener('change',apply); }catch(_){ m.addListener(apply); } });
+  let rt=null; window.addEventListener('resize',()=>{ clearTimeout(rt); rt=setTimeout(fit,120); });
+  apply(); mirror();
+  let n=0; const iv=setInterval(()=>{ n++; if((typeof sumMain!=='undefined'&&sumMain)||n>60){ clearInterval(iv); fit(); setTimeout(fit,600); } },250);
+})();
 </script>
 </body>
 </html>
