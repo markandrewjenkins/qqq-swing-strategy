@@ -7,7 +7,8 @@
 <title>QQQ Swing Strategy</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <script>
-document.documentElement.classList.add('theme-miami');</script>
+(function(){ var d=document.documentElement; d.classList.add('theme-miami');
+  try{ if(localStorage.getItem('qqqTheme')==='day') d.classList.add('theme-pool'); }catch(_){} })();</script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
@@ -765,6 +766,62 @@ body.mob table.sig-mon .cur-cell { gap:8px; }
 body.mob table.sig-mon .cur-cell .cur-val { width:auto; overflow:visible; text-align:left; font-size:0.86rem; }
 body.mob #daily-reset, body.mob #eq-reset { left:62px !important; right:auto !important; top:6px !important;
   font-size:0.66rem !important; padding:2px 8px !important; }
+.theme-seg { display:inline-flex; align-items:stretch; border:1px solid var(--border2); border-radius:14px; overflow:hidden; margin:-3px 0 -3px 4px; }
+.theme-seg button { background:transparent; border:none; color:var(--dim); cursor:pointer; padding:1px 10px;
+  font-family:'Chakra Petch',sans-serif; font-size:0.72rem; font-weight:600; letter-spacing:0.04em; line-height:1.45; }
+.theme-seg button:hover { color:var(--text); }
+.theme-seg button.on { background:var(--pink); color:#fff; }
+body.mob .theme-seg { margin:0; }   
+html.theme-pool {
+  --bg:#f7f4ef; --panel:#ffffff; --panel2:#fbf9f6; --border:#e7e1d7; --border2:#d6ccbe;
+  --text:#262a40; --dim:#6f7088; --white:#14172b; --yellow:#e0457b; --cyan:#1d86a8; --pink:#e0457b;
+  --teal:#11957a; --purple:#7b61c9; --amber:#c97d12; --coral:#e2532f; --gray:#8b8aa0;
+  --cash:#f2ede5; --cashc:#c97d12; --holdg:#8b8aa0; --tealmut:#7fbcae; --coralmut:#e3a08f;
+  --cashmut:#d3b07a; --namut:#b4b2c4; --dimwhite:#4f5269; --orangemut:#d29a5c;
+  --sun-dawn:#f4a259; --sun-day:#e8b23a; --sun-dusk:#e0457b; --sun-night:#5b84c9;
+  background:var(--bg); color-scheme:light;
+}
+html.theme-pool body { background-color:var(--bg); }
+html.theme-pool .hdr { background:#ffffff; border-bottom:none; box-shadow:0 1px 0 var(--border); }
+html.theme-pool .hdr::before { background:radial-gradient(ellipse at top right, rgba(244,162,89,0.10), transparent 70%); }
+html.theme-pool .hdr::after { background:linear-gradient(90deg, transparent, rgba(29,134,168,0.55), transparent);
+  background-size:110px 100%; background-repeat:no-repeat; }
+html.theme-pool .hdr-title { background:linear-gradient(90deg,#e0457b 0%,#ee7b52 50%,#1d86a8 100%);
+  -webkit-background-clip:text; background-clip:text; color:transparent !important; text-shadow:none; }
+html.theme-pool #tod-bar { height:3px; box-shadow:none;
+  background:linear-gradient(90deg,#ef7aa1 0%,#f4a259 28%,#f2c14e 50%,#7cc8d8 74%,#1d86a8 100%); }
+html.theme-pool #tod-glow { opacity:0.35; }
+html.theme-pool #live-strip { background:#ffffff; }
+html.theme-pool .ph span { color:var(--text); text-shadow:none; }
+html.theme-pool .ph, html.theme-pool th { background:#fbf9f6; }
+html.theme-pool tr:hover td { background:rgba(29,134,168,0.05); }
+html.theme-pool .panel, html.theme-pool .kpi { box-shadow:0 1px 2px rgba(38,42,64,0.04), 0 10px 26px -18px rgba(38,42,64,0.28); }
+html.theme-pool .panel:hover { border-color:var(--border2); }
+html.theme-pool .kpi { border-left-color:var(--cyan); }
+html.theme-pool .kpi-val.pos { text-shadow:none; }
+html.theme-pool .tab { color:var(--dim); border-color:var(--border2); }
+html.theme-pool .tab.active { background:#fdebf2; border-color:var(--pink); color:#bf2f64; box-shadow:none; }
+html.theme-pool .tab:hover { border-color:var(--cyan); color:var(--cyan); }
+html.theme-pool .rp-btn, html.theme-pool .mini-mon .mini-exp { background:rgba(255,255,255,0.94); color:var(--cyan); }
+html.theme-pool .rp-btn:hover { background:rgba(29,134,168,0.08); border-color:var(--cyan); }
+html.theme-pool .rp-date { background:#ffffff; color:var(--text); }
+html.theme-pool .mini-mon .mini-inner { background:rgba(255,255,255,0.97); border-color:var(--border2);
+  box-shadow:0 10px 30px -14px rgba(38,42,64,0.40); }
+html.theme-pool .pill-tqqq, html.theme-pool .eb-tp { background:rgba(17,149,122,0.10); }
+html.theme-pool .pill-sqqq, html.theme-pool .eb-sl { background:rgba(226,83,47,0.10); }
+html.theme-pool .pill-qld, html.theme-pool .eb-ratio { background:rgba(29,134,168,0.10); }
+html.theme-pool .pill-qid { background:rgba(123,97,201,0.10); }
+html.theme-pool .eb-move { background:rgba(201,125,18,0.12); }
+html.theme-pool .note-box { background:rgba(224,69,123,0.05); border-color:var(--pink); }
+html.theme-pool .sig-explain { background:rgba(29,134,168,0.06); border-left-color:var(--cyan); }
+html.theme-pool .kpi-inset { background:rgba(29,134,168,0.05); }
+html.theme-pool .tod-badge { background:rgba(29,134,168,0.06); }
+html.theme-pool .live-dot { background:var(--pink); box-shadow:0 0 0 3px rgba(224,69,123,0.16); }
+html.theme-pool .live-ext.up { background:rgba(17,149,122,0.10); }
+html.theme-pool .live-ext.down { background:rgba(226,83,47,0.10); }
+html.theme-pool a { color:var(--cyan); }
+html.theme-pool .theme-seg button.on { background:var(--cyan); }
+html.theme-pool ::selection { background:rgba(224,69,123,0.18); }
 </style>
 </head>
 <body>
@@ -775,6 +832,7 @@ body.mob #daily-reset, body.mob #eq-reset { left:62px !important; right:auto !im
     <div class="m-bar"><span id="m-pos"></span><button id="m-menu" onclick="mMenu()" aria-label="Menu" title="Menu">&#9776;</button></div>
     <div class="hdr-metarow">
       <span class="hdr-meta" id="hdr-meta">Loading...</span>
+      <span class="theme-seg" role="group" aria-label="Colour theme"><button id="th-night" onclick="setTheme('night')" title="Neon night theme">&#9790; Night</button><button id="th-day" onclick="setTheme('day')" title="Light poolside theme">&#9728; Day</button></span>
     </div>
   </div>
   <div class="tabs">
@@ -1187,20 +1245,56 @@ body.mob #daily-reset, body.mob #eq-reset { left:62px !important; right:auto !im
   <div class="flavor-footer" id="flavor-footer"></div>
 </div>
 <script>
-const PALETTE={
- '--bg':'#070510','--panel':'#100a1e','--panel2':'#0b0718','--border':'#241a3c','--border2':'#463065',
- '--text':'#ece2fa','--dim':'#9683bf','--white':'#fdf2ff','--yellow':'#f660b6','--cyan':'#2ee6ff',
- '--pink':'#f660b6','--teal':'#25f4b0','--purple':'#b98cff','--amber':'#ffb347','--coral':'#ff5a7a',
- '--gray':'#7d6cae','--cash':'#1b1330','--cashc':'#ffb347','--holdg':'#8a79b8','--tealmut':'#3f8f79',
- '--coralmut':'#a35668','--cashmut':'#b08a52','--namut':'#6a5b93','--dimwhite':'#b3a3d6','--orangemut':'#c78f4e',
- '--sun-dawn':'#ffb347','--sun-day':'#ffd166','--sun-dusk':'#ff6f9c','--sun-night':'#6f8fd6'};
-Object.entries(PALETTE).forEach(([k,v])=>document.documentElement.style.setProperty(k,v));
-const YELLOW='#f660b6', CYAN='#2ee6ff', TEAL='#25f4b0', PURPLE='#b98cff';
-const PINK='#f660b6', CORAL='#ff5a7a', AMBER='#ffb347', GRAY='#7d6cae', CASHC='#ffb347';
-const DIM='#9683bf';
-const GRID='rgba(120,90,200,0.14)', TICK='#8f7cbb';
-const LCBG='#0b0718', LCTX='#c9b8ef', LCBD='#241a3c', LCCH='#5a4488';
-const HATCH='#1b1330', HATCH2='#160e28', CASHB='#ffb347', CASHD='#241a3c', ENTRYC='#ffffff';
+const PAL_BY_THEME={
+ night:{YELLOW:'#f660b6',CYAN:'#2ee6ff',TEAL:'#25f4b0',PURPLE:'#b98cff',PINK:'#f660b6',CORAL:'#ff5a7a',
+  AMBER:'#ffb347',GRAY:'#7d6cae',CASHC:'#ffb347',DIM:'#9683bf',GRID:'rgba(120,90,200,0.14)',TICK:'#8f7cbb',
+  LCBG:'#0b0718',LCTX:'#c9b8ef',LCBD:'#241a3c',LCCH:'#5a4488',HATCH:'#1b1330',HATCH2:'#160e28',
+  CASHB:'#ffb347',CASHD:'#241a3c',ENTRYC:'#ffffff',INK:'#ffffff',ACT:'#fff0a0',
+  RGB_PINK:'246,96,182',RGB_CYAN:'46,230,255',RGB_TEAL:'37,244,176',RGB_CORAL:'255,90,122'},
+ day:{YELLOW:'#e0457b',CYAN:'#1d86a8',TEAL:'#11957a',PURPLE:'#7b61c9',PINK:'#e0457b',CORAL:'#e2532f',
+  AMBER:'#c97d12',GRAY:'#8b8aa0',CASHC:'#c97d12',DIM:'#6f7088',GRID:'rgba(38,42,64,0.07)',TICK:'#6f7088',
+  LCBG:'#ffffff',LCTX:'#4a4e66',LCBD:'#e3ddd2',LCCH:'#a9a3bd',HATCH:'#eee8df',HATCH2:'#f6f2ec',
+  CASHB:'#c97d12',CASHD:'#e3ddd2',ENTRYC:'#262a40',INK:'#262a40',ACT:'#c97d12',
+  RGB_PINK:'224,69,123',RGB_CYAN:'29,134,168',RGB_TEAL:'17,149,122',RGB_CORAL:'226,83,47'}};
+const MKTC_THEME={ night:{pre:'#D0B570',open:'#D49B5F',after:'#C892A0',closed:'#ACC0E7'},
+                   day:{pre:'#a8842a',open:'#c0702a',after:'#b0577a',closed:'#4f78b8'} };
+let THEME=document.documentElement.classList.contains('theme-pool')?'day':'night';
+let YELLOW,CYAN,TEAL,PURPLE,PINK,CORAL,AMBER,GRAY,CASHC,DIM,GRID,TICK,LCBG,LCTX,LCBD,LCCH,
+    HATCH,HATCH2,CASHB,CASHD,ENTRYC,INK,ACT,RGB_PINK,RGB_CYAN,RGB_TEAL,RGB_CORAL;
+function _loadThemeJS(){ ({YELLOW,CYAN,TEAL,PURPLE,PINK,CORAL,AMBER,GRAY,CASHC,DIM,GRID,TICK,LCBG,LCTX,LCBD,LCCH,
+    HATCH,HATCH2,CASHB,CASHD,ENTRYC,INK,ACT,RGB_PINK,RGB_CYAN,RGB_TEAL,RGB_CORAL}=PAL_BY_THEME[THEME]); }
+_loadThemeJS();
+function setTheme(t){
+  t=(t==='day')?'day':'night';
+  if(t!==THEME){
+    THEME=t; try{ localStorage.setItem('qqqTheme',t); }catch(_){}
+    document.documentElement.classList.toggle('theme-pool',t==='day');
+    _loadThemeJS(); try{ Object.assign(MKTC,MKTC_THEME[t]); updateMarket(); }catch(_){}
+    if(typeof DATA!=='undefined'&&DATA){
+      if(!window._themeBusy){ window._themeSupBase=_suppressSync; window._themeBusy=true; }
+      _suppressSync=true;
+      clearTimeout(window._themeRebuild); clearTimeout(window._themeRestore);
+      window._themeRebuild=setTimeout(()=>{
+        const act=TABS.find(n=>{ const el=document.getElementById('tab-'+n); return el&&el.style.display!=='none'; })||'summary';
+        const _ce=document.getElementById('candle-chart');
+        try{ if(sumMain) sumMain.remove(); }catch(_){} sumMain=null;
+        try{ render(); }catch(e){ console.error(e); }
+        if(_ce&&_ce._glow&&!_ce.contains(_ce._glow)) _ce.appendChild(_ce._glow);
+        try{ if(window._sigMonReady) renderSignalMonitor(); }catch(_){}
+        try{ switchTab(act); }catch(_){}
+        window._themeRestore=setTimeout(()=>{ _suppressSync=window._themeSupBase; window._themeBusy=false; }, 700);
+      }, 50);
+    }
+  }
+  _syncThemeUI();
+}
+function _syncThemeUI(){
+  const n=document.getElementById('th-night'), d=document.getElementById('th-day'), m=document.getElementById('m-theme');
+  if(n){ n.classList.toggle('on',THEME==='night'); n.setAttribute('aria-pressed',THEME==='night'); }
+  if(d){ d.classList.toggle('on',THEME==='day'); d.setAttribute('aria-pressed',THEME==='day'); }
+  if(m){ m.innerHTML=THEME==='day'?'&#9790;':'&#9728;'; m.title=m.ariaLabel=THEME==='day'?'Switch to Night theme':'Switch to Day theme'; }
+}
+_syncThemeUI();
 const FONT = "'Chakra Petch', sans-serif";
 const FLAVOR_ON = false;
 (function(){
@@ -1537,22 +1631,22 @@ function renderForward(selDate){
     +(li<H.length-1?' Past dates use only analogs whose outcome was already known on that date (no look-ahead).':'');
   const labels=['Now']; for(let h=1;h<=FWD_H;h++) labels.push('+'+h);
   const dsets=[];
-  dsets.push({label:'p10–p90',data:[0,...rows.map(r=>r.p90)],borderColor:'rgba(0,0,0,0)',backgroundColor:'rgba(46,230,255,0.07)',pointRadius:0,fill:'+1',tension:0.25});
+  dsets.push({label:'p10–p90',data:[0,...rows.map(r=>r.p90)],borderColor:'rgba(0,0,0,0)',backgroundColor:`rgba(${RGB_CYAN},0.07)`,pointRadius:0,fill:'+1',tension:0.25});
   dsets.push({label:'_p10',data:[0,...rows.map(r=>r.p10)],borderColor:'rgba(0,0,0,0)',pointRadius:0,fill:false,tension:0.25});
-  dsets.push({label:'p25–p75',data:[0,...rows.map(r=>r.p75)],borderColor:'rgba(0,0,0,0)',backgroundColor:'rgba(46,230,255,0.15)',pointRadius:0,fill:'+1',tension:0.25});
+  dsets.push({label:'p25–p75',data:[0,...rows.map(r=>r.p75)],borderColor:'rgba(0,0,0,0)',backgroundColor:`rgba(${RGB_CYAN},0.15)`,pointRadius:0,fill:'+1',tension:0.25});
   dsets.push({label:'_p25',data:[0,...rows.map(r=>r.p25)],borderColor:'rgba(0,0,0,0)',pointRadius:0,fill:false,tension:0.25});
   const _dmin=picks[0][0], _dmax=picks[picks.length-1][0]||1;
   const _sim=dist=>_dmax>_dmin ? 1-(dist-_dmin)/(_dmax-_dmin) : 1;
   const MAXL=80, step=Math.max(1,Math.floor(paths.length/MAXL));
   for(let k=paths.length-1;k>=0;k-=step){ const s=_sim(paths[k].dist);
-    dsets.push({data:paths[k].arr,borderColor:`rgba(246,96,182,${(0.03+0.42*s*s).toFixed(3)})`,
+    dsets.push({data:paths[k].arr,borderColor:`rgba(${RGB_PINK},${(0.03+0.42*s*s).toFixed(3)})`,
       borderWidth:0.8+1.4*s*s,pointRadius:0,fill:false,tension:0}); }
   dsets.push({label:'Median analog',data:[0,...rows.map(r=>r.med)],borderColor:TEAL,borderWidth:2.5,pointRadius:0,fill:false,tension:0.25});
-  const legend=[[TEAL,'median'],['rgba(46,230,255,0.35)','25–75%'],['rgba(46,230,255,0.15)','10–90%'],['rgba(246,96,182,0.35)','analog paths']];
+  const legend=[[TEAL,'median'],[`rgba(${RGB_CYAN},0.35)`,'25–75%'],[`rgba(${RGB_CYAN},0.15)`,'10–90%'],[`rgba(${RGB_PINK},0.35)`,'analog paths']];
   if(li<H.length-1-FWD_H && last[pxf]>0){ const act=[0];
     let ok=true; for(let h=1;h<=FWD_H;h++){ const p_=H[li+h][pxf]; if(!(p_>0)){ok=false;break;} act.push(p_/last[pxf]-1); }
-    if(ok){ dsets.push({label:'Actual result',data:act,borderColor:'#fff0a0',borderWidth:2,borderDash:[6,4],pointRadius:0,fill:false,tension:0});
-            legend.push(['#fff0a0','actual result']); } }
+    if(ok){ dsets.push({label:'Actual result',data:act,borderColor:ACT,borderWidth:2,borderDash:[6,4],pointRadius:0,fill:false,tension:0});
+            legend.push([ACT,'actual result']); } }
   const _fp=v=>(v>=0?'+':'')+(v*100).toFixed(2)+'%';
   mkChart('fwdChart',{type:'line',data:{labels,datasets:dsets},
     options:{responsive:true,maintainAspectRatio:false,animation:false,
@@ -1614,7 +1708,7 @@ function renderForward(selDate){
     xs.forEach(v=>{ bins[Math.min(NB-1,Math.max(0,Math.floor((v-lo)/wd)))]++; });
     const centers=bins.map((_,i)=>lo+(i+0.5)*wd);
     const labels=centers.map(c=>(c*100).toFixed(c>=0.1||c<=-0.1?0:1)+'%');
-    const barCols=centers.map(c=>c>=0?'rgba(37,244,176,0.62)':'rgba(255,90,122,0.62)');
+    const barCols=centers.map(c=>c>=0?`rgba(${RGB_TEAL},0.62)`:`rgba(${RGB_CORAL},0.62)`);
     const norm=centers.map(c=>{ const z=(c-mean)/sd;
       return xs.length*wd*Math.exp(-0.5*z*z)/(sd*Math.sqrt(2*Math.PI)); });
     const zeroLine={ id:'fwdZero', afterDatasetsDraw(ch){
@@ -1622,9 +1716,9 @@ function renderForward(selDate){
       if(0<lo||0>hi) return;
       const px=a.left+((0-lo)/(hi-lo))*(a.right-a.left);
       if(px<a.left||px>a.right) return;
-      const c=ch.ctx; c.save(); c.setLineDash([4,4]); c.strokeStyle='#ffffff'; c.lineWidth=1.5;
+      const c=ch.ctx; c.save(); c.setLineDash([4,4]); c.strokeStyle=INK; c.lineWidth=1.5;
       c.beginPath(); c.moveTo(px,a.top); c.lineTo(px,a.bottom); c.stroke();
-      c.setLineDash([]); c.fillStyle='#ffffff'; c.font="10px "+FONT; c.textAlign='center';
+      c.setLineDash([]); c.fillStyle=INK; c.font="10px "+FONT; c.textAlign='center';
       c.fillText('break-even', px, a.top+9); c.restore(); } };
     mkChart('fwdDistChart',{ data:{ labels, datasets:[
         {type:'bar',label:'Analog outcomes',data:bins,backgroundColor:barCols,borderWidth:0,order:2},
@@ -1762,7 +1856,7 @@ function renderAnalytics(){
     ddS.setData(ddLW);
     if(bhLW.length){ const bh=ch.addLineSeries({color:GRAY,lineWidth:1,lineStyle:2,priceScaleId:'left',lastValueVisible:false,priceLineVisible:false,
       priceFormat:{type:'custom',formatter:v=>fmtAx(v*1000/DATA.meta.start_capital)}}); bh.setData(bhLW); }
-    const eqS=ch.addAreaSeries({lineColor:YELLOW,topColor:'rgba(246,96,182,0.22)',bottomColor:'rgba(246,96,182,0.01)',lineWidth:2,priceScaleId:'left',
+    const eqS=ch.addAreaSeries({lineColor:YELLOW,topColor:`rgba(${RGB_PINK},0.22)`,bottomColor:`rgba(${RGB_PINK},0.01)`,lineWidth:2,priceScaleId:'left',
       priceLineVisible:true,priceLineColor:LCTX,priceLineWidth:1,priceLineStyle:2,
       priceFormat:{type:'custom',formatter:v=>fmtAx(v*1000/DATA.meta.start_capital)}});
     eqS.setData(eqLW);
@@ -2085,7 +2179,7 @@ function renderRisk(){
   mkChart('rollChart',{ type:'line', data:{ labels:rlab.filter((_,i)=>i%rstep===0),
     datasets:[{label:'Rolling 12-mo return',data:rl.filter((_,i)=>i%rstep===0),borderWidth:1.5,pointRadius:0,fill:true,
       borderColor:_zeroSplit(TEAL,CORAL),
-      backgroundColor:_zeroSplit('rgba(37,244,176,0.10)','rgba(255,90,122,0.12)') }]},
+      backgroundColor:_zeroSplit(`rgba(${RGB_TEAL},0.10)`,`rgba(${RGB_CORAL},0.12)`) }]},
     options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+(c.parsed.y>=0?'+':'')+c.parsed.y+'%'}}},
       scales:{x:{ticks:{color:TICK,maxTicksLimit:10,font:{size:12,family:FONT}},grid:{color:GRID}},
         y:{ticks:{color:TICK,font:{size:12,family:FONT},callback:v=>v+'%'},grid:{color:GRID}}}} });
@@ -2101,9 +2195,9 @@ function renderRisk(){
     const p0=scales.x.getPixelForValue(Math.max(0,Math.min(NB-1,i0)));
     const p1=scales.x.getPixelForValue(Math.max(0,Math.min(NB-1,i0+1)));
     const x=p0+(p1-p0)*fr;
-    ctx.save(); ctx.setLineDash([5,4]); ctx.lineWidth=1.5; ctx.strokeStyle='#ffffff';
+    ctx.save(); ctx.setLineDash([5,4]); ctx.lineWidth=1.5; ctx.strokeStyle=INK;
     ctx.beginPath(); ctx.moveTo(x,chartArea.top); ctx.lineTo(x,chartArea.bottom); ctx.stroke();
-    ctx.setLineDash([]); ctx.fillStyle='#ffffff'; ctx.font='600 11px '+FONT;
+    ctx.setLineDash([]); ctx.fillStyle=INK; ctx.font='600 11px '+FONT;
     const lab='avg '+(_avgRet>=0?'+':'')+(_avgRet*100).toFixed(1)+'%';
     ctx.textAlign = x>chartArea.right-60 ? 'right' : 'left';
     ctx.fillText(lab, x + (x>chartArea.right-60?-5:5), chartArea.top+11);
@@ -2368,7 +2462,7 @@ function _isMktHoliday(){ return _MKT_HOLIDAYS.has(_etDate()); }
 function _fmtDur(s){ if(s<0)s=0; const h=Math.floor(s/3600); const m=Math.floor((s%3600)/60); return h>0?(h+'h '+m+'m'):(m+'m'); }
 function _nextPhase(){ const {wd,sod}=_etNow(); const PRE=14400,OPEN=34200,CLOSE=57600,AFT=72000,DAY=86400; const isWk=wd!=='Sat'&&wd!=='Sun'&&!_isMktHoliday(); if(isWk&&sod>=PRE&&sod<OPEN) return {verb:'Market opens',secs:OPEN-sod}; if(isWk&&sod>=OPEN&&sod<CLOSE) return {verb:'Regular hours end',secs:CLOSE-sod}; if(isWk&&sod>=CLOSE&&sod<AFT) return {verb:'Market closes',secs:AFT-sod}; const idx={Sun:0,Mon:1,Tue:2,Wed:3,Thu:4,Fri:5,Sat:6}[wd]; const toFour=(sod<PRE)?(PRE-sod):(DAY-sod+PRE); const land=(sod<PRE)?idx:((idx+1)%7); let extra=0; if(land===6)extra=2; else if(land===0)extra=1; return {verb:'Pre-market opens',secs:toFour+extra*DAY}; }
 function toEtClock(iso){ if(!iso) return '\u2014'; try{ return new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',hour12:false,hour:'2-digit',minute:'2-digit'}).format(new Date(iso)); }catch(_){ return '\u2014'; } }
-const MKTC = { pre:'#D0B570', open:'#D49B5F', after:'#C892A0', closed:'#ACC0E7' };
+const MKTC = Object.assign({}, MKTC_THEME[THEME]);
 function _setLiveDot(active, color){
   const dot=document.querySelector('#live-strip .live-dot'); if(!dot) return;
   dot.style.background = color;
@@ -2513,7 +2607,7 @@ function buildDaily(){
     timeScale:{borderColor:LCBD,rightOffset:6,minBarSpacing:0.02,maxBarSpacing:18},
     crosshair:{mode:(LC.CrosshairMode?LC.CrosshairMode.Normal:1),vertLine:{color:LCCH,labelBackgroundColor:LCCH},horzLine:{color:LCCH,labelBackgroundColor:LCCH}} });
   window._dailyChart=dailyChart;
-  dailySeries=dailyChart.addAreaSeries({lineColor:YELLOW,topColor:'rgba(246,96,182,0.22)',bottomColor:'rgba(246,96,182,0.01)',lineWidth:2,priceScaleId:'left',
+  dailySeries=dailyChart.addAreaSeries({lineColor:YELLOW,topColor:`rgba(${RGB_PINK},0.22)`,bottomColor:`rgba(${RGB_PINK},0.01)`,lineWidth:2,priceScaleId:'left',
     priceLineVisible:true,priceLineColor:LCTX,priceLineWidth:1,priceLineStyle:2,
     priceFormat:{type:'custom',formatter:v=>fmtAx(v/DATA.meta.start_capital)}});
   if(document.body.classList.contains('mob')){ mk.forEach(m=>{ m.text=''; }); try{ dailyChart.applyOptions({layout:{fontSize:11}}); }catch(_){} }
