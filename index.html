@@ -7,8 +7,9 @@
 <title>QQQ Swing Strategy</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <script>
-(function(){ var d=document.documentElement; d.classList.add('theme-miami');
-  try{ if(localStorage.getItem('qqqTheme')==='day') d.classList.add('theme-pool'); }catch(_){} })();</script>
+(function(){ var d=document.documentElement, t=null; d.classList.add('theme-miami');
+  try{ t=localStorage.getItem('qqqTheme'); }catch(_){}
+  if(t!=='night') d.classList.add('theme-pool'); })();</script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
@@ -832,7 +833,7 @@ html.theme-pool ::selection { background:rgba(224,69,123,0.18); }
     <div class="m-bar"><span id="m-pos"></span><button id="m-menu" onclick="mMenu()" aria-label="Menu" title="Menu">&#9776;</button></div>
     <div class="hdr-metarow">
       <span class="hdr-meta" id="hdr-meta">Loading...</span>
-      <span class="theme-seg" role="group" aria-label="Colour theme"><button id="th-night" onclick="setTheme('night')" title="Neon night theme">&#9790; Night</button><button id="th-day" onclick="setTheme('day')" title="Light poolside theme">&#9728; Day</button></span>
+      <span class="theme-seg" role="group" aria-label="Colour theme"><button id="th-day" onclick="setTheme('day')" title="Light poolside theme">&#9728; Day</button><button id="th-night" onclick="setTheme('night')" title="Neon night theme">&#9790; Night</button></span>
     </div>
   </div>
   <div class="tabs">
@@ -1281,7 +1282,8 @@ function setTheme(t){
         try{ render(); }catch(e){ console.error(e); }
         if(_ce&&_ce._glow&&!_ce.contains(_ce._glow)) _ce.appendChild(_ce._glow);
         try{ if(window._sigMonReady) renderSignalMonitor(); }catch(_){}
-        try{ switchTab(act); }catch(_){}
+        if(act!=='analytics'){ try{ switchTab(act); }catch(_){} }
+        else { const hd=document.querySelector('.hdr'); if(hd) hd.classList.remove('m-open'); }
         window._themeRestore=setTimeout(()=>{ _suppressSync=window._themeSupBase; window._themeBusy=false; }, 700);
       }, 50);
     }
@@ -1863,7 +1865,7 @@ function renderAnalytics(){
     window._eqLen = eqLW.length;
     ch.timeScale().subscribeVisibleLogicalRangeChange(()=>{ _updateEqToEndBtn(); });
     _updateEqToEndBtn();
-    const _fit=()=>{ const w=el.clientWidth; if(!w) return;
+    const _fit=()=>{ if(window._eqChart!==ch) return; const w=el.clientWidth; if(!w) return;
       try{ ch.applyOptions({width:w, height:el.clientHeight||320}); ch.timeScale().fitContent(); }catch(_){} };
     _fit(); requestAnimationFrame(_fit); setTimeout(_fit,120); setTimeout(_fit,400);
     if(!el._eqRO && window.ResizeObserver){
@@ -1872,7 +1874,7 @@ function renderAnalytics(){
         try{ c.applyOptions({width:w, height:el.clientHeight||320}); }catch(_){} });
       el._eqRO.observe(el);
     }
-    if(!el._eqResize){ el._eqResize=true; window.addEventListener('resize',()=>{ try{ch.applyOptions({width:el.clientWidth||900});}catch(_){} }); }
+    if(!el._eqResize){ el._eqResize=true; window.addEventListener('resize',()=>{ const c=window._eqChart; if(!c) return; try{c.applyOptions({width:el.clientWidth||900});}catch(_){} }); }
   };
   window._buildEq();
   buildDaily();
