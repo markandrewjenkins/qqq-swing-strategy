@@ -687,6 +687,8 @@ body.mob #live-strip:not(.m-exp) .live-row:first-child > .live-item:not(.live-st
 body.mob #live-strip:not(.m-exp) .live-status { flex-basis:auto !important; width:auto !important; margin-left:auto !important; }
 body.mob #live-strip:not(.m-exp) .live-status > :not(.live-badge) { display:none !important; }
 body.mob #live-strip:not(.m-exp) .live-ext { display:none !important; }
+body.mob #live-strip.m-exp .live-status { order:-1; flex-basis:100% !important; width:100% !important; margin-left:0 !important;
+  flex-wrap:wrap; gap:4px 12px !important; padding-bottom:5px; border-bottom:1px solid var(--border); }
 body.mob #replay-bar, body.mob #cdl-info, body.mob #cdl-fs, body.mob .mkt-sessbar { display:none !important; }
 body.mob #live-panel .ph-live { padding-top:6px; padding-bottom:6px; }
 body.mob-p #mini-monitor { display:block !important; top:auto; left:0; right:0; bottom:0; max-height:68%;
