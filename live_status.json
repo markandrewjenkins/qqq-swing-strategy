@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-10-03T00:55:24+00:00",
+  "generated_utc": "2026-10-05T03:46:10+00:00",
   "market": {
     "vxn_used": 21.2,
     "vix_used": 15.31,
@@ -8,21 +8,21 @@
       "vxn": 21.2,
       "vxn_date": "2026-10-02",
       "vxn_chg": -0.058196,
-      "vxn_ref": 22.51,
-      "vix": 16.39,
-      "vix_date": "2026-10-01",
-      "vix_chg": 0.00306,
-      "vix_ref": 16.39,
+      "vxn_ref": 21.2,
+      "vix": 15.31,
+      "vix_date": "2026-10-02",
+      "vix_chg": -0.065894,
+      "vix_ref": 15.31,
       "vix3m": 18.01,
       "vix3m_date": "2026-10-02",
       "vix3m_chg": -0.030678,
-      "vix3m_ref": 18.58
+      "vix3m_ref": 18.01
     },
     "quotes": {
       "vxn": {
         "price": 21.2,
-        "prev_close": 22.51,
-        "change_pct": -0.058196,
+        "prev_close": 21.2,
+        "change_pct": 0.0,
         "session": "regular",
         "asof_date": "2026-10-02",
         "regular_price": 21.2,
@@ -34,8 +34,8 @@
       },
       "vix": {
         "price": 15.31,
-        "prev_close": 16.39,
-        "change_pct": -0.065894,
+        "prev_close": 15.31,
+        "change_pct": 0.0,
         "session": "regular",
         "asof_date": "2026-10-02",
         "regular_price": 15.31,
@@ -47,8 +47,8 @@
       },
       "vix3m": {
         "price": 18.01,
-        "prev_close": 18.58,
-        "change_pct": -0.030678,
+        "prev_close": 18.01,
+        "change_pct": 0.0,
         "session": "regular",
         "asof_date": "2026-10-02",
         "regular_price": 18.01,
@@ -173,11 +173,11 @@
   },
   "cboe_refreshed": true,
   "official": {
-    "date": "2026-10-01",
+    "date": "2026-10-02",
     "position": "LONG_TQQQ",
     "signal": "LONG_TQQQ",
     "open_pnl": 0.655556,
-    "equity": 454086184.05,
+    "equity": 475640115.73,
     "entry_date": "2026-04-10",
     "entry_price": 48.9624,
     "open_pnl_live": true
