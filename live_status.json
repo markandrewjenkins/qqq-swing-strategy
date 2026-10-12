@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-10-10T01:07:15+00:00",
+  "generated_utc": "2026-10-12T08:00:34+00:00",
   "market": {
     "vxn_used": 20.55,
     "vix_used": 14.84,
@@ -8,7 +8,7 @@
       "vxn": 20.55,
       "vxn_date": "2026-10-09",
       "vxn_chg": -0.065059,
-      "vxn_ref": 21.98,
+      "vxn_ref": 20.55,
       "vix": 15.41,
       "vix_date": "2026-10-08",
       "vix_chg": 0.021883,
@@ -16,13 +16,13 @@
       "vix3m": 17.77,
       "vix3m_date": "2026-10-09",
       "vix3m_chg": -0.017146,
-      "vix3m_ref": 18.08
+      "vix3m_ref": 17.77
     },
     "quotes": {
       "vxn": {
         "price": 20.55,
-        "prev_close": 21.98,
-        "change_pct": -0.065059,
+        "prev_close": 20.55,
+        "change_pct": 0.0,
         "session": "regular",
         "asof_date": "2026-10-09",
         "regular_price": 20.55,
@@ -34,21 +34,21 @@
       },
       "vix": {
         "price": 14.84,
-        "prev_close": 15.41,
-        "change_pct": -0.036989,
-        "session": "regular",
+        "prev_close": 15.42,
+        "change_pct": -0.037613,
+        "session": "pre",
         "asof_date": "2026-10-09",
         "regular_price": 14.84,
         "regular_change": -0.037613,
-        "ext_price": null,
-        "ext_change": null,
+        "ext_price": 15.37,
+        "ext_change": 0.035714,
         "reg_time": "2026-10-09T20:10:00+00:00",
-        "time": "2026-10-09T20:10:00+00:00"
+        "time": "2026-10-12T07:45:31+00:00"
       },
       "vix3m": {
         "price": 17.77,
-        "prev_close": 18.08,
-        "change_pct": -0.017146,
+        "prev_close": 17.77,
+        "change_pct": 0.0,
         "session": "regular",
         "asof_date": "2026-10-09",
         "regular_price": 17.77,
@@ -69,7 +69,7 @@
         "ext_price": 30883.148,
         "ext_change": 0.0,
         "reg_time": "2026-10-09T20:15:00+00:00",
-        "time": "2026-10-09T23:59:34+00:00"
+        "time": "2026-10-09T23:55:00+00:00"
       },
       "tqqq": {
         "price": 81.3099,
@@ -82,7 +82,7 @@
         "ext_price": 81.28,
         "ext_change": -0.000368,
         "reg_time": "2026-10-09T20:00:00+00:00",
-        "time": "2026-10-09T23:59:21+00:00"
+        "time": "2026-10-09T23:55:00+00:00"
       },
       "sqqq": {
         "price": 32.94,
@@ -95,7 +95,7 @@
         "ext_price": 32.9499,
         "ext_change": 0.000301,
         "reg_time": "2026-10-09T20:00:00+00:00",
-        "time": "2026-10-09T23:59:33+00:00"
+        "time": "2026-10-09T23:55:00+00:00"
       },
       "qqq": {
         "price": 751.28,
@@ -108,7 +108,7 @@
         "ext_price": 751.38,
         "ext_change": 0.000133,
         "reg_time": "2026-10-09T20:00:00+00:00",
-        "time": "2026-10-09T23:59:34+00:00"
+        "time": "2026-10-09T23:55:00+00:00"
       },
       "spy": {
         "price": 778.57,
@@ -121,7 +121,7 @@
         "ext_price": 778.57,
         "ext_change": 0.0,
         "reg_time": "2026-10-09T20:00:00+00:00",
-        "time": "2026-10-09T23:59:58+00:00"
+        "time": "2026-10-09T23:55:00+00:00"
       },
       "upro": {
         "price": 155.72,
@@ -134,7 +134,7 @@
         "ext_price": 155.89,
         "ext_change": 0.001092,
         "reg_time": "2026-10-09T20:00:00+00:00",
-        "time": "2026-10-09T23:59:39+00:00"
+        "time": "2026-10-09T23:55:00+00:00"
       },
       "spxu": {
         "price": 32.83,
@@ -147,7 +147,7 @@
         "ext_price": 32.8312,
         "ext_change": 3.7e-05,
         "reg_time": "2026-10-09T20:00:00+00:00",
-        "time": "2026-10-09T23:59:35+00:00"
+        "time": "2026-10-09T23:55:00+00:00"
       },
       "spx": {
         "price": 7811.54,
@@ -171,13 +171,13 @@
     "yc_spread": null,
     "regime": "contango"
   },
-  "cboe_refreshed": true,
+  "cboe_refreshed": false,
   "official": {
-    "date": "2026-10-08",
+    "date": "2026-10-09",
     "position": "LONG_TQQQ",
     "signal": "LONG_TQQQ",
     "open_pnl": 0.66066,
-    "equity": 468266389.4,
+    "equity": 478192514.7,
     "entry_date": "2026-04-10",
     "entry_price": 48.9624,
     "open_pnl_live": true
