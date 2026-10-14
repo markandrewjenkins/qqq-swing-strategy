@@ -1,9 +1,9 @@
 {
-  "generated_utc": "2026-10-14T20:50:29+00:00",
+  "generated_utc": "2026-10-14T20:55:24+00:00",
   "market": {
     "vxn_used": 20.84,
     "vix_used": 16.85,
-    "vix3m_used": 18.78,
+    "vix3m_used": 18.79,
     "curve": {
       "vxn": 21.14,
       "vxn_date": "2026-10-13",
@@ -46,17 +46,17 @@
         "time": "2026-10-14T20:10:00+00:00"
       },
       "vix3m": {
-        "price": 18.78,
+        "price": 18.79,
         "prev_close": 17.96,
-        "change_pct": 0.045657,
+        "change_pct": 0.046214,
         "session": "regular",
         "asof_date": "2026-10-14",
-        "regular_price": 18.78,
-        "regular_change": 0.045657,
+        "regular_price": 18.79,
+        "regular_change": 0.046214,
         "ext_price": null,
         "ext_change": null,
-        "reg_time": "2026-10-14T20:10:00+00:00",
-        "time": "2026-10-14T20:10:00+00:00"
+        "reg_time": "2026-10-14T20:15:00+00:00",
+        "time": "2026-10-14T20:15:00+00:00"
       },
       "ndx": {
         "price": 29960.2,
@@ -69,7 +69,7 @@
         "ext_price": 29950.816,
         "ext_change": 0.0,
         "reg_time": "2026-10-14T20:15:00+00:00",
-        "time": "2026-10-14T20:50:21+00:00"
+        "time": "2026-10-14T20:55:20+00:00"
       },
       "tqqq": {
         "price": 74.0615,
@@ -79,10 +79,10 @@
         "asof_date": "2026-10-14",
         "regular_price": 74.0615,
         "regular_change": -0.060253,
-        "ext_price": 73.75,
-        "ext_change": -0.004206,
+        "ext_price": 73.76,
+        "ext_change": -0.004071,
         "reg_time": "2026-10-14T20:00:00+00:00",
-        "time": "2026-10-14T20:50:13+00:00"
+        "time": "2026-10-14T20:55:25+00:00"
       },
       "sqqq": {
         "price": 36.0385,
@@ -92,10 +92,10 @@
         "asof_date": "2026-10-14",
         "regular_price": 36.0385,
         "regular_change": 0.060424,
-        "ext_price": 36.1799,
-        "ext_change": 0.003924,
+        "ext_price": 36.1703,
+        "ext_change": 0.003657,
         "reg_time": "2026-10-14T20:00:00+00:00",
-        "time": "2026-10-14T20:50:32+00:00"
+        "time": "2026-10-14T20:55:19+00:00"
       },
       "qqq": {
         "price": 728.75,
@@ -105,10 +105,10 @@
         "asof_date": "2026-10-14",
         "regular_price": 728.75,
         "regular_change": -0.019931,
-        "ext_price": 727.77,
-        "ext_change": -0.001345,
+        "ext_price": 727.79,
+        "ext_change": -0.001317,
         "reg_time": "2026-10-14T20:00:00+00:00",
-        "time": "2026-10-14T20:50:21+00:00"
+        "time": "2026-10-14T20:55:20+00:00"
       },
       "spy": {
         "price": 769.37,
@@ -118,10 +118,10 @@
         "asof_date": "2026-10-14",
         "regular_price": 769.37,
         "regular_change": -0.011105,
-        "ext_price": 768.94,
-        "ext_change": -0.000559,
+        "ext_price": 769.07,
+        "ext_change": -0.00039,
         "reg_time": "2026-10-14T20:00:00+00:00",
-        "time": "2026-10-14T20:50:31+00:00"
+        "time": "2026-10-14T20:55:21+00:00"
       },
       "upro": {
         "price": 150.1409,
@@ -131,10 +131,10 @@
         "asof_date": "2026-10-14",
         "regular_price": 150.1409,
         "regular_change": -0.033842,
-        "ext_price": 150.011,
-        "ext_change": -0.000865,
+        "ext_price": 149.97,
+        "ext_change": -0.001138,
         "reg_time": "2026-10-14T20:00:00+00:00",
-        "time": "2026-10-14T20:41:29+00:00"
+        "time": "2026-10-14T20:54:07+00:00"
       },
       "spxu": {
         "price": 34.02,
@@ -144,10 +144,10 @@
         "asof_date": "2026-10-14",
         "regular_price": 34.02,
         "regular_change": 0.033728,
-        "ext_price": 34.0986,
-        "ext_change": 0.00231,
+        "ext_price": 34.0705,
+        "ext_change": 0.001484,
         "reg_time": "2026-10-14T20:00:00+00:00",
-        "time": "2026-10-14T20:48:37+00:00"
+        "time": "2026-10-14T20:55:19+00:00"
       },
       "spx": {
         "price": 7718.9399,
@@ -165,7 +165,7 @@
     }
   },
   "derived": {
-    "contango": 0.11454,
+    "contango": 0.115134,
     "contango_live": true,
     "contango_asof": "2026-10-14",
     "yc_spread": null,
