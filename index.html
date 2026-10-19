@@ -823,6 +823,20 @@ html.theme-pool .live-ext.down { background:rgba(226,83,47,0.10); }
 html.theme-pool a { color:var(--cyan); }
 html.theme-pool .theme-seg button.on { background:var(--cyan); }
 html.theme-pool ::selection { background:rgba(224,69,123,0.18); }
+#m-tip { position:absolute; z-index:1000; max-width:min(330px, calc(100vw - 24px)); padding:10px 36px 10px 12px;
+  background:var(--panel); color:var(--text); border:1px solid var(--border2); border-radius:10px;
+  box-shadow:0 10px 30px -10px rgba(0,0,0,0.55); font-size:0.8rem; line-height:1.45; white-space:pre-line;
+  overflow-wrap:anywhere; }
+#m-tip .m-tip-x { position:absolute; top:4px; right:4px; width:28px; height:28px; border:none; border-radius:7px;
+  background:transparent; color:var(--dim); font-size:1.05rem; line-height:28px; text-align:center; cursor:pointer; padding:0; }
+#m-tip .m-tip-x:active { background:rgba(127,127,127,0.18); }
+body.mob .m-tip-on { outline:1px dashed var(--border2); outline-offset:2px; border-radius:3px; }
+body.mob #m-menu { display:inline-flex; align-items:center; justify-content:center; width:36px; height:28px;
+  padding:0 !important; font-size:0 !important; line-height:0 !important; }
+body.mob #m-menu::before { content:''; display:block; width:16px; height:12px;
+  background:linear-gradient(currentColor 0 0) top/100% 2px no-repeat,
+             linear-gradient(currentColor 0 0) center/100% 2px no-repeat,
+             linear-gradient(currentColor 0 0) bottom/100% 2px no-repeat; }
 </style>
 </head>
 <body>
@@ -3262,6 +3276,36 @@ updateMarket(); setInterval(updateMarket, 1000);
   [mqP,mqL].forEach(m=>{ try{ m.addEventListener('change',apply); }catch(_){ m.addListener(apply); } });
   let rt=null; const re=()=>{ clearTimeout(rt); rt=setTimeout(apply,120); };
   window.addEventListener('resize',re); window.addEventListener('orientationchange',re);
+  let tipEl=null, tipFor=null;
+  function hideTip(){ if(tipEl){ tipEl.remove(); tipEl=null; } if(tipFor){ tipFor.classList.remove('m-tip-on'); tipFor=null; } }
+  function showTip(el,txt){
+    hideTip(); tipFor=el; el.classList.add('m-tip-on');
+    tipEl=document.createElement('div'); tipEl.id='m-tip'; tipEl.setAttribute('role','dialog');
+    const t=document.createElement('div'); t.textContent=txt; tipEl.appendChild(t);
+    const x=document.createElement('button'); x.className='m-tip-x'; x.setAttribute('aria-label','Close');
+    x.innerHTML='&#10005;'; x.addEventListener('click',ev=>{ ev.stopPropagation(); hideTip(); }); tipEl.appendChild(x);
+    document.body.appendChild(tipEl);
+    const r=el.getBoundingClientRect(), vw=document.documentElement.clientWidth, vh=window.innerHeight;
+    const w=tipEl.offsetWidth, hh=tipEl.offsetHeight;
+    let left=Math.min(Math.max(12, r.left+r.width/2-w/2), vw-12-w);
+    let top=(r.bottom+8+hh<=vh-8 || r.top-8-hh<8) ? r.bottom+8 : r.top-8-hh;
+    tipEl.style.left=(left+window.scrollX)+'px'; tipEl.style.top=(Math.max(8,top)+window.scrollY)+'px';
+  }
+  document.addEventListener('click',e=>{
+    if(!B.classList.contains('mob')) return;
+    if(e.target.closest('#m-tip')) return;
+    const el=e.target.closest('[title]');
+    const ls=document.getElementById('live-strip');
+    const skip=!el || !el.getAttribute('title')
+      || el===ls || el.closest('button,a,input,select,textarea,label,.mini-hd,.tabs')
+      || el.querySelector('canvas') || el.getBoundingClientRect().height>220
+      || (ls && ls.contains(el) && !ls.classList.contains('m-exp'));
+    if(skip){ if(tipEl) hideTip(); return; }
+    e.preventDefault(); e.stopPropagation();
+    if(tipFor===el){ hideTip(); return; }
+    showTip(el, el.getAttribute('title'));
+  }, true);
+  window.addEventListener('orientationchange',()=>hideTip());
   apply(); mirror();
   let n=0; const iv=setInterval(()=>{ n++; if((typeof sumMain!=='undefined'&&sumMain)||n>60){ clearInterval(iv); fit(); setTimeout(fit,600); } },250);
 })();

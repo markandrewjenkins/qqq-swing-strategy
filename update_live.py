@@ -225,7 +225,7 @@ def yahoo_quote(symbol: str, prepost: bool = False) -> dict:
         r4 = lambda v: round(v, 4) if v is not None else None
         return {
             "price": r4(price), "prev_close": r4(prev), "change_pct": r6(chg),
-            "session": session, "asof_date": asof,
+            "session": session, "asof_date": asof, "prev_date": prev_d,
             "regular_price": r4(price), "regular_change": r6(chg),
             "ext_price": r4(ext_px), "ext_change": r6(ext_chg),
             "reg_time": (datetime.fromtimestamp(reg_time.get(asof), tz=timezone.utc).isoformat()
@@ -305,7 +305,10 @@ def main() -> None:
     et = et_now()
     after_eod_post = (et.hour > 17) or (et.hour == 17 and et.minute >= 30)
     have_cached = any(prev_curve.get(k) is not None for k in ("vxn", "vix3m"))
-    refresh_cboe = (not have_cached) or after_eod_post
+    # (c) the cached files disagree on their last date: one CBOE CSV posted late (the VIX
+    #     file often ends a session behind VXN/VIX3M), so re-check every run until they line up.
+    _cdates = {prev_curve.get(k + "_date") for k in ("vxn", "vix", "vix3m")} - {None}
+    refresh_cboe = (not have_cached) or after_eod_post or len(_cdates) > 1
 
     today_iso = et.date().isoformat()
     curve = {}
@@ -344,8 +347,31 @@ def main() -> None:
     quotes["spx"] = yahoo_quote("^GSPC", prepost=False)   # S&P 500 index level
     # Re-base index %change on the authoritative CBOE prior close — but only for a
     # settled regular reading, so it never clobbers the pre/post-market convention.
+    # A Yahoo index quote can lag the official CBOE close (Oct 2026: ^VXN still showed the
+    # prior Friday all Monday evening after CBOE had posted Monday's close). Never show an
+    # older Yahoo print than the CBOE file: adopt the CBOE close and its change instead.
+    for qkey, ckey in [("vxn", "vxn"), ("vix", "vix"), ("vix3m", "vix3m")]:
+        q = quotes.get(qkey); cval = curve.get(ckey); cdt = curve.get(ckey + "_date")
+        if q is not None and cval and cdt and (q.get("asof_date") is None or q["asof_date"] < cdt):
+            chg = curve.get(ckey + "_chg")
+            q.update({"price": round(cval, 4), "regular_price": round(cval, 4),
+                      "change_pct": chg, "regular_change": chg,
+                      "prev_close": round(cval / (1.0 + chg), 4) if chg not in (None, -1) else None,
+                      "prev_date": None, "asof_date": cdt, "session": "closed",
+                      "ext_price": None, "ext_change": None, "source": "cboe",
+                      "time": f"{cdt}T20:15:00+00:00", "reg_time": f"{cdt}T20:15:00+00:00"})
+            print(f"  stale {qkey}: Yahoo quote older than CBOE close {cdt} - using CBOE {cval}")
     for qkey, ckey in [("vxn", "vxn"), ("vix", "vix"), ("vix3m", "vix3m")]:
         q = quotes.get(qkey); ref = curve.get(ckey + "_ref")
+        # Only trust the CBOE close if it is from the session right before the quote's
+        # session. A CSV that hasn't caught up yet would measure today's move against the
+        # wrong day (e.g. +10% on a -9% day), so keep Yahoo's own previous regular close.
+        cdt = curve.get(ckey + "_date")
+        if (q and cdt and cdt != today_iso and q.get("prev_date") and q.get("asof_date")
+                and cdt < q["prev_date"] and q["asof_date"] > cdt):
+            print(f"  ref   {ckey}: CBOE close {cdt} is behind Yahoo's prior session "
+                  f"{q['prev_date']} - keeping Yahoo prev close {q.get('prev_close')}")
+            continue
         if q and q.get("price") and ref and q.get("session") in ("regular", "post", "closed"):
             q["change_pct"] = round(q["price"] / ref - 1.0, 6)
             q["prev_close"] = round(ref, 4)
