@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-10-23T10:10:29+00:00",
+  "generated_utc": "2026-10-23T10:15:25+00:00",
   "market": {
     "vxn_used": 28.72,
     "vix_used": 19.04,
@@ -42,10 +42,10 @@
         "prev_date": "2026-10-21",
         "regular_price": 19.04,
         "regular_change": 0.141487,
-        "ext_price": 19.58,
-        "ext_change": 0.028361,
+        "ext_price": 19.59,
+        "ext_change": 0.028887,
         "reg_time": "2026-10-22T20:10:00+00:00",
-        "time": "2026-10-23T09:55:16+00:00"
+        "time": "2026-10-23T10:00:16+00:00"
       },
       "vix3m": {
         "price": 20.12,
@@ -73,7 +73,7 @@
         "ext_price": null,
         "ext_change": null,
         "reg_time": "2026-10-22T20:00:00+00:00",
-        "time": "2026-10-23T10:10:31+00:00"
+        "time": "2026-10-23T10:15:15+00:00"
       },
       "tqqq": {
         "price": 66.68,
@@ -84,10 +84,10 @@
         "prev_date": "2026-10-21",
         "regular_price": 66.68,
         "regular_change": -0.086325,
-        "ext_price": 66.42,
-        "ext_change": -0.003899,
+        "ext_price": 66.4678,
+        "ext_change": -0.003182,
         "reg_time": "2026-10-22T20:00:00+00:00",
-        "time": "2026-10-23T10:10:23+00:00"
+        "time": "2026-10-23T10:15:00+00:00"
       },
       "sqqq": {
         "price": 39.44,
@@ -98,10 +98,10 @@
         "prev_date": "2026-10-21",
         "regular_price": 39.44,
         "regular_change": 0.086202,
-        "ext_price": 39.63,
-        "ext_change": 0.004817,
+        "ext_price": 39.57,
+        "ext_change": 0.003296,
         "reg_time": "2026-10-22T20:00:00+00:00",
-        "time": "2026-10-23T10:10:11+00:00"
+        "time": "2026-10-23T10:14:59+00:00"
       },
       "qqq": {
         "price": 705.5,
@@ -112,10 +112,10 @@
         "prev_date": "2026-10-21",
         "regular_price": 705.5,
         "regular_change": -0.028652,
-        "ext_price": 704.866,
-        "ext_change": -0.000899,
+        "ext_price": 705.08,
+        "ext_change": -0.000595,
         "reg_time": "2026-10-22T20:00:00+00:00",
-        "time": "2026-10-23T10:10:31+00:00"
+        "time": "2026-10-23T10:15:15+00:00"
       },
       "spy": {
         "price": 764.57,
