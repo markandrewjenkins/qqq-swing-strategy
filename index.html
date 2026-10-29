@@ -3001,17 +3001,17 @@ function renderSignalMonitor(histBar){
     ['20-day EMA Trend','Close vs its 20-day EMA — the base trend gate for each side',
       'Above &rarr; TQQQ side','Below &rarr; SQQQ side (50-day too)', pct(emaDist,1),
       emaDist!=null?(emaDist>=0?'TQQQ':'SQQQ'):'NEU', gEma],
-    ['QQQ 200-day Regime','Added filter: SQQQ entries only while QQQ holds below its 200-day SMA',
+    ['QQQ 200-day Regime','QQQ vs its 200-day SMA: below = bear regime (SQQQ entries allowed, the Ichimoku and Chikou exits armed); above = bull regime (SQQQ off, those exits disarmed)',
       'Above &rarr; bear trades off','Below &rarr; bear trades allowed',
       b.qqq_below_sma200?'Below':'Above', b.qqq_below_sma200?'SQQQ':'TQQQ', gReg],
-    ['VIX Contango','VIX3M / VIX &minus; 1 — added filter from the VIX Swing Strategy',
+    ['VIX Contango','VIX3M / VIX &minus; 1: deep backwardation blocks TQQQ entries; steep contango blocks SQQQ entries',
       'Steep contango blocks SQQQ','Deep backwardation blocks TQQQ',
       pct(b.contango,1), b.contango!=null?(b.contango>_m4.q2?'TQQQ':b.contango<_m4.q1?'SQQQ':'NEU'):'NEU', gCt],
   ];
   const blockRows=[
-    ['Stochastic Floor','A deeply oversold %K blocks SQQQ entries AND exits an open SQQQ &mdash; the single most valuable gate','','Not oversold (clear)',
+    ['Stochastic Floor','A deeply oversold %K blocks SQQQ entries (the bear move is already stretched)','','Not oversold (clear)',
       num(b.stoch_k,1), (b.stoch_k!=null&&b.stoch_k>=_m4.q3)?'SQQQ':'NA', gK],
-    ['ATR Collapse','Volatility-spectrum extreme-low blocks SQQQ entries AND exits an open SQQQ (no fuel for a bear move) &mdash; worth +0.9 CAGR and 1.5 DD pts','','Not extreme-low clear',
+    ['ATR Collapse','Volatility-spectrum extreme-low blocks SQQQ entries (no fuel for a bear move)','','Not extreme-low clear',
       num(b.atr_sig,1), 'SQQQ', gAtr],
     ['MFI Floor','A deeply oversold Money Flow Index blocks SQQQ entries (selling already exhausted)','','Not oversold (clear)',
       num(b.mfi,1), (b.mfi!=null&&b.mfi>=_m4.q4)?'SQQQ':'NA', gMfi],
@@ -3032,7 +3032,7 @@ function renderSignalMonitor(histBar){
       (isSV&&!!b.qqq_below_sma200), b.bear_bar&&b.qqq_below_sma200, barState, gBar],
     ['Chikou Span','The Ichimoku Chikou span (price shifted back 25 bars) drops below the price from 25 bars ago — momentum confirmation that the down-move is real, not noise. Armed only in a bear regime; reads N/A above the 200-day SMA.', 'Not bearish, or bull regime','Bear regime + bearish',
       (isSV&&!!b.qqq_below_sma200), b.chikou_bear&&b.qqq_below_sma200, b.chikou_sig===1?'Bullish':b.chikou_sig===-1?'Bearish':'Consol.', gChik],
-    ['VXN Percentile','VXN at an extreme 2-year percentile — crash regime, de-risk', 'Below the extreme','At the extreme',
+    ['VXN Percentile','VXN at an extreme 2-year percentile — crash regime: closes TQQQ in either regime', 'Below the extreme','At the extreme',
       isSV, b.vxn_extreme_high, num(b.vxn_rank,1), gVxnR],
     ['Stoch %K','A deeply oversold %K — the bear move is stretched; rebound risk, so the SQQQ short is closed', 'Not oversold','Oversold',
       isUV, (b.stoch_k!=null&&b.stoch_k<_m4.q3), num(b.stoch_k,1), gK],
@@ -3051,6 +3051,7 @@ function renderSignalMonitor(histBar){
        tip:`open P&L vs the hard stop · now ${openpnl!=null?(openpnl*100).toFixed(1)+'%':'—'}`}],
   ];
   const _entryValid = inPos && (isSV ? !!b.long_tqqq : !!b.long_sqqq);
+  for(let i=0;i<=4;i++) xdef[i][1]=xdef[i][1].replace(/\.\s*$/,'')+' (held while the same side’s entry setup is still aligned)';
   const exState=i=>{ const r=xdef[i];
     if(!inPos || !r[4]) return 'na';
     if(r[5]) return (i<=4 && _entryValid) ? 'held' : 'exit';
@@ -3150,10 +3151,11 @@ function renderSignalMonitor(histBar){
     +curCell(r[6],g,dull)+`<td>${stat(i)}</td></tr>`; };
   const rows=(arr,idxs)=>idxs.map(i=>rowHtml(arr[i])).join('');
   const exRows=idxs=>idxs.map(i=>exitRow(i)).join('');
+  const _sizeDesc='Give-back from the highest close since entry. Past a deep give-back the TQQQ position is levered up (deep drawdowns that don&rsquo;t trip an exit tend to mean-revert fast); it returns to full size on a new peak close. SQQQ always trades at reduced size.';
   const body='<tbody>'
     + _div('<b>REGIME &amp; SIZE</b> &mdash; the master switch. QQQ vs its 200-day SMA decides everything below: <b>Bull</b> (ride TQQQ dips, SQQQ off) or <b>Bear</b> (Ichimoku exits arm, SQQQ may trade). <b>Position size</b>: TQQQ trades at full size and SQQQ at reduced size, but a deep TQQQ give-back from its peak since entry levers the position up until a new peak is reclaimed.','regime-hd')
     + rowHtml(coreRows[3])
-    + `<tr><td class="sig-name">Position Size (DD-boost)</td><td class="sig-desc">Give-back from the highest close since entry. Past a deep give-back the TQQQ position is levered up (deep drawdowns that don&rsquo;t trip an exit tend to mean-revert fast); it returns to full size on a new peak close. SQQQ always trades at reduced size.</td>`
+    + `<tr><td class="sig-name">Position Size (DD-boost)</td><td class="sig-desc">${_sizeDesc}</td>`
       + `<td style="color:var(--teal)">Normal give-back &rarr; full size</td><td style="color:var(--coral)">Deep give-back &rarr; boosted</td>`
       + curCell(isSV?(_bst.on?'<b style="color:var(--cashc)">2.0&times;</b>':'1.0&times;'):(isUV?'0.75&times;':'—'), (isSV?_bGauge:null), !isSV)
       + `<td>${isSV?(_bst.on?'<span class="sig-ind" style="color:var(--cashc);font-weight:700">BOOSTED</span>':'<span class="sig-ind" style="color:var(--teal);font-weight:700">Normal</span>'):'<span style="color:var(--namut);font-weight:700">N/A</span>'}</td></tr>`
@@ -3178,15 +3180,18 @@ function renderSignalMonitor(histBar){
       if(s==='hold') return `<span style="color:${holdColor}">Hold</span>`;
       if(s==='held') return `<span style="color:var(--amber)" title="${_heldTitle}">Held</span>`;
       return '<span style="color:var(--namut)">N/A</span>'; };
-    const mRow=(name,spec,valHtml,sigHtml,dull)=>`<div class="mini-row"><span class="mini-name">${name}</span>`
+    const _tips={}; let _tipSec=null;
+    const mSub=(title,key,cls)=>{ _tipSec=key; _tips[key]=[]; return `<div class="mini-sub${cls?' '+cls:''}">${title} @@TIP:${key}@@</div>`; };
+    const mRow=(name,spec,valHtml,sigHtml,dull)=>(_tipSec&&_tips[_tipSec].push(name), '')+`<div class="mini-row"><span class="mini-name">${name}</span>`
       +`<span class="mini-val" style="color:${dull?'var(--dimwhite)':'var(--white)'}">${valHtml}</span><span class="mini-bar">${spec?gaugeMini({...spec,dull:spec.dull||dull}):''}</span>`
       +`<span class="mini-sig">${sigHtml}</span></div>`;
     const posCell=(lab,inst,labCol)=>{const k=kindOf(inst);const txt=k==='sv'?'TQQQ':k==='uv'?'SQQQ':'Cash';
       const col=k==='sv'?'var(--teal)':k==='uv'?'var(--coral)':'var(--cashc)';
       return `<span style="color:${labCol}">${lab}</span> <span style="color:${col}">${txt}</span>`;};
     const help=t=>`<span class="mini-help" title="${(''+t).replace(/"/g,'&quot;')}">&#9432;</span>`;
-    const eTip=[...coreRows,...blockRows].map(r=>stripTags(r[0])+': '+_ds(r[1])).join('\n');
-    const xTip=xdef.map(r=>stripTags(r[0])+': '+_ds(r[1])).join('\n');
+    const _mDesc={ r:{'200 D SMA':coreRows[3][1], 'Size':_sizeDesc},
+      e:{'20 D EMA':coreRows[2][1], 'VIX3M:VIX1M':coreRows[4][1], 'Stoch %K':blockRows[0][1], 'ATR Vol Spec':blockRows[1][1], 'MFI':blockRows[2][1]},
+      x:{} };
     let mh=`<div class="mini-pos">${posCell('Current',curPos,'var(--yellow)')} <span class="sig-proj-arrow">&rarr;</span> ${posCell('Next open',proj,'var(--white)')}</div>`;
     const _tqMet=(tqBase?1:0)+(bwGuard?1:0);
     const _sqMet=((emaDist!=null&&emaDist<0)?1:0)+(b.qqq_below_sma200?1:0)
@@ -3198,22 +3203,25 @@ function renderSignalMonitor(histBar){
     mh+=`<div class="mini-combo"><span>${_cmbo}</span></div>`;
     mh+=`<div class="mini-why">${explain}</div>`;
     const mnames=['Ichimoku Bar','Chikou Span','VXN %ile','Stoch %K','ATR Vol Spec','Trailing Stop','Hard Stop'];
+    mnames.forEach((n,i)=>{ _mDesc.x[n]=xdef[i][1]; });
     const mExit=i=>{ const s=exState(i); const g=xdef[i][7]?{...xdef[i][7],trig:s==='exit'}:null;
       return mRow(mnames[i], g, stripTags(''+xdef[i][6])||'—', mStat(i), s==='na'); };
-    mh+=`<div class="mini-sub mini-regime">Regime</div>`;
+    mh+=mSub('Regime','r','mini-regime');
     mh+=mRow('200 D SMA', gReg, b.qqq_below_sma200?'Below':'Above', mSig(coreRows[3][5]));
     mh+=mRow('Size', (isSV?_bGauge:null),
       isSV?(_bst.on?'2.0×':'1.0×'):(isUV?'0.75×':'—'),
       isSV?(_bst.on?'<span style="color:var(--cashc)">Boost</span>':'<span style="color:var(--teal)">Base</span>')
           :'<span style="color:var(--namut)">N/A</span>', !isSV);
-    mh+=`<div class="mini-sub">Entry indicators ${help(eTip)}</div>`;
+    mh+=mSub('Entry indicators','e');
     mh+=mRow('20 D EMA', gEma, (emaDist==null?'—':(emaDist>=0?'Above':'Below')), mSig(coreRows[2][5]), inPos);
     mh+=mRow('VIX3M:VIX1M', gCt, stripTags(''+coreRows[4][4]), mSig(coreRows[4][5]), inPos);
     mh+=mRow('Stoch %K', gK, stripTags(''+num(b.stoch_k,0)), mSig(blockRows[0][5]), inPos);
     mh+=mRow('ATR Vol Spec', gAtr, stripTags(''+num(b.atr_sig,0)), mSig(blockRows[1][5]), inPos);
     mh+=mRow('MFI', gMfi, stripTags(''+num(b.mfi,0)), mSig(blockRows[2][5]), inPos);
-    mh+=`<div class="mini-sub">Exit indicators ${help(xTip)}</div>`;
+    mh+=mSub('Exit indicators','x');
     [0,1,2,3,4,5,6].forEach(i=>{ mh+=mExit(i); });
+    _tipSec=null;
+    mh=mh.replace(/@@TIP:(\w+)@@/g,(m,k)=>help((_tips[k]||[]).map(n=>n+': '+_ds(stripTags(''+((_mDesc[k]||{})[n]||'')))).join('\n')));
     mh+=`<div class="mini-note"><b>NOTE:</b> Signals computed from TQQQ daily bars</div>`;
     const _mm=document.getElementById('mini-monitor');
     let _miniColl=false; try{ const _mv=localStorage.getItem(_miniKey()); _miniColl=(_mv==null)?_miniDefault():_mv==='1'; }catch(_){}
