@@ -3050,16 +3050,21 @@ function renderSignalMonitor(histBar){
       {lo:-0.18,hi:0,z:[[-0.18,_m4.q8,'C'],[_m4.q8,0,'P']],v:openpnl,fmt:v=>Math.round(v*100)+'%',
        tip:`open P&L vs the hard stop · now ${openpnl!=null?(openpnl*100).toFixed(1)+'%':'—'}`}],
   ];
+  const _entryValid = inPos && (isSV ? !!b.long_tqqq : !!b.long_sqqq);
   const exState=i=>{ const r=xdef[i];
     if(!inPos || !r[4]) return 'na';
-    return r[5] ? 'exit' : 'hold'; };
+    if(r[5]) return (i<=4 && _entryValid) ? 'held' : 'exit';
+    return 'hold'; };
+  const _heldTitle = 'Exit signal held - the same-side entry setup is still aligned on this close, so the position is kept';
   const holdColor = isUV ? 'var(--coral)' : 'var(--teal)';
   const stat=i=>{ const s=exState(i);
     if(s==='exit') return `<span style="color:var(--cashc);font-weight:700">Exit</span>`;
     if(s==='hold') return `<span style="color:${holdColor};font-weight:700">Hold</span>`;
+    if(s==='held') return `<span style="color:var(--amber);font-weight:700" title="${_heldTitle}">Held</span>`;
     return `<span style="color:var(--namut);font-weight:700">N/A</span>`; };
-  let exHold=0, exExit=0;
-  xdef.forEach((r,i)=>{ const s=exState(i); if(s==='hold') exHold++; else if(s==='exit') exExit++; });
+  let exHold=0, exExit=0, exHeld=0;
+  xdef.forEach((r,i)=>{ const s=exState(i); if(s==='hold') exHold++; else if(s==='exit') exExit++; else if(s==='held') exHeld++; });
+  const _heldNames = xdef.map((r,i)=>exState(i)==='held'?r[0]:null).filter(Boolean);
   const nApplicable = xdef.filter(r=>r[4]).length;
   const kindOf = s => s==='LONG_TQQQ'?'sv':s==='LONG_SQQQ'?'uv':'cash';
   const chip = s => { const k=kindOf(s); const nm=k==='sv'?svN():k==='uv'?uvN():'Cash';
@@ -3074,7 +3079,7 @@ function renderSignalMonitor(histBar){
     + `<span class="vt-uv"${inPos?' style="color:var(--coralmut)"':''}>SQQQ setup ${b.long_sqqq?'ALIGNED':'not aligned'}</span>${DOT}`
     + `<span class="sig-rf">(entries evaluate on every daily close)</span></div>`;
   const exitMix = `<div class="sig-proj-mixline" style="margin-bottom:7px"><span class="lbl">Exit indicator mix</span>`
-    + `<b style="color:var(--teal)">${exHold} hold</b>${DOT}<b style="color:var(--coral)">${exExit} exit</b>`
+    + `<b style="color:var(--teal)">${exHold} hold</b>${DOT}<b style="color:var(--coral)">${exExit} exit</b>${exHeld?`${DOT}<b style="color:var(--amber)">${exHeld} held</b>`:''}`
     + `${DOT}<span class="sig-rf">(${nApplicable} apply to the ${inPos?(isSV?'TQQQ':'SQQQ'):'current'} position)</span></div>`;
   const _instTxt = isUV?'SQQQ (reduced size)':'TQQQ';
   const _firedExits = xdef.map((r,i)=>exState(i)==='exit'?r[0]:null).filter(Boolean);
@@ -3086,6 +3091,8 @@ function renderSignalMonitor(histBar){
       explain=`<b>Exiting ${_instTxt}</b> at the next market open: ${exTxt}. Exits are structural — the strategy leaves when the trend breaks, not when it looks "overbought" (those Pine exits were removed in tuning). While the same-side entry conditions still hold, exits are suppressed.`;
     } else if((isSV&&_pk==='uv')||(isUV&&_pk==='sv')){ _why=`an exit fired AND the opposite side's full setup aligned &rarr; <b style="color:${_pk==='sv'?'var(--teal)':'var(--coral)'}">reverse position</b>`;
       explain=`<b>Reversing into ${_pk==='sv'?'TQQQ':'SQQQ'}</b> at the next open: the current position's exit fired on the same close that the opposite side completed its full entry alignment, so the strategy flips directly without a cash stop.`;
+    } else if(exHeld){ _why=`<b style="color:${POSC}">holding ${isSV?'TQQQ':'SQQQ'}</b> &mdash; <b style="color:var(--amber)">exit held</b>: the ${isSV?'TQQQ':'SQQQ'} entry setup is still aligned`;
+      explain=`<b>Holding ${_instTxt} &mdash; exit held.</b> <b>${_heldNames.join('</b> + <b>')}</b> fired, but the ${isSV?'TQQQ':'SQQQ'} entry setup is still aligned on this close, so the exit is suppressed &mdash; the strategy won't sell into a bar where its own logic would buy. The trailing and hard stops always fire.`;
     } else { _why=`<b style="color:${POSC}">holding ${isSV?'TQQQ':'SQQQ'}</b> &mdash; no exit rule fired on this close`;
       explain=`<b>Holding ${_instTxt}.</b> None of the applicable exit rules fired on this close, so the position rides. Entry rows are context-only while in a trade; ${isSV?'the catastrophe trail back-stops':'the trailing and hard stops back-stop'} the trend rules. In a bull regime (QQQ above its 200-day SMA) only a VXN crash-spike or that trail can force TQQQ out — dips are held.`;
     }
@@ -3169,6 +3176,7 @@ function renderSignalMonitor(histBar){
     const mStat=i=>{ const s=exState(i);
       if(s==='exit') return '<span style="color:var(--cashc)">Exit</span>';
       if(s==='hold') return `<span style="color:${holdColor}">Hold</span>`;
+      if(s==='held') return `<span style="color:var(--amber)" title="${_heldTitle}">Held</span>`;
       return '<span style="color:var(--namut)">N/A</span>'; };
     const mRow=(name,spec,valHtml,sigHtml,dull)=>`<div class="mini-row"><span class="mini-name">${name}</span>`
       +`<span class="mini-val" style="color:${dull?'var(--dimwhite)':'var(--white)'}">${valHtml}</span><span class="mini-bar">${spec?gaugeMini({...spec,dull:spec.dull||dull}):''}</span>`
@@ -3185,7 +3193,7 @@ function renderSignalMonitor(histBar){
       +(!(b.contango!=null&&b.contango>_m4.q2)?1:0)
       +((b.stoch_k==null||b.stoch_k>=_m4.q3)&&(b.mfi==null||b.mfi>=_m4.q4)?1:0);
     const _cmbo = inPos
-      ? `Hold ${_pips(exHold,nApplicable,holdColor)} ${exHold}/${nApplicable} &nbsp; Exit ${_pips(exExit,nApplicable,'var(--cashc)')} ${exExit}/${nApplicable}`
+      ? `Hold ${_pips(exHold,nApplicable,holdColor)} ${exHold}/${nApplicable} &nbsp; Exit ${_pips(exExit,nApplicable,'var(--cashc)')} ${exExit}/${nApplicable}${exHeld?` &nbsp; <span style="color:var(--amber)">Held ${exHeld}</span>`:''}`
       : `Enter TQQQ ${_pips(_tqMet,2,'var(--teal)')} ${_tqMet}/2 &nbsp; Enter SQQQ ${_pips(_sqMet,4,'var(--coral)')} ${_sqMet}/4`;
     mh+=`<div class="mini-combo"><span>${_cmbo}</span></div>`;
     mh+=`<div class="mini-why">${explain}</div>`;
