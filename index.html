@@ -830,6 +830,7 @@ html.theme-pool ::selection { background:rgba(224,69,123,0.18); }
 #m-tip .m-tip-x { position:absolute; top:4px; right:4px; width:28px; height:28px; border:none; border-radius:7px;
   background:transparent; color:var(--dim); font-size:1.05rem; line-height:28px; text-align:center; cursor:pointer; padding:0; }
 #m-tip .m-tip-x:active { background:rgba(127,127,127,0.18); }
+#m-tip.d-tip { padding:10px 12px; max-width:min(600px, calc(100vw - 24px)); pointer-events:none; font-size:0.76rem; }
 body.mob .m-tip-on { outline:1px dashed var(--border2); outline-offset:2px; border-radius:3px; }
 body.mob #m-menu { display:inline-flex; align-items:center; justify-content:center; width:36px; height:28px;
   padding:0 !important; font-size:0 !important; line-height:0 !important; }
@@ -3307,6 +3308,24 @@ updateMarket(); setInterval(updateMarket, 1000);
     let top=(r.bottom+8+hh<=vh-8 || r.top-8-hh<8) ? r.bottom+8 : r.top-8-hh;
     tipEl.style.left=(left+window.scrollX)+'px'; tipEl.style.top=(Math.max(8,top)+window.scrollY)+'px';
   }
+  document.addEventListener('mouseover',e=>{
+    if(B.classList.contains('mob')) return;
+    const el=e.target.closest('.mini-help');
+    if(!el){ if(tipEl && tipEl.classList.contains('d-tip')) hideTip(); return; }
+    if(el===tipFor) return;
+    const t=el.getAttribute('title')||el.dataset.tip; if(!t) return;
+    el.dataset.tip=t; el.removeAttribute('title'); showTip(el,t);
+    tipEl.classList.add('d-tip'); const x=tipEl.querySelector('.m-tip-x'); if(x) x.remove();
+    const r=el.getBoundingClientRect(), vw=document.documentElement.clientWidth, vh=window.innerHeight, w=tipEl.offsetWidth, hh=tipEl.offsetHeight;
+    tipEl.style.left=(Math.min(Math.max(12, r.right-w), vw-12-w)+window.scrollX)+'px';
+    tipEl.style.top=(Math.max(8, Math.min(r.bottom+8, vh-8-hh))+window.scrollY)+'px';
+  });
+  document.addEventListener('mouseout',e=>{
+    if(B.classList.contains('mob') || !tipFor) return;
+    const el=e.target.closest('.mini-help'); if(!el || el!==tipFor || el.contains(e.relatedTarget)) return;
+    if(el.dataset.tip) el.setAttribute('title',el.dataset.tip);
+    hideTip();
+  });
   document.addEventListener('click',e=>{
     if(!B.classList.contains('mob')) return;
     if(e.target.closest('#m-tip')) return;
