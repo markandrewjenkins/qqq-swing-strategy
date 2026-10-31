@@ -830,6 +830,7 @@ html.theme-pool ::selection { background:rgba(224,69,123,0.18); }
 #m-tip .m-tip-x { position:absolute; top:4px; right:4px; width:28px; height:28px; border:none; border-radius:7px;
   background:transparent; color:var(--dim); font-size:1.05rem; line-height:28px; text-align:center; cursor:pointer; padding:0; }
 #m-tip .m-tip-x:active { background:rgba(127,127,127,0.18); }
+#m-tip .m-tip-row { margin-bottom:5px; } #m-tip .m-tip-row:last-child { margin-bottom:0; } #m-tip .m-tip-row b { font-weight:700; }
 #m-tip.d-tip { padding:10px 12px; max-width:min(600px, calc(100vw - 24px)); pointer-events:none; font-size:0.76rem; }
 body.mob .m-tip-on { outline:1px dashed var(--border2); outline-offset:2px; border-radius:3px; }
 body.mob #m-menu { display:inline-flex; align-items:center; justify-content:center; width:36px; height:28px;
@@ -3298,7 +3299,13 @@ updateMarket(); setInterval(updateMarket, 1000);
   function showTip(el,txt){
     hideTip(); tipFor=el; el.classList.add('m-tip-on');
     tipEl=document.createElement('div'); tipEl.id='m-tip'; tipEl.setAttribute('role','dialog');
-    const t=document.createElement('div'); t.textContent=txt; tipEl.appendChild(t);
+    const t=document.createElement('div');
+    if(el.classList.contains('mini-help')){
+      txt.split(String.fromCharCode(10)).forEach(line=>{ const d=document.createElement('div'); d.className='m-tip-row'; const i=line.indexOf(': ');
+        if(i>0 && i<40){ const b=document.createElement('b'); b.textContent=line.slice(0,i); d.append(b, line.slice(i)); } else d.textContent=line;
+        t.appendChild(d); });
+    } else t.textContent=txt;
+    tipEl.appendChild(t);
     const x=document.createElement('button'); x.className='m-tip-x'; x.setAttribute('aria-label','Close');
     x.innerHTML='&#10005;'; x.addEventListener('click',ev=>{ ev.stopPropagation(); hideTip(); }); tipEl.appendChild(x);
     document.body.appendChild(tipEl);
