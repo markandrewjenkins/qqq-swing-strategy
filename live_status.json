@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-10-31T00:15:29+00:00",
+  "generated_utc": "2026-10-31T00:20:23+00:00",
   "market": {
     "vxn_used": 28.5,
     "vix_used": 19.42,
@@ -91,13 +91,13 @@
       },
       "sqqq": {
         "price": 41.77,
-        "prev_close": 39.079,
-        "change_pct": 0.068861,
+        "prev_close": 39.11,
+        "change_pct": 0.068013,
         "session": "post",
         "asof_date": "2026-10-30",
         "prev_date": "2026-10-29",
         "regular_price": 41.77,
-        "regular_change": 0.068861,
+        "regular_change": 0.068013,
         "ext_price": 41.32,
         "ext_change": -0.010773,
         "reg_time": "2026-10-30T20:00:00+00:00",
