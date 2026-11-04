@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-11-04T23:40:27+00:00",
+  "generated_utc": "2026-11-04T23:45:25+00:00",
   "market": {
     "vxn_used": 25.08,
     "vix_used": 16.61,
@@ -73,7 +73,7 @@
         "ext_price": null,
         "ext_change": null,
         "reg_time": "2026-11-04T21:00:00+00:00",
-        "time": "2026-11-04T23:40:20+00:00"
+        "time": "2026-11-04T23:44:12+00:00"
       },
       "tqqq": {
         "price": 62.28,
@@ -84,10 +84,10 @@
         "prev_date": "2026-11-03",
         "regular_price": 62.28,
         "regular_change": 0.030443,
-        "ext_price": 62.22,
-        "ext_change": -0.000963,
+        "ext_price": 62.2799,
+        "ext_change": -2e-06,
         "reg_time": "2026-11-04T21:00:00+00:00",
-        "time": "2026-11-04T23:40:00+00:00"
+        "time": "2026-11-04T23:45:22+00:00"
       },
       "sqqq": {
         "price": 41.52,
@@ -98,10 +98,10 @@
         "prev_date": "2026-11-03",
         "regular_price": 41.52,
         "regular_change": -0.030167,
-        "ext_price": 41.58,
-        "ext_change": 0.001445,
+        "ext_price": 41.53,
+        "ext_change": 0.000241,
         "reg_time": "2026-11-04T21:00:00+00:00",
-        "time": "2026-11-04T23:40:05+00:00"
+        "time": "2026-11-04T23:45:10+00:00"
       },
       "qqq": {
         "price": 692.12,
@@ -112,10 +112,10 @@
         "prev_date": "2026-11-03",
         "regular_price": 692.12,
         "regular_change": 0.010247,
-        "ext_price": 691.8188,
-        "ext_change": -0.000435,
+        "ext_price": 692.0461,
+        "ext_change": -0.000107,
         "reg_time": "2026-11-04T21:00:00+00:00",
-        "time": "2026-11-04T23:40:20+00:00"
+        "time": "2026-11-04T23:44:12+00:00"
       },
       "spy": {
         "price": 767.08,
@@ -126,10 +126,10 @@
         "prev_date": "2026-11-03",
         "regular_price": 767.08,
         "regular_change": 0.017226,
-        "ext_price": 767.62,
-        "ext_change": 0.000704,
+        "ext_price": 767.69,
+        "ext_change": 0.000795,
         "reg_time": "2026-11-04T21:00:00+00:00",
-        "time": "2026-11-04T23:39:23+00:00"
+        "time": "2026-11-04T23:43:43+00:00"
       },
       "upro": {
         "price": 147.44,
@@ -140,10 +140,10 @@
         "prev_date": "2026-11-03",
         "regular_price": 147.44,
         "regular_change": 0.051266,
-        "ext_price": 147.76,
-        "ext_change": 0.00217,
+        "ext_price": 147.8,
+        "ext_change": 0.002442,
         "reg_time": "2026-11-04T21:00:00+00:00",
-        "time": "2026-11-04T23:40:18+00:00"
+        "time": "2026-11-04T23:41:44+00:00"
       },
       "spxu": {
         "price": 34.415,
@@ -188,7 +188,7 @@
     "position": "LONG_TQQQ",
     "signal": "LONG_TQQQ",
     "open_pnl": 0.271996,
-    "equity": 298200989.99,
+    "equity": 298200197.95,
     "entry_date": "2026-04-10",
     "entry_price": 48.9624,
     "open_pnl_live": true
