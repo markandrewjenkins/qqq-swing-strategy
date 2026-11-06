@@ -459,10 +459,9 @@ table.sig-mon th:nth-child(6),table.sig-mon td:nth-child(6){ width:9%; }
 .mini-mon .mini-help { pointer-events:auto; cursor:help; color:var(--dim); margin-left:3px; }
 .mini-mon .sig-gauge { pointer-events:auto; cursor:help; }
 .mini-row { display:flex; align-items:center; gap:6px; margin:1px 0; white-space:nowrap; }
-.disc-top { font-size:0.68rem; line-height:1.4; color:var(--dim); padding:5px 18px; border-bottom:1px solid var(--border); }
-.disc-top b { color:var(--text); font-weight:600; }
+.disc-pill { display:inline-flex; align-items:center; gap:4px; font-size:0.66rem; color:var(--dim); border:1px solid var(--border2); border-radius:10px; padding:1px 8px; cursor:help; white-space:nowrap; user-select:none; }
+.disc-pill:hover { color:var(--text); border-color:var(--dim); }
 .disc-foot { font-size:0.7rem; line-height:1.5; color:var(--dim); padding:18px 18px 28px; margin-top:18px; border-top:1px solid var(--border); }
-body.mob .disc-top { padding:5px 12px; font-size:0.64rem; }
 .mini-row .mini-name { color:var(--yellow); width:64px; flex:none; }
 .mini-row .mini-val { width:46px; flex:none; text-align:right; color:var(--white); }
 .mini-row .mini-bar { width:72px; flex:none; }
@@ -854,6 +853,7 @@ body.mob #m-menu::before { content:''; display:block; width:16px; height:12px;
     <div class="hdr-metarow">
       <span class="hdr-meta" id="hdr-meta" title="Back-tested period of the current rules (hypothetical results; see the disclaimer below the header)">Loading...</span>
       <span class="theme-seg" role="group" aria-label="Colour theme"><button id="th-day" onclick="setTheme('day')" title="Light poolside theme">&#9728; Day</button><button id="th-night" onclick="setTheme('night')" title="Neon night theme">&#9790; Night</button></span>
+      <span class="disc-pill disc-tip" title="Hypothetical performance disclosure: all returns, drawdowns and other statistics shown are simulated by applying the current version of the strategy rules to historical data. The strategy is refined on an ongoing basis and each revision is back-tested over the entire history, so the figures benefit from hindsight, are subject to change without notice, and may differ materially from results achieved by following earlier versions of the strategy. They are not the results of actual trading, may not fully reflect costs, slippage, liquidity, taxes or fills, and are not a guarantee or reliable indication of future performance. Leveraged and inverse ETFs can lose most of their value quickly. For information and educational purposes only; not investment advice or a recommendation to buy or sell any security." aria-label="Performance disclaimer">&#9888; Hypothetical results</span>
     </div>
   </div>
   <div class="tabs">
@@ -866,7 +866,6 @@ body.mob #m-menu::before { content:''; display:block; width:16px; height:12px;
     <button class="tab" onclick="switchTab('howto')">About</button>
   </div>
 </div>
-<div class="disc-top disc-tip" title="Hypothetical performance disclosure: all returns, drawdowns and other statistics shown are simulated by applying the current version of the strategy rules to historical data. The strategy is refined on an ongoing basis and each revision is back-tested over the entire history, so the figures benefit from hindsight, are subject to change without notice, and may differ materially from results achieved by following earlier versions of the strategy. They are not the results of actual trading, may not fully reflect costs, slippage, liquidity, taxes or fills, and are not a guarantee or reliable indication of future performance. Leveraged and inverse ETFs can lose most of their value quickly. For information and educational purposes only; not investment advice or a recommendation to buy or sell any security.">&#9888; Hypothetical, back-tested results of the <b>current</b> strategy rules. The rules are revised over time and every revision is re-tested over the full history, so figures change and reflect hindsight. Not actual trading results; past or simulated performance does not guarantee future results. Not investment advice.</div>
 <div id="live-strip" title="Live market readings that feed the entry/exit signals. Signals finalize on the daily close (confirmed ~5:30 PM ET once CBOE posts the day's VXN/VIX prints); the trade executes at the NEXT market open. Intraday values (incl. pre/post-market) are indicative only.">
   <div class="live-main">
     <div class="live-pos-block">
