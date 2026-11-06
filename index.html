@@ -459,6 +459,10 @@ table.sig-mon th:nth-child(6),table.sig-mon td:nth-child(6){ width:9%; }
 .mini-mon .mini-help { pointer-events:auto; cursor:help; color:var(--dim); margin-left:3px; }
 .mini-mon .sig-gauge { pointer-events:auto; cursor:help; }
 .mini-row { display:flex; align-items:center; gap:6px; margin:1px 0; white-space:nowrap; }
+.disc-top { font-size:0.68rem; line-height:1.4; color:var(--dim); padding:5px 18px; border-bottom:1px solid var(--border); }
+.disc-top b { color:var(--text); font-weight:600; }
+.disc-foot { font-size:0.7rem; line-height:1.5; color:var(--dim); padding:18px 18px 28px; margin-top:18px; border-top:1px solid var(--border); }
+body.mob .disc-top { padding:5px 12px; font-size:0.64rem; }
 .mini-row .mini-name { color:var(--yellow); width:64px; flex:none; }
 .mini-row .mini-val { width:46px; flex:none; text-align:right; color:var(--white); }
 .mini-row .mini-bar { width:72px; flex:none; }
@@ -848,7 +852,7 @@ body.mob #m-menu::before { content:''; display:block; width:16px; height:12px;
     <div class="hdr-title">QQQ SWING STRATEGY</div>
     <div class="m-bar"><span id="m-pos"></span><button id="m-menu" onclick="mMenu()" aria-label="Menu" title="Menu">&#9776;</button></div>
     <div class="hdr-metarow">
-      <span class="hdr-meta" id="hdr-meta">Loading...</span>
+      <span class="hdr-meta" id="hdr-meta" title="Back-tested period of the current rules (hypothetical results; see the disclaimer below the header)">Loading...</span>
       <span class="theme-seg" role="group" aria-label="Colour theme"><button id="th-day" onclick="setTheme('day')" title="Light poolside theme">&#9728; Day</button><button id="th-night" onclick="setTheme('night')" title="Neon night theme">&#9790; Night</button></span>
     </div>
   </div>
@@ -862,6 +866,7 @@ body.mob #m-menu::before { content:''; display:block; width:16px; height:12px;
     <button class="tab" onclick="switchTab('howto')">About</button>
   </div>
 </div>
+<div class="disc-top disc-tip" title="Hypothetical performance disclosure: all returns, drawdowns and other statistics shown are simulated by applying the current version of the strategy rules to historical data. The strategy is refined on an ongoing basis and each revision is back-tested over the entire history, so the figures benefit from hindsight, are subject to change without notice, and may differ materially from results achieved by following earlier versions of the strategy. They are not the results of actual trading, may not fully reflect costs, slippage, liquidity, taxes or fills, and are not a guarantee or reliable indication of future performance. Leveraged and inverse ETFs can lose most of their value quickly. For information and educational purposes only; not investment advice or a recommendation to buy or sell any security.">&#9888; Hypothetical, back-tested results of the <b>current</b> strategy rules. The rules are revised over time and every revision is re-tested over the full history, so figures change and reflect hindsight. Not actual trading results; past or simulated performance does not guarantee future results. Not investment advice.</div>
 <div id="live-strip" title="Live market readings that feed the entry/exit signals. Signals finalize on the daily close (confirmed ~5:30 PM ET once CBOE posts the day's VXN/VIX prints); the trade executes at the NEXT market open. Intraday values (incl. pre/post-market) are indicative only.">
   <div class="live-main">
     <div class="live-pos-block">
@@ -1262,6 +1267,7 @@ body.mob #m-menu::before { content:''; display:block; width:16px; height:12px;
   <div class="flavor-footer" id="flavor-footer"></div>
 </div>
 <script>
+const DISC = 'Hypothetical performance disclosure: all returns, drawdowns and other statistics shown are simulated by applying the current version of the strategy rules to historical data. The strategy is refined on an ongoing basis and each revision is back-tested over the entire history, so the figures benefit from hindsight, are subject to change without notice, and may differ materially from results achieved by following earlier versions of the strategy. They are not the results of actual trading, may not fully reflect costs, slippage, liquidity, taxes or fills, and are not a guarantee or reliable indication of future performance. Leveraged and inverse ETFs can lose most of their value quickly. For information and educational purposes only; not investment advice or a recommendation to buy or sell any security.';
 const PAL_BY_THEME={
  night:{YELLOW:'#f660b6',CYAN:'#2ee6ff',TEAL:'#25f4b0',PURPLE:'#b98cff',PINK:'#f660b6',CORAL:'#ff5a7a',
   AMBER:'#ffb347',GRAY:'#7d6cae',CASHC:'#ffb347',DIM:'#9683bf',GRID:'rgba(120,90,200,0.14)',TICK:'#8f7cbb',
@@ -1331,7 +1337,7 @@ const FLAVOR_ON = false;
   }
   if(document.readyState!=='loading') init(); else document.addEventListener('DOMContentLoaded', init);
 })();
-const _m4=(s=>{const b=atob(s);let o='';for(let i=0;i<b.length;i++)o+=String.fromCharCode(b.charCodeAt(i)^((i*7+13)&255));return JSON.parse(o);})('djZqEwsKGg5rfGB2QxldVEe0paO1gtadl4bx//36rtLPzsk3JTJmKwcWCgNvcGN0LFJJSEmus6K37ZSIi4iR9//4+ZPR0s3TNSIiKA0KXg8ffnt8a1hLTAdNobCjtq/b');
+const _m4=(s=>{const b=atob(s);let o='';for(let i=0;i<b.length;i++)o+=String.fromCharCode(b.charCodeAt(i)^((i*7+13)&255));return JSON.parse(o);})('djZqEwsKGg5rfGB2QxldVEe0paO1gtadl4bx//36rtLPzsk3JTJmKwcWCgNvcGN0LFJJSEmus6K37ZSIi4iR9//4+ZPR0s3TNSIiKA0KXg8ffnt8a1hLTAdNobCjtq+Kj8aJ4PPg+e/QwNGIMio1JjMRVg==');
 let DATA=null;
 let OHLC=null, QQQ_OHLC=null, CANDLES=null, candleSeries=null, posSeries=null, sumMain=null, sumPos=null, LIVE=null, MARKERS=null, POSBYDATE=null;
 let OHLCBYTIME={};
@@ -1828,10 +1834,10 @@ function renderAnalytics(){
     if(k.insets){
       const grid = `<div class="dd-grid">`+k.insets.map(([lab,val,tip])=>
         `<div class="kpi-inset" title="${tip.replace(/"/g,'&quot;')}"><span class="ki-l">${lab}</span><span class="ki-v">${val}</span></div>`).join('')+`</div>`;
-      return `<div class="kpi kpi-wide"><div class="dd-left"><div class="kpi-label">${k.l}</div>`
+      return `<div class="kpi kpi-wide disc-tip" title="${DISC}"><div class="dd-left"><div class="kpi-label">${k.l}</div>`
         +`<div class="kpi-val ${k.c}">${k.v}</div><div class="kpi-sub">${k.sub}</div></div>${grid}</div>`;
     }
-    return `<div class="kpi"><div class="kpi-label">${k.l}</div><div class="kpi-val ${k.c}">${k.v}</div><div class="kpi-sub">${k.sub}</div></div>`;
+    return `<div class="kpi disc-tip" title="${DISC}"><div class="kpi-label">${k.l}</div><div class="kpi-val ${k.c}">${k.v}</div><div class="kpi-sub">${k.sub}</div></div>`;
   }).join('');
   const sc=DATA.meta.start_capital;
   const ec=aEq();
@@ -2181,7 +2187,7 @@ function renderRisk(){
     {l:'P(drawdown > 50%)', v:probDD(-0.50)+'%', sub:'Across 2,000 simulations', c:'teal'},
   ];
   const rk=document.getElementById('risk-kpis');
-  if(rk) rk.innerHTML=kp.map(k=>`<div class="kpi"><div class="kpi-label">${k.l}</div><div class="kpi-val ${k.c}">${k.v}</div><div class="kpi-sub">${k.sub}</div></div>`).join('');
+  if(rk) rk.innerHTML=kp.map(k=>`<div class="kpi disc-tip" title="${DISC}"><div class="kpi-label">${k.l}</div><div class="kpi-val ${k.c}">${k.v}</div><div class="kpi-sub">${k.sub}</div></div>`).join('');
   const ec=aEq(); const W=252; const rl=[], rlab=[];
   for(let i=W;i<ec.length;i++){ const a=ec[i-W].equity, b=ec[i].equity; if(a>0){ rl.push(+((b/a-1)*100).toFixed(1)); rlab.push(ec[i].date); } }
   const rstep=Math.max(1,Math.floor(rl.length/150));
@@ -2990,6 +2996,13 @@ function renderSignalMonitor(histBar){
   const gAtr={lo:dAt.lo,hi:dAt.hi,z:[[dAt.lo,0,'r'],[0,dAt.hi,'t']],v:b.atr_sig,fmt:fN0,
     tip:`ATR volatility spectrum (14d vs 120d, %) — an extreme-low reading blocks SQQQ entries and exits SQQQ (no volatility fuel) · now ${b.atr_sig!=null?b.atr_sig.toFixed(1):'—'}`};
   const _bst=(_boostMap()[b.date])||{on:false,gb:null};
+  const _stExt = (()=>{ const bh=DATA.bar_history, k=bh.indexOf(b); if(k<199) return null;
+    let s=0, n=0; for(let j=k-199;j<=k;j++){ const v=bh[j].qqq_price; if(v!=null){ s+=v; n++; } }
+    return (n>=190 && b.qqq_price!=null) ? b.qqq_price/(s/n)-1 : null; })();
+  const _stOn = _stExt!=null && _stExt > _m4.r2;
+  const _stG = {lo:-0.20,hi:0.35,z:[[-0.20,_m4.r2,'t'],[_m4.r2,0.35,'n']],v:_stExt,fmt:v=>(v>=0?'+':'')+Math.round(v*100)+'%',
+    tip:`QQQ vs its 200-day average · above the line TQQQ is held at reduced size · now ${_stExt==null?'—':((_stExt>=0?'+':'')+(_stExt*100).toFixed(1)+'%')}`};
+  const _sizeX = (_bst.on?_m4.r1:1)*(_stOn?_m4.r3:1);
   const _bGauge={lo:0,hi:0.45,z:[[0,_m4.q9,'t'],[_m4.q9,0.45,'n']],v:(_bst.gb==null?null:_bst.gb),fmt:v=>Math.round(v*100)+'%',
     tip:`give-back from the peak close since entry — a deep give-back levers the TQQQ position up until a new peak close · now ${_bst.gb!=null?(_bst.gb*100).toFixed(1)+'%':'—'}`};
   const coreRows=[
@@ -3153,14 +3166,19 @@ function renderSignalMonitor(histBar){
     +curCell(r[6],g,dull)+`<td>${stat(i)}</td></tr>`; };
   const rows=(arr,idxs)=>idxs.map(i=>rowHtml(arr[i])).join('');
   const exRows=idxs=>idxs.map(i=>exitRow(i)).join('');
+  const _stDesc='Overbought guard: while QQQ closes far above its 200-day average, TQQQ is held at reduced size. Blow-off extensions have tended to give back; on those days TQQQ historically averaged slightly negative instead of its usual gain.';
   const _sizeDesc='Give-back from the highest close since entry. Past a deep give-back the TQQQ position is levered up (deep drawdowns that don&rsquo;t trip an exit tend to mean-revert fast); it returns to full size on a new peak close. SQQQ always trades at reduced size.';
   const body='<tbody>'
     + _div('<b>REGIME &amp; SIZE</b> &mdash; the master switch. QQQ vs its 200-day SMA decides everything below: <b>Bull</b> (ride TQQQ dips, SQQQ off) or <b>Bear</b> (Ichimoku exits arm, SQQQ may trade). <b>Position size</b>: TQQQ trades at full size and SQQQ at reduced size, but a deep TQQQ give-back from its peak since entry levers the position up until a new peak is reclaimed.','regime-hd')
     + rowHtml(coreRows[3])
     + `<tr><td class="sig-name">Position Size (DD-boost)</td><td class="sig-desc">${_sizeDesc}</td>`
       + `<td style="color:var(--teal)">Normal give-back &rarr; full size</td><td style="color:var(--coral)">Deep give-back &rarr; boosted</td>`
-      + curCell(isSV?(_bst.on?'<b style="color:var(--cashc)">2.0&times;</b>':'1.0&times;'):(isUV?'0.75&times;':'—'), (isSV?_bGauge:null), !isSV)
+      + curCell(isSV?(_bst.on?'<b style="color:var(--cashc)">'+_sizeX.toFixed(1)+'&times;</b>':_sizeX.toFixed(1)+'&times;'):(isUV?'0.75&times;':'—'), (isSV?_bGauge:null), !isSV)
       + `<td>${isSV?(_bst.on?'<span class="sig-ind" style="color:var(--cashc);font-weight:700">BOOSTED</span>':'<span class="sig-ind" style="color:var(--teal);font-weight:700">Normal</span>'):'<span style="color:var(--namut);font-weight:700">N/A</span>'}</td></tr>`
+    + `<tr><td class="sig-name">Stretch cut</td><td class="sig-desc">${_stDesc}</td>`
+      + `<td style="color:var(--teal)">Normal distance &rarr; full size</td><td style="color:var(--coral)">Stretched &rarr; reduced size</td>`
+      + curCell(_stExt==null?'—':((_stExt>=0?'+':'')+(_stExt*100).toFixed(1)+'%'), _stG, isUV)
+      + `<td>${isUV?'<span style="color:var(--namut);font-weight:700">N/A</span>':_stOn?'<span class="sig-ind" style="color:var(--cashc);font-weight:700">REDUCED</span>':'<span class="sig-ind" style="color:var(--teal);font-weight:700">Full</span>'}</td></tr>`
     + _div('Entry Indicators &mdash; which side each gate currently permits. <b>TQQQ</b> needs only the first two (close above the 20-day EMA, VIX curve not deeply backwardated). <b>SQQQ</b> needs the mirror of those two plus a bear regime above, and none of the three exhaustion gates vetoing it.')
     + rows(coreRows,[2,4]) + rows(blockRows,[0,1,2])
     + _div('Exit Indicators &mdash; any ONE closes the open position at the next open. The TQQQ trend exits are <b>regime-gated</b> (in a bull regime only a VXN crash-spike or the catastrophe trail can force it out); the SQQQ exits are exhaustion readings plus its two stops. Rows that don&rsquo;t apply to the side you hold read N/A.')
@@ -3191,7 +3209,7 @@ function renderSignalMonitor(histBar){
       const col=k==='sv'?'var(--teal)':k==='uv'?'var(--coral)':'var(--cashc)';
       return `<span style="color:${labCol}">${lab}</span> <span style="color:${col}">${txt}</span>`;};
     const help=t=>`<span class="mini-help" title="${(''+t).replace(/"/g,'&quot;')}">&#9432;</span>`;
-    const _mDesc={ r:{'200 D SMA':coreRows[3][1], 'Size':_sizeDesc},
+    const _mDesc={ r:{'200 D SMA':coreRows[3][1], 'Size':_sizeDesc, 'Stretch':_stDesc},
       e:{'20 D EMA':coreRows[2][1], 'VIX3M:VIX1M':coreRows[4][1], 'Stoch %K':blockRows[0][1], 'ATR Vol Spec':blockRows[1][1], 'MFI':blockRows[2][1]},
       x:{} };
     let mh=`<div class="mini-pos">${posCell('Current',curPos,'var(--yellow)')} <span class="sig-proj-arrow">&rarr;</span> ${posCell('Next open',proj,'var(--white)')}</div>`;
@@ -3211,9 +3229,11 @@ function renderSignalMonitor(histBar){
     mh+=mSub('Regime','r','mini-regime');
     mh+=mRow('200 D SMA', gReg, b.qqq_below_sma200?'Below':'Above', mSig(coreRows[3][5]));
     mh+=mRow('Size', (isSV?_bGauge:null),
-      isSV?(_bst.on?'2.0×':'1.0×'):(isUV?'0.75×':'—'),
+      isSV?(_sizeX.toFixed(1)+'×'):(isUV?'0.75×':'—'),
       isSV?(_bst.on?'<span style="color:var(--cashc)">Boost</span>':'<span style="color:var(--teal)">Base</span>')
           :'<span style="color:var(--namut)">N/A</span>', !isSV);
+    mh+=mRow('Stretch', _stG, _stExt==null?'—':((_stExt>=0?'+':'')+Math.round(_stExt*100)+'%'),
+      isUV?'<span style="color:var(--namut)">N/A</span>':_stOn?'<span style="color:var(--cashc)">Cut</span>':'<span style="color:var(--teal)">Full</span>', isUV||!_stOn);
     mh+=mSub('Entry indicators','e');
     mh+=mRow('20 D EMA', gEma, (emaDist==null?'—':(emaDist>=0?'Above':'Below')), mSig(coreRows[2][5]), inPos);
     mh+=mRow('VIX3M:VIX1M', gCt, stripTags(''+coreRows[4][4]), mSig(coreRows[4][5]), inPos);
@@ -3317,7 +3337,7 @@ updateMarket(); setInterval(updateMarket, 1000);
   }
   document.addEventListener('mouseover',e=>{
     if(B.classList.contains('mob')) return;
-    const el=e.target.closest('.mini-help');
+    const el=e.target.closest('.mini-help,.disc-tip');
     if(!el){ if(tipEl && tipEl.classList.contains('d-tip')) hideTip(); return; }
     if(el===tipFor) return;
     const t=el.getAttribute('title')||el.dataset.tip; if(!t) return;
@@ -3329,7 +3349,7 @@ updateMarket(); setInterval(updateMarket, 1000);
   });
   document.addEventListener('mouseout',e=>{
     if(B.classList.contains('mob') || !tipFor) return;
-    const el=e.target.closest('.mini-help'); if(!el || el!==tipFor || el.contains(e.relatedTarget)) return;
+    const el=e.target.closest('.mini-help,.disc-tip'); if(!el || el!==tipFor || el.contains(e.relatedTarget)) return;
     if(el.dataset.tip) el.setAttribute('title',el.dataset.tip);
     hideTip();
   });
@@ -3352,5 +3372,6 @@ updateMarket(); setInterval(updateMarket, 1000);
   let n=0; const iv=setInterval(()=>{ n++; if((typeof sumMain!=='undefined'&&sumMain)||n>60){ clearInterval(iv); fit(); setTimeout(fit,600); } },250);
 })();
 </script>
+<div class="disc-foot"><b>Important:</b> Hypothetical performance disclosure: all returns, drawdowns and other statistics shown are simulated by applying the current version of the strategy rules to historical data. The strategy is refined on an ongoing basis and each revision is back-tested over the entire history, so the figures benefit from hindsight, are subject to change without notice, and may differ materially from results achieved by following earlier versions of the strategy. They are not the results of actual trading, may not fully reflect costs, slippage, liquidity, taxes or fills, and are not a guarantee or reliable indication of future performance. Leveraged and inverse ETFs can lose most of their value quickly. For information and educational purposes only; not investment advice or a recommendation to buy or sell any security.</div>
 </body>
 </html>
