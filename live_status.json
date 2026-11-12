@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-11-12T11:15:31+00:00",
+  "generated_utc": "2026-11-12T11:20:28+00:00",
   "market": {
     "vxn_used": 26.74,
     "vix_used": 17.48,
@@ -42,10 +42,10 @@
         "prev_date": "2026-11-10",
         "regular_price": 17.48,
         "regular_change": -0.101747,
-        "ext_price": 18.32,
-        "ext_change": 0.048055,
+        "ext_price": 18.33,
+        "ext_change": 0.048627,
         "reg_time": "2026-11-11T21:10:00+00:00",
-        "time": "2026-11-12T11:00:16+00:00"
+        "time": "2026-11-12T11:05:16+00:00"
       },
       "vix3m": {
         "price": 19.24,
@@ -73,7 +73,7 @@
         "ext_price": null,
         "ext_change": null,
         "reg_time": "2026-11-11T21:00:00+00:00",
-        "time": "2026-11-12T11:15:27+00:00"
+        "time": "2026-11-12T11:20:21+00:00"
       },
       "tqqq": {
         "price": 60.39,
@@ -84,10 +84,10 @@
         "prev_date": "2026-11-10",
         "regular_price": 60.39,
         "regular_change": 0.066424,
-        "ext_price": 59.1,
-        "ext_change": -0.021361,
+        "ext_price": 59.06,
+        "ext_change": -0.022024,
         "reg_time": "2026-11-11T21:00:00+00:00",
-        "time": "2026-11-12T11:14:26+00:00"
+        "time": "2026-11-12T11:19:45+00:00"
       },
       "sqqq": {
         "price": 40.57,
@@ -98,10 +98,10 @@
         "prev_date": "2026-11-10",
         "regular_price": 40.57,
         "regular_change": -0.067356,
-        "ext_price": 41.53,
-        "ext_change": 0.023663,
+        "ext_price": 41.48,
+        "ext_change": 0.02243,
         "reg_time": "2026-11-11T21:00:00+00:00",
-        "time": "2026-11-12T11:15:24+00:00"
+        "time": "2026-11-12T11:18:34+00:00"
       },
       "qqq": {
         "price": 690.1,
@@ -112,10 +112,10 @@
         "prev_date": "2026-11-10",
         "regular_price": 690.1,
         "regular_change": 0.022174,
-        "ext_price": 684.9393,
-        "ext_change": -0.007478,
+        "ext_price": 684.92,
+        "ext_change": -0.007506,
         "reg_time": "2026-11-11T21:00:00+00:00",
-        "time": "2026-11-12T11:15:27+00:00"
+        "time": "2026-11-12T11:20:21+00:00"
       },
       "spy": {
         "price": 759.97,
