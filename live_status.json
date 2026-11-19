@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-11-19T02:43:42+00:00",
+  "generated_utc": "2026-11-19T09:00:40+00:00",
   "market": {
     "vxn_used": 33.12,
     "vix_used": 24.56,
@@ -8,21 +8,21 @@
       "vxn": 33.12,
       "vxn_date": "2026-11-18",
       "vxn_chg": -0.038328,
-      "vxn_ref": 34.44,
+      "vxn_ref": 33.12,
       "vix": 24.56,
       "vix_date": "2026-11-18",
       "vix_chg": -0.03535,
-      "vix_ref": 25.46,
+      "vix_ref": 24.56,
       "vix3m": 24.29,
       "vix3m_date": "2026-11-18",
       "vix3m_chg": -0.027622,
-      "vix3m_ref": 24.98
+      "vix3m_ref": 24.29
     },
     "quotes": {
       "vxn": {
         "price": 33.12,
-        "prev_close": 34.44,
-        "change_pct": -0.038328,
+        "prev_close": 33.12,
+        "change_pct": 0.0,
         "session": "regular",
         "asof_date": "2026-11-18",
         "prev_date": "2026-11-17",
@@ -35,22 +35,22 @@
       },
       "vix": {
         "price": 24.56,
-        "prev_close": 25.46,
-        "change_pct": -0.03535,
-        "session": "regular",
+        "prev_close": 25.45,
+        "change_pct": -0.034971,
+        "session": "pre",
         "asof_date": "2026-11-18",
         "prev_date": "2026-11-17",
         "regular_price": 24.56,
         "regular_change": -0.034971,
-        "ext_price": null,
-        "ext_change": null,
-        "reg_time": "2026-11-18T21:15:00+00:00",
-        "time": "2026-11-18T21:15:00+00:00"
+        "ext_price": 21.95,
+        "ext_change": -0.10627,
+        "reg_time": "2026-11-18T21:10:00+00:00",
+        "time": "2026-11-19T08:45:31+00:00"
       },
       "vix3m": {
         "price": 24.29,
-        "prev_close": 24.98,
-        "change_pct": -0.027622,
+        "prev_close": 24.29,
+        "change_pct": 0.0,
         "session": "regular",
         "asof_date": "2026-11-18",
         "prev_date": "2026-11-17",
@@ -73,7 +73,7 @@
         "ext_price": null,
         "ext_change": null,
         "reg_time": "2026-11-18T21:00:00+00:00",
-        "time": "2026-11-19T00:59:56+00:00"
+        "time": "2026-11-19T00:55:00+00:00"
       },
       "tqqq": {
         "price": 52.18,
@@ -87,7 +87,7 @@
         "ext_price": 54.61,
         "ext_change": 0.04657,
         "reg_time": "2026-11-18T21:00:00+00:00",
-        "time": "2026-11-19T00:59:59+00:00"
+        "time": "2026-11-19T00:55:00+00:00"
       },
       "sqqq": {
         "price": 46.61,
@@ -101,7 +101,7 @@
         "ext_price": 44.44,
         "ext_change": -0.046557,
         "reg_time": "2026-11-18T21:00:00+00:00",
-        "time": "2026-11-19T00:59:59+00:00"
+        "time": "2026-11-19T00:55:00+00:00"
       },
       "qqq": {
         "price": 658.36,
@@ -115,7 +115,7 @@
         "ext_price": 668.65,
         "ext_change": 0.01563,
         "reg_time": "2026-11-18T21:00:00+00:00",
-        "time": "2026-11-19T00:59:56+00:00"
+        "time": "2026-11-19T00:55:00+00:00"
       },
       "spy": {
         "price": 729.67,
@@ -129,7 +129,7 @@
         "ext_price": 735.57,
         "ext_change": 0.008086,
         "reg_time": "2026-11-18T21:00:00+00:00",
-        "time": "2026-11-19T00:59:56+00:00"
+        "time": "2026-11-19T00:55:00+00:00"
       },
       "upro": {
         "price": 125.14,
@@ -143,7 +143,7 @@
         "ext_price": 128.14,
         "ext_change": 0.023973,
         "reg_time": "2026-11-18T21:00:00+00:00",
-        "time": "2026-11-19T00:59:55+00:00"
+        "time": "2026-11-19T00:55:00+00:00"
       },
       "spxu": {
         "price": 39.4785,
@@ -157,7 +157,7 @@
         "ext_price": 38.5305,
         "ext_change": -0.024013,
         "reg_time": "2026-11-18T21:00:00+00:00",
-        "time": "2026-11-19T00:59:54+00:00"
+        "time": "2026-11-19T00:55:00+00:00"
       },
       "spx": {
         "price": 7323.6299,
@@ -182,13 +182,13 @@
     "yc_spread": null,
     "regime": "backwardation"
   },
-  "cboe_refreshed": true,
+  "cboe_refreshed": false,
   "official": {
     "date": "2026-11-18",
     "position": "CASH",
     "signal": "CASH",
     "open_pnl": 0.0,
-    "equity": 351667695.31,
+    "equity": 351725474.78,
     "entry_date": null,
     "entry_price": null
   },
