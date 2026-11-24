@@ -1250,8 +1250,10 @@ body.mob #m-menu::before { content:''; display:block; width:16px; height:12px;
         <p>TQQQ trades at full size, and <b>levers up</b> once a position has given back a large share of its
           gains from its highest close without an exit firing, holding the boost until a new peak close. The deep
           trigger is deliberate: shallower pullbacks often keep falling, while give-backs this deep have historically
-          been followed by the sharpest rebounds &mdash; and the trigger never deepened the strategy&rsquo;s worst
-          drawdown. SQQQ trades at <b>reduced size</b>. Cash is not a position the strategy seeks &mdash; it appears only when
+          been followed by the sharpest rebounds. The boost has its own stop: if the account falls a set amount
+          from its high while levered, it drops back to full size until the position makes a new peak. (Added
+          after the late-2026 selloff, when a boost held for months deepened the worst drawdown; that stop had
+          never triggered in the prior history.) SQQQ trades at <b>reduced size</b>. Cash is not a position the strategy seeks &mdash; it appears only when
           neither side qualifies.</p>
       </div>
     </div>
@@ -1336,7 +1338,7 @@ const FLAVOR_ON = false;
   }
   if(document.readyState!=='loading') init(); else document.addEventListener('DOMContentLoaded', init);
 })();
-const _m4=(s=>{const b=atob(s);let o='';for(let i=0;i<b.length;i++)o+=String.fromCharCode(b.charCodeAt(i)^((i*7+13)&255));return JSON.parse(o);})('djZqEwsKGg5rfGB2QxldVEe0paO1gtadl4bx//36rtLPzsk3JTJmKwcWCgNvcGN0LFJJSEmus6K37ZSIi4iR9//4+ZPR0s3TNSIiKA0KXg8ffnt8a1hLTAdNobCjtq+Kj8aJ4PPg+e/QwNGIMio1JjMRVg==');
+const _m4=(s=>{const b=atob(s);let o='';for(let i=0;i<b.length;i++)o+=String.fromCharCode(b.charCodeAt(i)^((i*7+13)&255));return JSON.parse(o);})('djZqEwsKGg5rfGB2QxldVEe0paO1gtadl4bx//36rtLPzsk3JTJmKwcWCgNvcGN0LFJJSEmus6K37ZSIi4iR9//4+ZPR0s3TNSIiKA0KXg8ffnt8a1hLTAdNobCjtq+Kj8aJ4PPg+e/QwNGIMio1JjMRBxBLdGV0ZXJQXww=');
 let DATA=null;
 let OHLC=null, QQQ_OHLC=null, CANDLES=null, candleSeries=null, posSeries=null, sumMain=null, sumPos=null, LIVE=null, MARKERS=null, POSBYDATE=null;
 let OHLCBYTIME={};
@@ -2878,16 +2880,22 @@ function renderSummary(){
 function _boostMap(){
   if(window._bmap) return window._bmap;
   const H=(typeof DATA!=='undefined'&&DATA&&DATA.bar_history)||[]; const m={};
-  let peak=null, prev=null, armed=false;
+  let peak=null, prev=null, armed=false, floored=false, bpk=null;
   for(const b of H){
     const p=b.position, px=b.tqqq_price;
-    if(p!=='LONG_TQQQ'){ peak=null; armed=false; prev=p; m[b.date]={on:false,gb:null}; continue; }
-    if(prev!=='LONG_TQQQ'){ peak=px; armed=false; }
+    if(p!=='LONG_TQQQ'){ peak=null; armed=floored=false; prev=p; m[b.date]={on:false,gb:null}; continue; }
+    if(prev!=='LONG_TQQQ'){ peak=px; armed=floored=false; }
     prev=p;
     if(px!=null) peak=(peak==null)?px:Math.max(peak,px);
     const gb=(peak&&px)?Math.max(0,1-px/peak):0;
-    if(gb<=1e-9) armed=false;
-    if(gb>=_m4.q9 && b.signal==='LONG_TQQQ') armed=true;
+    if(gb<=1e-9) armed=floored=false;
+    if(b.signal==='LONG_TQQQ'){
+      if(gb>=_m4.q9 && !floored && !armed){ armed=true; bpk=b.equity; }
+      if(armed){
+        bpk=Math.max(bpk,b.equity);
+        if(_m4.r4 && b.equity<=bpk*(1-_m4.r4)){ armed=false; floored=true; }
+      }
+    }
     m[b.date]={on:armed, gb:gb};
   }
   window._bmap=m; return m;
@@ -3166,7 +3174,7 @@ function renderSignalMonitor(histBar){
   const rows=(arr,idxs)=>idxs.map(i=>rowHtml(arr[i])).join('');
   const exRows=idxs=>idxs.map(i=>exitRow(i)).join('');
   const _stDesc='Overbought guard: while QQQ closes far above its 200-day average, TQQQ is held at reduced size. Blow-off extensions have tended to give back; on those days TQQQ historically averaged slightly negative instead of its usual gain.';
-  const _sizeDesc='Give-back from the highest close since entry. Past a deep give-back the TQQQ position is levered up (deep drawdowns that don&rsquo;t trip an exit tend to mean-revert fast); it returns to full size on a new peak close. SQQQ always trades at reduced size.';
+  const _sizeDesc='Give-back from the highest close since entry. Past a deep give-back the TQQQ position is levered up (deep drawdowns that don&rsquo;t trip an exit tend to mean-revert fast); it returns to full size on a new peak close, or earlier if the account falls too far while levered. SQQQ always trades at reduced size.';
   const body='<tbody>'
     + _div('<b>REGIME &amp; SIZE</b> &mdash; the master switch. QQQ vs its 200-day SMA decides everything below: <b>Bull</b> (ride TQQQ dips, SQQQ off) or <b>Bear</b> (Ichimoku exits arm, SQQQ may trade). <b>Position size</b>: TQQQ trades at full size and SQQQ at reduced size, but a deep TQQQ give-back from its peak since entry levers the position up until a new peak is reclaimed.','regime-hd')
     + rowHtml(coreRows[3])
