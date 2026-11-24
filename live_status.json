@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-11-24T01:55:34+00:00",
+  "generated_utc": "2026-11-24T05:26:26+00:00",
   "market": {
     "vxn_used": 36.31,
     "vix_used": 26.62,
@@ -8,21 +8,21 @@
       "vxn": 36.31,
       "vxn_date": "2026-11-23",
       "vxn_chg": -0.197569,
-      "vxn_ref": 45.25,
-      "vix": 35.89,
-      "vix_date": "2026-11-20",
-      "vix_chg": 0.261955,
-      "vix_ref": 35.89,
+      "vxn_ref": 36.31,
+      "vix": 26.62,
+      "vix_date": "2026-11-23",
+      "vix_chg": -0.258289,
+      "vix_ref": 26.62,
       "vix3m": 25.5,
       "vix3m_date": "2026-11-23",
       "vix3m_chg": -0.175824,
-      "vix3m_ref": 30.94
+      "vix3m_ref": 25.5
     },
     "quotes": {
       "vxn": {
         "price": 36.31,
-        "prev_close": 45.25,
-        "change_pct": -0.197569,
+        "prev_close": 36.31,
+        "change_pct": 0.0,
         "session": "regular",
         "asof_date": "2026-11-23",
         "prev_date": "2026-11-20",
@@ -35,8 +35,8 @@
       },
       "vix": {
         "price": 26.62,
-        "prev_close": 35.89,
-        "change_pct": -0.258289,
+        "prev_close": 26.62,
+        "change_pct": 0.0,
         "session": "regular",
         "asof_date": "2026-11-23",
         "prev_date": "2026-11-20",
@@ -49,8 +49,8 @@
       },
       "vix3m": {
         "price": 25.5,
-        "prev_close": 30.94,
-        "change_pct": -0.175824,
+        "prev_close": 25.5,
+        "change_pct": 0.0,
         "session": "regular",
         "asof_date": "2026-11-23",
         "prev_date": "2026-11-20",
@@ -188,7 +188,7 @@
     "position": "CASH",
     "signal": "CASH",
     "open_pnl": 0.0,
-    "equity": 351725622.93,
+    "equity": 433421862.79,
     "entry_date": null,
     "entry_price": null
   },
