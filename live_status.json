@@ -1,8 +1,8 @@
 {
-  "generated_utc": "2026-11-26T16:30:30+00:00",
+  "generated_utc": "2026-11-26T16:35:30+00:00",
   "market": {
     "vxn_used": 38.53,
-    "vix_used": 26.62,
+    "vix_used": 26.64,
     "vix3m_used": 26.29,
     "curve": {
       "vxn": 38.53,
@@ -34,18 +34,18 @@
         "time": "2026-11-25T21:00:00+00:00"
       },
       "vix": {
-        "price": 26.62,
+        "price": 26.64,
         "prev_close": 28.29,
-        "change_pct": -0.059031,
+        "change_pct": -0.058324,
         "session": "regular",
         "asof_date": "2026-11-26",
         "prev_date": "2026-11-25",
-        "regular_price": 26.62,
-        "regular_change": -0.060028,
+        "regular_price": 26.64,
+        "regular_change": -0.059322,
         "ext_price": null,
         "ext_change": null,
-        "reg_time": "2026-11-26T16:15:16+00:00",
-        "time": "2026-11-26T16:15:16+00:00"
+        "reg_time": "2026-11-26T16:20:16+00:00",
+        "time": "2026-11-26T16:20:16+00:00"
       },
       "vix3m": {
         "price": 26.29,
@@ -62,9 +62,9 @@
         "time": "2026-11-25T21:00:00+00:00"
       },
       "ndx": {
-        "price": 26142.13,
+        "price": 26142.94,
         "prev_close": 26216.6367,
-        "change_pct": -0.002842,
+        "change_pct": -0.002811,
         "session": "regular",
         "asof_date": "2026-11-25",
         "prev_date": "2026-11-24",
@@ -104,16 +104,16 @@
         "time": "2026-11-26T00:59:50+00:00"
       },
       "qqq": {
-        "price": 635.04,
+        "price": 635.06,
         "prev_close": 636.85,
-        "change_pct": -0.002842,
+        "change_pct": -0.002811,
         "session": "post",
         "asof_date": "2026-11-25",
         "prev_date": "2026-11-24",
-        "regular_price": 635.04,
-        "regular_change": -0.002842,
+        "regular_price": 635.06,
+        "regular_change": -0.002811,
         "ext_price": 636.6214,
-        "ext_change": 0.00249,
+        "ext_change": 0.002459,
         "reg_time": "2026-11-25T21:00:00+00:00",
         "time": "2026-11-26T00:59:55+00:00"
       },
