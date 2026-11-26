@@ -1,8 +1,8 @@
 {
-  "generated_utc": "2026-11-26T07:14:31+00:00",
+  "generated_utc": "2026-11-26T09:00:38+00:00",
   "market": {
     "vxn_used": 38.53,
-    "vix_used": 28.29,
+    "vix_used": 28.32,
     "vix3m_used": 26.29,
     "curve": {
       "vxn": 38.53,
@@ -34,18 +34,18 @@
         "time": "2026-11-25T21:00:00+00:00"
       },
       "vix": {
-        "price": 28.29,
-        "prev_close": 28.29,
-        "change_pct": 0.0,
-        "session": "regular",
+        "price": 28.32,
+        "prev_close": 26.36,
+        "change_pct": 0.074355,
+        "session": "pre",
         "asof_date": "2026-11-25",
         "prev_date": "2026-11-24",
-        "regular_price": 28.29,
-        "regular_change": 0.073217,
-        "ext_price": null,
-        "ext_change": null,
-        "reg_time": "2026-11-25T21:15:00+00:00",
-        "time": "2026-11-25T21:15:00+00:00"
+        "regular_price": 28.32,
+        "regular_change": 0.074355,
+        "ext_price": 26.83,
+        "ext_change": -0.052613,
+        "reg_time": "2026-11-25T21:10:00+00:00",
+        "time": "2026-11-26T08:45:31+00:00"
       },
       "vix3m": {
         "price": 26.29,
@@ -62,9 +62,9 @@
         "time": "2026-11-25T21:00:00+00:00"
       },
       "ndx": {
-        "price": 26142.13,
+        "price": 26142.94,
         "prev_close": 26216.6367,
-        "change_pct": -0.002842,
+        "change_pct": -0.002811,
         "session": "regular",
         "asof_date": "2026-11-25",
         "prev_date": "2026-11-24",
@@ -104,16 +104,16 @@
         "time": "2026-11-26T00:59:50+00:00"
       },
       "qqq": {
-        "price": 635.04,
+        "price": 635.06,
         "prev_close": 636.85,
-        "change_pct": -0.002842,
+        "change_pct": -0.002811,
         "session": "post",
         "asof_date": "2026-11-25",
         "prev_date": "2026-11-24",
-        "regular_price": 635.04,
-        "regular_change": -0.002842,
+        "regular_price": 635.06,
+        "regular_change": -0.002811,
         "ext_price": 636.6214,
-        "ext_change": 0.00249,
+        "ext_change": 0.002459,
         "reg_time": "2026-11-25T21:00:00+00:00",
         "time": "2026-11-26T00:59:55+00:00"
       },
@@ -176,7 +176,7 @@
     }
   },
   "derived": {
-    "contango": -0.070696,
+    "contango": -0.071681,
     "contango_live": true,
     "contango_asof": "2026-11-25",
     "yc_spread": null,
@@ -188,7 +188,7 @@
     "position": "CASH",
     "signal": "LONG_SQQQ",
     "open_pnl": 0.0,
-    "equity": 433422160.5,
+    "equity": 433421509.85,
     "entry_date": null,
     "entry_price": null
   },
