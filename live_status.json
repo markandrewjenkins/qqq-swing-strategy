@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-11-26T03:42:09+00:00",
+  "generated_utc": "2026-11-26T07:14:31+00:00",
   "market": {
     "vxn_used": 38.53,
     "vix_used": 28.29,
@@ -8,36 +8,35 @@
       "vxn": 38.53,
       "vxn_date": "2026-11-25",
       "vxn_chg": 0.057935,
-      "vxn_ref": 36.42,
+      "vxn_ref": 38.53,
       "vix": 28.29,
       "vix_date": "2026-11-25",
       "vix_chg": 0.073217,
-      "vix_ref": 26.36,
+      "vix_ref": 28.29,
       "vix3m": 26.29,
       "vix3m_date": "2026-11-25",
       "vix3m_chg": 0.032195,
-      "vix3m_ref": 25.47
+      "vix3m_ref": 26.29
     },
     "quotes": {
       "vxn": {
         "price": 38.53,
-        "prev_close": 36.42,
-        "change_pct": 0.057935,
-        "session": "closed",
+        "prev_close": 38.53,
+        "change_pct": 0.0,
+        "session": "regular",
         "asof_date": "2026-11-25",
-        "prev_date": null,
+        "prev_date": "2026-11-23",
         "regular_price": 38.53,
-        "regular_change": 0.057935,
+        "regular_change": 0.049864,
         "ext_price": null,
         "ext_change": null,
-        "reg_time": "2026-11-25T20:15:00+00:00",
-        "time": "2026-11-25T20:15:00+00:00",
-        "source": "cboe"
+        "reg_time": "2026-11-25T21:00:00+00:00",
+        "time": "2026-11-25T21:00:00+00:00"
       },
       "vix": {
         "price": 28.29,
-        "prev_close": 26.36,
-        "change_pct": 0.073217,
+        "prev_close": 28.29,
+        "change_pct": 0.0,
         "session": "regular",
         "asof_date": "2026-11-25",
         "prev_date": "2026-11-24",
@@ -50,8 +49,8 @@
       },
       "vix3m": {
         "price": 26.29,
-        "prev_close": 25.47,
-        "change_pct": 0.032195,
+        "prev_close": 26.29,
+        "change_pct": 0.0,
         "session": "regular",
         "asof_date": "2026-11-25",
         "prev_date": "2026-11-24",
@@ -183,13 +182,13 @@
     "yc_spread": null,
     "regime": "backwardation"
   },
-  "cboe_refreshed": true,
+  "cboe_refreshed": false,
   "official": {
     "date": "2026-11-25",
     "position": "CASH",
     "signal": "LONG_SQQQ",
     "open_pnl": 0.0,
-    "equity": 433421438.51,
+    "equity": 433422160.5,
     "entry_date": null,
     "entry_price": null
   },
