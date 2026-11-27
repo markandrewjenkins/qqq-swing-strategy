@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-11-27T23:10:32+00:00",
+  "generated_utc": "2026-11-27T23:15:29+00:00",
   "market": {
     "vxn_used": 33.34,
     "vix_used": 23.81,
@@ -63,9 +63,9 @@
         "time": "2026-11-27T18:00:00+00:00"
       },
       "ndx": {
-        "price": 26682.28,
+        "price": 26681.45,
         "prev_close": 26050.1465,
-        "change_pct": 0.024266,
+        "change_pct": 0.024234,
         "session": "regular",
         "asof_date": "2026-11-27",
         "prev_date": "2026-11-25",
@@ -106,13 +106,13 @@
       },
       "qqq": {
         "price": 650.45,
-        "prev_close": 635.04,
-        "change_pct": 0.024266,
+        "prev_close": 635.06,
+        "change_pct": 0.024234,
         "session": "post",
         "asof_date": "2026-11-27",
         "prev_date": "2026-11-25",
         "regular_price": 650.45,
-        "regular_change": 0.024266,
+        "regular_change": 0.024234,
         "ext_price": 650.62,
         "ext_change": 0.000261,
         "reg_time": "2026-11-27T21:00:00+00:00",
