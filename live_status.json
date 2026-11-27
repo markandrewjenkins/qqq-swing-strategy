@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-11-27T23:00:33+00:00",
+  "generated_utc": "2026-11-27T23:05:29+00:00",
   "market": {
     "vxn_used": 33.34,
     "vix_used": 23.81,
@@ -185,13 +185,14 @@
   },
   "cboe_refreshed": true,
   "official": {
-    "date": "2026-11-25",
-    "position": "CASH",
+    "date": "2026-11-27",
+    "position": "LONG_SQQQ",
     "signal": "LONG_SQQQ",
-    "open_pnl": 0.0,
-    "equity": 433421843.58,
-    "entry_date": null,
-    "entry_price": null
+    "open_pnl": 0.00153,
+    "equity": 425226216.64,
+    "entry_date": "2026-11-27",
+    "entry_price": 45.76,
+    "open_pnl_live": true
   },
   "note": "VXN/VIX/VIX3M are CBOE end-of-day (re-fetched only after the ~5:30pm ET post; cached intraday) with Yahoo intraday overrides. ETF quotes are Yahoo intraday (~5-15 min delayed). Signals finalize on the daily close and trade the next market open."
 }
